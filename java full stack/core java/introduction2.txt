@@ -1,0 +1,70 @@
+Q) What is the difference between Python and Java?
+
+Python					Java
+---------				------
+It is developed by Guido Van Rossum.	It is developed by James Gosling.
+
+It is managed by Python Software 	It is managed by Oracle Corporation.
+Foundation (PSF).
+
+It is often used as scripting 		It is often used as object oriented programming language.				language.
+
+It is a dynamically typed language.	It is a statically typed language.
+
+It is a interpreted language.		It is a compiled language.
+
+It uses PVM to execute python byte code.It uses JVM to execute java byte code.
+
+Performance is low.			Performance is high.	
+
+There is less security.			It is highly secured.
+
+
+AI 
+===
+AI stands for Artificial Intelligence.
+AI is a capability of a computer or a system to mimic or simulate human behaviours.
+ex:
+	Thinking 	
+	Reasoning 
+	Language understanding 	
+	Perception 	
+	and etc.
+We have three types of AI.
+
+1) Weak / Narrow AI 
+------------------
+	It is limited to narrow areas.
+	ex:
+		ChatGPT, Alexa, Siri, GoogleMaps and etc. 
+
+2) Strong AI 
+------------
+	It is used to mimic human behaviours.
+	ex:
+		Not Yet Achieved
+
+2) Super AI 
+---------
+	It is used to surpass human behaviours.
+	ex:
+		Not Yet Achieved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

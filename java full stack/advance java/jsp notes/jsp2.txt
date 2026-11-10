@@ -1,0 +1,355 @@
+First Web application having JSP program as web resource program 
+================================================================
+
+Deployment Directory Structure 
+------------------------------
+JspApp1
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---ABC.jsp
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+ABC.jsp 
+-------
+<center>
+	<h1>
+		Current Date And Time 
+		<br>
+		<%
+			java.time.LocalDateTime ldt = java.time.LocalDateTime.now();
+			out.println(ldt);
+		%>
+	</h1>
+</center>
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp1</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>ABC.jsp</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+Request url 
+----------
+	http://localhost:2525/JspApp1/
+
+
+Configuration of JSP program 
+============================
+Configuration of JSP program is optional.
+We can configure JSP program in web.xml file using <servlet> and <servlet-mapping> tags.
+
+
+Deployment Directory Structure 
+------------------------------
+JspApp1
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---ABC.jsp
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+ABC.jsp 
+-------
+<center>
+	<h1>
+		Current Date And Time 
+		<br>
+		<%
+			java.time.LocalDateTime ldt = java.time.LocalDateTime.now();
+			out.println(ldt);
+		%>
+	</h1>
+</center>
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp1</display-name>
+  
+  <servlet>
+  		<servlet-name>ABC</servlet-name>
+  		<jsp-file>/ABC.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+  		<servlet-name>ABC</servlet-name>
+  		<url-pattern>/test</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
+
+
+Request url 
+----------
+	http://localhost:2525/JspApp1/test
+	http://localhost:2525/JspApp1/ABC.jsp
+
+
+How can we make our web application accessible by url pattern 
+==============================================================
+To make our web application accessible by url pattern we need to keep ABC.jsp file 
+inside /WEB-INF folder.
+
+Deployment Directory Structure 
+------------------------------
+JspApp1
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---WEB-INF
+		|
+		|---ABC.jsp
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+ABC.jsp 
+-------
+<center>
+	<h1 style="color:blue">
+		Current Date And Time 
+		<br>
+		<%
+			java.time.LocalDateTime ldt = java.time.LocalDateTime.now();
+			out.println(ldt);
+		%>
+	</h1>
+</center>
+
+web.xml 
+------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp1</display-name>
+  
+  <servlet>
+  		<servlet-name>ABC</servlet-name>
+  		<jsp-file>/WEB-INF/ABC.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+  		<servlet-name>ABC</servlet-name>
+  		<url-pattern>/test</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
+
+Request url 
+-----------
+	http://localhost:2525/JspApp1/test
+	http://localhost:2525/JspApp1/ABC.jsp    // 404 Error 
+
+
+Note:
+-----
+Servlet Container executes servlet program directly.
+
+JSP container can't execute JSP program directly. It takes the support of servlet container to execute JSP program. Hence for JSP program one JES(Java Equivalent Class) class will be created.
+
+
+JSP Life Cycle Methods 
+======================
+We have three life cycle methods in JSP.
+
+1) _jspInit() 
+-------------
+	It is used for instantiation event.
+	This method will execute just before JES class creation.
+
+2) _jspService()
+-------------
+	It is used for request arrival event.	
+	This method will execute when request goes to JSP program.
+
+3) _jspDestroy()
+---------------
+	It is used for destruction event.
+	This method will execute just before JES class destruction.
+
+
+Phases in JSP 
+=============
+There are two phases in JSP.
+
+1) Translation phase 
+
+2) Request Processing phase 
+
+1) Translation phase 
+--------------------
+In translation phase, our JSP program converts to JES class.
+
+2) Request Processing phase 
+---------------------------
+In request processing phase, our JES class executed and result sends to browser window as dynamic response. 
+
+Diagram: jsp2.1
+
+
+
+JSP Tags/Elements 
+=================
+JSP contains three tags.
+
+1) Scripting Tags 
+-----------------
+	i) Scriptlet Tag 
+		ex:
+			<%  code here  %>
+
+	ii) Expression Tag 
+		ex:
+			<%=  code here %>
+
+	iii) Declaration Tag 
+		ex:
+			<%!  code here %>
+
+2) Directive Tags 
+----------------	
+	i) Page Directive Tag 
+		ex:
+			<%@page attribute=value %>
+	
+	ii) Include Directive Tag
+		ex
+			<%@include attribute=value %>	
+
+3) Action Tags 
+--------------
+	<jsp:include>
+	<jsp:forward>
+	<jsp:useBean>
+	<jsp:setProperty>
+	<jsp:getProperty>
+	and etc.
+
+JSP Comments
+============
+ex:
+	<%-- comment here --%>
+
+
+Scriptlet Tag
+==============
+It is used to declare java code.
+syntax
+------
+	<% code here %>
+
+Deployment Directory Structure 
+------------------------------
+JspApp2
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---form.html
+	|---process.jsp
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+form.html
+---------
+<form action="process.jsp">
+	Name : <input type="text" name="t1"/> 
+	<input type="submit" value="submit"/>
+</form>
+
+
+process.jsp
+------------
+<center>
+	<h1>
+		<%
+			String name = request.getParameter("t1");	
+			out.println("Welcome : "+name);
+		%>
+	</h1>
+</center>
+
+
+web.xml 
+------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp2</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+Request url 
+----------
+	http://localhost:2525/JspApp2/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,250 @@
+Views
+=====
+It is a virtual representation of a data from one or more than one table.
+
+A table which is used to create a view is called base table.
+
+View does not consume the memory.
+
+View does not contain the data.
+
+View gets the data from base table when we execute/run select command.
+
+We have different types of views.
+
+1) Simple View 
+
+2) Complex View 
+
+3) With read only View 
+
+4) With check option View 
+
+5) Materialized View 
+
+
+1) Simple View 
+---------------
+If a view is created by using one base table is called simple view.
+ex:
+	create view v1 as select * from student;
+	
+	select * from v1;
+
+DML operations are allowed in simple view.
+ex:
+	insert into v1 values(104,'ramulu','pune');
+	commit;
+	select * from student;
+	select * from v1;
+
+
+2) Complex View 
+---------------
+If a view is created more then one base table is called complex view.
+
+ex:
+	create view v2 as select e.eid,e.ename,e.esal,d.dname,d.dloc 
+				from emp e,dept d 
+				where (e.deptno = d.deptno);
+
+	select * from v2;
+
+DML operations are not allowed in complex view.
+ex:
+	delete from v2 where eid=201;  -- invalid 
+
+
+3) With read only View 
+----------------------
+If a view is created by using one base table and DML operations are not required then we need to use with read only view.
+
+ex:
+
+	create view v3 as select * from student with read only;
+	
+	select * from v3;
+
+	delete from v3 where sno=101;	-- invalid 
+
+4) With check option View 
+--------------------------
+If a view is created by using one base table and DML operations are allowed only when condition is satisfied then we need to use with check option view.
+
+ex:
+	create view v4 as select * from emp where deptno = 30 with check option;
+
+	select * from v4;
+
+	insert into v4 values(208,'Lisa',23000,60,'Salesman',500); --invalid 
+	insert into v4 values(208,'Lisa',23000,30,'Salesman',500);
+	select * from v4;
+	select * from emp;
+
+5) Materialized View 
+--------------------
+To create a materialized view a table must have primary key.
+Materialized view is also known as snapshot.
+
+ex:
+	alter table emp add primary key(eid);
+
+	create materialized view v5 as select * from emp;
+
+	select * from v5; -- 8 records 
+
+	delete from emp where eid=208;
+	commit;
+	select * from emp; -- 7 records 
+	select * from v5;  -- 8 records 
+	
+	To update the view we need to refresh the view.
+	ex:
+		exec DBMS_SNAPSHOT.REFRESH('V5');
+
+		select * from v5; -- 7 records 
+
+
+Q) Write a query to see the list of views present in database?
+
+	select view_name from user_views;
+
+
+Q) Write a query to drop the view.
+	drop view v1;
+	drop view v2;
+	drop view v3;
+	drop view v4;
+	drop materialized view v5;
+
+
+Sub-Queries 
+===========
+Somtimes we will declare a query inside another query such concept is called subquery.
+
+In sub query , first inner query will execute then outer query.
+
+Sub query can be nested upto 32 levels.
+
+Sub queries are used to select the records based on unknown values.
+
+We have following list of sub queries.
+
+1) Scalar Sub query 
+
+2) Inline View 
+
+3) Single Row Sub query 
+
+4) Multiple Row Sub query 
+
+5) Multiple Column Sub query 
+
+
+1) Scalar Sub query 
+-------------------
+If a sub query returns single value then it is called scalar sub query.''
+
+It contains one row and one column.
+
+It acts like a column.
+
+ex:
+	select ename, (select avg(esal) from emp) from emp;
+	select ename, (select avg(esal) from emp) as AVG_SAL from emp;
+
+
+2) Inline View 
+--------------
+If a sub query present in from clause then it is called inline view.
+
+It returns multiple rows.
+
+It acts like a table.
+
+ex:
+	select * from (select * from emp) where rownum<=3;
+	select * from (select * from emp order by eid) where rownum<=3;
+	select * from (select * from emp order by desc) where rownum<=3;
+	
+
+3) Single Row Sub query 
+------------------------
+If a sub query returns single row is called single row sub query.
+
+ex:
+	select max(esal) from emp where esal<(select max(esal) from emp);
+
+
+	select * from emp where esal > (select esal from emp where ename='Mark');		
+	
+	select * from emp where 
+	eid = (select eid from emp where ename='Alan')
+	and 
+	ename = (select ename from emp where esal = 9000);
+
+4) Multiple Row Sub query 
+---------------------
+If a sub query returns multiple rows then it is called multiple row sub query.
+
+To work with multiple row sub query we required multiple row operators.
+
+We have three multiple row operators.
+
+i) ANY 
+
+ii) ALL 
+
+ii) IN 
+
+i) ANY 
+-----
+	select * from emp where esal > ANY (select esal from emp where deptno=10);
+	select * from emp where esal < ANY (select esal from emp where deptno=10);
+
+ii) ALL 
+------
+	select * from emp where esal > ALL (select esal from emp where deptno=10);
+	select * from emp where esal < ALL (select esal from emp where deptno=10);
+
+iii) IN 
+------
+	select * from emp where esal IN (select esal from emp where deptno=10);
+	
+
+5) Multiple Column Sub query 
+---------------------------
+If a sub query returns multiple columns is called multiple column sub query.
+
+ex:
+
+select * from emp where(eid,ename,esal) IN (select eid,ename,esal from emp);
+
+select eid,ename,esal from emp where(eid,ename,esal) IN (select eid,ename,esal from emp);
+
+select eid,ename,esal from emp where(eid,ename,esal) IN 
+		(select eid,ename,esal from emp where eid=201);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

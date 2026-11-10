@@ -1,0 +1,383 @@
+Typecasting 
+===========
+The process of converting from one datatype to another datatype is called typecasting.
+
+In java , typecasting can be performed in two ways.
+
+1) Implicit typecasting 
+
+2) Explicit typecasting 
+
+
+1) Implicit typecasting
+----------------------
+If we want to store smaller value into a bigger variable then we need to use implicit typecasting.
+
+A compiler is responsible to perform implicit typecasting.
+
+There is no possibility to loss the information.
+
+It is also known as widening or upcasting.
+
+We can perform implicit typecasting as follow.
+
+syntax:
+-------
+	byte	-->	short
+				-->	
+					int -->	long --> float --> double
+				-->
+			char
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		byte b = 10;
+		int i = b;
+		System.out.println(i);// 10
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		char ch = 'a';
+		long l = ch;
+		System.out.println(l);// 97
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		float f = i;
+		System.out.println(f); // 10.0
+	}
+}
+	
+2) Explicit typecasting 
+----------------------
+If we want to store bigger value into a smaller variable then we need to use explicit typecasting.
+
+A programmer is responsible to perform explicit typecasting.
+
+There is a possibility to loss the information.
+
+It is also known as narrowing or downcasting.
+
+We can perform explicit typecasting as follow.
+
+ex:
+	byte <-- short
+			<--		
+				int <--	long <-- float <-- double		
+			<--
+		char
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		double d = 10.56d;
+		int i = (int)d;
+		System.out.println(i); // 10
+	}
+}
+	
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 65;
+		char ch = (char)i;
+		System.out.println(ch); // A
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 130;
+		byte b = (byte)i;
+		System.out.println(b); // -126
+	}
+}
+
+
+
+Types of blocks 
+===============
+A block is a set of statements which is enclosed in a curly braces i.e {}.
+
+In java we have three types of blocks.
+
+1) Instance block 
+
+2) Static block 
+
+3) Local block 
+
+
+1) Instance block 
+-------------------
+Instance block is used to initialize instance variables.
+
+Instance block must and should declare immediately after the class but not inside methods and constructors.
+
+Instance block is executed automatically when we create object.
+
+We can declare instance block as follow.
+
+syntax:
+------
+	//instance block 
+	{
+		-
+		- // set of statements 
+		-
+	}
+
+ex:
+---
+class Test 
+{
+	//instance block 
+	{
+		System.out.println("instance-block");
+	}
+	public static void main(String[] args) 
+	{
+		System.out.println("main-method");
+	}
+}
+o/p:
+	main-method
+
+ex:
+---
+class Test 
+{
+	//instance block 
+	{
+		System.out.println("instance-block");
+	}
+	public static void main(String[] args) 
+	{
+		System.out.println("main-method");
+		Test t = new Test();
+	}
+}
+o/p:
+	main-method 
+	instance-block 
+
+ex:
+---
+class Test 
+{
+	//instance block 
+	{
+		System.out.println("instance-block");
+	}
+	public static void main(String[] args) 
+	{
+		Test t1 = new Test();
+		System.out.println("main-method");
+		Test t2 = new Test();
+	}
+}
+o/p:
+	instance-block 
+	main-method 
+	instance-block 
+
+ex:
+--
+class Test 
+{
+	//instance variable 
+	int i;
+	
+	//instance block 
+	{
+		i = 100;
+	}
+	
+	public static void main(String[] args) 
+	{
+		Test t = new Test();
+		System.out.println(t.i); // 100
+	}
+}
+
+
+2) Static block 
+----------------
+Static block is used to initialize static variables.
+
+Static block must and should declare immediately after the class but not inside methods and constructors.
+
+Static block will execute automatically when class is loaded.
+
+We can declare static block as follow.
+
+syntax:
+-------
+	// static block 
+	static 
+	{
+		-
+		- //set of statements 
+		-
+	}
+
+ex:
+---
+class Test 
+{
+	//static block 
+	static
+	{
+		System.out.println("static-block");
+	}
+	
+	public static void main(String[] args) 
+	{
+		System.out.println("main-method");
+	}
+}
+o/p:
+	static-block 
+	main-method 
+
+ex:
+---
+class Test 
+{
+	//static variables 
+	static int i;
+	
+	//static block 
+	static
+	{
+		 i = 300;
+	}
+	
+	public static void main(String[] args) 
+	{
+		System.out.println(i); // 300
+	}
+}
+
+
+3) Local block 
+--------------
+Local block is used to initialize local variables.
+
+Local block must and should declare inside methods and constructors.
+
+local block will execute just like a normal statement.
+
+We can declare local block as follow.
+
+syntax:
+-------
+	// syntax 
+	{	
+		-
+		- //set of statements 
+		-
+	}	
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		System.out.println("stmt1"); 
+		
+		//local block 
+		{
+			System.out.println("stmt2"); 	
+		}
+		
+		System.out.println("stmt3"); 
+	}
+}
+o/p:
+	stmt1
+	stmt2
+	stmt3
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//local variable 
+		int i;
+		
+		//local block 
+		{
+			i = 300;
+		}
+		
+		System.out.println(i);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

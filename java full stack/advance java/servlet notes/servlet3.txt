@@ -1,0 +1,161 @@
+Servlet 
+========
+It is a dynamic web resource program that enhanced the functionality of web server, 
+proxy server or IDE' server.
+
+or
+
+It is a server side web resource program which is used to generate dynamic web pages.
+
+or
+
+It is a single instance multithread java based web resource program which is used to develop web applications.
+
+Diagram: servlet3.1
+
+
+Steps to develop first web application having servlet program web resource program
+===================================================================================
+Diagram: servlet3.2
+
+Deployment Directory Structure 
+-------------------------------
+DateApp
+|
+|---Java Resources
+	|
+	|------src
+		|		
+		|---com.rt.www
+			|
+			|---DateSrv.java
+|---WebContent
+	|
+	|---WEB-INF
+		|
+		|---web.xml
+Note:
+----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+step1:
+------
+	Create a dynamic web project i.e DateApp.
+	ex:
+		File --> New --> Dynamic Web Project
+		Project Name : DateApp 
+		Dynamic Modele Version : 4.0
+		--> Next --> Next --> Generate web.xml file (select on checkbox)
+		--> Finish.
+
+step2:
+-----
+	Add "servlet-api.jar" file in project build path.
+	ex:
+		right click to DateApp project --> build path -->
+		configure build path --> libraries -->
+		add external jars --> select servlet-api.jar file -->
+		open --> apply and close.
+
+step3:
+-----
+	Create a com.rt.www package inside "Java Reources/src" folder.
+
+step4:
+------
+	Create DateSrv.java file inside "com.rt.www" package.
+
+DateSrv.java
+------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+public class DateSrv extends GenericServlet
+{
+	public void service(ServletRequest req,ServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+		
+		LocalDateTime ldt = LocalDateTime.now();
+		pw.println("<center><h1>Current Date and Time <br> "+ldt+" </h1></center>");
+	
+		pw.close();
+	}
+}
+
+step5:
+-----
+	Configure servlet program in web.xml file.
+
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+ 
+  <display-name>DateApp</display-name>
+  
+  <servlet>
+  	<servlet-name>DateSrv</servlet-name>
+  	<servlet-class>com.rt.www.DateSrv</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>DateSrv</servlet-name>
+  	<url-pattern>/test</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
+
+step6:
+------
+	Add tomcat server to eclipse IDE.	
+	ex:
+		window --> preferences --> Server --> Runtime Environments
+		--> click to add button --> select Apache Tomcat 9 --> Next
+		--> select Tomcat9.0 location
+		(C:\Program Files\Apache Software Foundation\Tomcat 9.0) --> Finish
+		--> Apply and close.	
+
+step7:
+-----
+	Run dynamic web project.
+	ex:
+		right click to DateApp project --> run as --> run on server 
+		-- Apache Tomcat 9 --> Next --> Finish.
+step8:
+------
+	Test the application by using below request url.
+	ex:
+		http://localhost:2525/DateApp/test
+
+Note:
+----
+	If there is a problem with web.xml file then we will get 404 error.
+	If there is a problem with servlet file then we will get 500 error.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

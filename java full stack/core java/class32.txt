@@ -1,0 +1,436 @@
+Interfaces
+==========
+Interface is a blue print of a class and it is a collection of abstract methods, default methods, static methods and private methods.
+
+Diagram: class32.1
+
+Abstract method is a incomplete method because it ends with semicolon and does not have any body.
+ex:
+	public abstract void methodOne();
+
+It is not possible to create object for interfaces because it contains unimplemented methods and lack of constructor.
+
+To write the implementation of abstract methods we will use implementation class.
+
+It is possible to create object for implementation class because it contains method with body.
+
+By default every abstract method is a public and abstract.
+
+Interface contains only constants i.e public static final.
+
+If we have service requirement specifications then we need to use interface.
+
+ex:
+---
+interface Animal 
+{
+	public abstract void sound();
+}
+class Dog implements Animal
+{
+	@Override
+	public void sound()
+	{
+		System.out.println("Bow Bow");
+	}
+}
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		Animal a = new Dog();
+		a.sound();
+	}
+}
+
+ex:
+---
+interface Animal 
+{
+	public abstract void sound();
+}
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		//Anonymous inner class
+		Animal a = new Animal()
+		{
+			public void sound()
+			{
+				System.out.println("Meow Meow");
+			}
+		};
+		a.sound();
+	}
+}
+
+If interface contains four methods then we need to override all methods otherwise we will get 
+compile time error.
+
+ex:
+---
+interface ATM
+{
+	public abstract void deposit();
+	public void withdrawl();
+	abstract void ministatement();
+	void transfer();
+}
+class ATMImpl implements ATM 
+{
+	@Override
+	public void deposit()
+	{
+		System.out.println("Deposit Method");
+	}
+	@Override
+	public void withdrawl()
+	{
+		System.out.println("Withdrawl Method");
+	}
+	@Override
+	public void ministatement()
+	{
+		System.out.println("MiniStatement Method");
+	}
+	@Override
+	public void transfer()
+	{
+		System.out.println("Transfer Method");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		ATM atm = new ATMImpl();
+		atm.deposit();
+		atm.withdrawl();
+		atm.ministatement();
+		atm.transfer();
+	}
+}
+
+In java, class can't extends more then one class. 
+But interface can extends more then one interface.
+
+ex:
+---
+interface A 
+{
+	void methodOne();
+}
+interface B
+{
+	void methodTwo();
+}
+interface C extends A,B
+{
+	void methodThree();
+}
+class D implements C 
+{
+	@Override 
+	public void methodOne()
+	{
+		System.out.println("MethodOne");
+	}
+	@Override 
+	public void methodTwo()
+	{
+		System.out.println("MethodTwo");
+	}
+	@Override 
+	public void methodThree()
+	{
+		System.out.println("MethodThree");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		C c = new D();
+		c.methodOne();
+		c.methodTwo();
+		c.methodThree();
+	}
+}
+
+A class can implements more then one interface.
+
+ex:
+---
+interface Father 
+{
+	float HT = 6.2f;
+	void height();
+}
+interface Mother 
+{
+	float HT = 5.8f;
+	void height();
+}
+class Child implements Father,Mother
+{
+	@Override
+	public void height()
+	{
+		float height = (Father.HT+Mother.HT)/2;
+		System.out.println("Child Height ="+height);
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Child c = new Child();
+		c.height();
+	}
+}
+
+
+Marker interface 
+================
+Interface which does not contain any methods and constants is called marker interface.
+
+In general, empty interface is called marker interface.
+
+We have following list of marker interfaces in java.
+
+ex:
+	Serializable 
+	Cloneable 
+	Remote 
+	and etc.	
+
+Using marker interface we will get some ability to do.
+
+
+Q) Write a program to achieve multiple inheritance in java?
+
+interface Father
+{
+	public void skill();
+}
+interface Mother
+{
+	public void skill();
+}
+class Child implements Father,Mother 
+{
+	@Override
+	public void skill()
+	{
+		System.out.println("Programming Skill");
+		System.out.println("Cooking Skill");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Child c = new Child();
+		c.skill();
+	}
+}
+
+Abstract class
+==============
+It is a collection of zero or more abstract methods or concrete(regular) methods.
+
+A abstract keyword is applicable for methods and classes but not for variables.
+
+It is not possible to create object for abstract class because it contains incomplete methods.
+
+To write the implementation of abstract methods we will use sub classes.
+
+In abstract class, abstract methods must be declare using abstract keyword.
+ex:
+	abstract void m1();
+	public abstract void m1();
+
+Abstract class contains only instance variables.
+
+If we know partial implementation the we need to use abstract class.
+
+ex:
+---
+abstract class Payment
+{
+	public abstract void paymentMethod();
+}
+class CardPayment extends Payment
+{
+	@Override
+	public void paymentMethod()
+	{
+		System.out.println("Card Payment");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		CardPayment cp = new CardPayment();
+		cp.paymentMethod();
+	}
+}		
+
+ex:
+---
+abstract class Plan 
+{
+	//instance variable 
+	protected double rate;
+	
+	//abstract method 
+	public abstract void getRate();
+	
+	//concret method
+	public void calculateBillAmt(int units)
+	{
+		System.out.println("Total Units : "+units);
+		System.out.println("Total Bill : "+ (rate*units));
+	}
+}
+class DomesticPlan extends Plan 
+{
+	@Override
+	public void getRate()
+	{
+		rate = 2.5d;
+	}
+}
+class CommercialPlan extends Plan 
+{
+	@Override
+	public void getRate()
+	{
+		rate = 5.0d;
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		DomesticPlan dp = new DomesticPlan();
+		dp.getRate();
+		dp.calculateBillAmt(250);
+		
+		CommercialPlan cp = new CommercialPlan();
+		cp.getRate();
+		cp.calculateBillAmt(250);
+	}
+}
+
+
+
+Q) What is the difference between Interface and Abstract class?
+
+Interface					Abstract class
+----------					---------------
+To declare interface we will use interface	To declare abstract class we will use abstract
+keyword.					keyword.
+
+It is a blue print of a class and it is a 	It is a collection of zero or more abstract 
+collection of abstract methods,default methods,	methods and concrete/regular methods.
+static methods and private methods.
+
+To write implementation of abstract methods	To write implement of abstract methods
+we will use implementation class.		we will use sub classes.
+
+It does not allow constructor.			It allows constructor.
+
+It does not allow blocks.			It allows blocks.
+
+We can achieve multiple inheritance.		We can't achieve multiple inheritance.
+
+If we know only specification then we 		If we know partial implementation then we 
+need to use interface.				need to use abstract class.
+
+
+Abstraction Example 
+===================
+
+ex:1
+-----
+abstract class Draw 
+{
+	public abstract void shape();
+}
+class Circle extends Draw
+{
+	@Override
+	public void shape()
+	{
+		System.out.println("Circle Shape");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Draw d = new Circle();
+		d.shape();	
+	}
+}
+
+ex:2
+---
+interface Draw
+{
+	public abstract void shape();
+}
+class Circle implements Draw
+{
+	@Override
+	public void shape()
+	{
+		System.out.println("Circle Shape");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Draw d = new Circle();
+		d.shape();	
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,366 @@
+JDBC flexible Application 
+=========================
+In JDBC, Connection object consider as heavy weight object.
+
+It is never recommanded to create Connection object in every JDBC application.
+
+We need to declare utility class which creates and returns Connection object.
+
+If any JDBC application need Connection object then it can take from utility class.
+
+A utility class is a container in programming that holds a collection of static methods and constants to perform common, reusable tasks.
+
+ex:
+	ConnectionUtility
+		|
+		| (Connection) 
+		|
+ 	   FlexibleApp
+		|		
+		|
+	   Database Software
+
+ConnectionUtility.java
+--------------------
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class ConnectionUtility
+{
+	final static String URL = "jdbc:oracle:thin:@localhost:1521:XE";
+	final static String USERNAME = "system";
+	final static String PASSWORD = "admin";
+	
+	public static Connection getConnection()throws Exception
+	{
+		return  DriverManager.getConnection(URL,USERNAME, PASSWORD);
+	}
+}
+
+
+FlexibleApp.java
+----------------
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class FlexibleApp 
+{	
+	public static void main(String[] args)throws Exception  
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = ConnectionUtility.getConnection();
+		Statement st = con.createStatement();
+		String qry = "select * from student";
+		ResultSet rs = st.executeQuery(qry);
+		while(rs.next())
+		{
+			System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+		}
+		rs.close();
+		st.close();
+		con.close();
+	}
+}
+
+
+Thin-Client/Fat-Server Application 
+====================================
+Every JDBC application is a thin-client/fat-server application.
+
+Diagram: jdbc5.1
+
+To create thin-client/fat-server application we need to store business logic and persistence logic in database software in the form of PL/SQL stored procedures and functions. 
+
+To deal with stored PL/SQL procedure and functions we need to use 
+CallableStatement object.
+
+Example1
+--------
+
+procedure
+---------
+create or replace procedure first_proc(A IN number, B IN number, C OUT number)
+is
+begin 
+C:=A+B;
+END;
+/
+
+ex:
+---
+package com.rt.www;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Types;
+
+public class CallableStmtApp1 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		CallableStatement cst = con.prepareCall("{CALL first_proc(?,?,?)}");
+		
+		//register out parameter
+		cst.registerOutParameter(3, Types.INTEGER);
+		
+		//set in parameters 
+		cst.setInt(1, 10);
+		cst.setInt(2, 20);
+		
+		//execute the procedure 
+		cst.execute();
+		
+		//gather the result 
+		int result = cst.getInt(3);
+		System.out.println("Sum of two numbers is = "+result);
+		
+		cst.close();
+		con.close();
+	}
+}
+
+
+Example2
+---------
+
+function 
+-------
+create or replace function first_func(A number,B number)
+return number
+is
+C number;
+begin 
+C := A + B;
+return C;
+end;
+/
+
+ex:
+---
+package com.rt.www;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Types;
+
+public class CallableStmtApp2 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		CallableStatement cst = con.prepareCall("{? = call first_func(?,?)}");
+		
+		//register out parameters
+		cst.registerOutParameter(1, Types.INTEGER);
+		
+		//set in parameters
+		cst.setInt(2, 100);
+		cst.setInt(3, 200);
+		
+		//execute the function 
+		cst.execute();
+		
+		//gather the result 
+		int result = cst.getInt(1);
+		System.out.println("Sum of two numbers is = "+result);
+		
+		cst.close();
+		con.close();
+	}
+}
+
+
+Transaction Management 
+======================
+Transaction means single unit of work.
+
+In transaction management, we commit if transaction is done sucessfully and we rollback if transaction is failed. 
+
+Diagram: jdbc5.2
+
+sbi table 
+=========
+drop table sbi;
+create table sbi(accno number(6),accholder varchar2(10), accbal number(8));
+insert into sbi values(100001,'vinay',5000);
+insert into sbi values(200002,'uday',6000);
+commit;
+
+kotak table 
+===========
+drop table kotak;
+create table kotak(accno number(6),accholder varchar2(10), accbal number(8));
+insert into kotak values(111111,'rohit',90000);
+insert into kotak values(222222,'vihar',80000);
+commit;
+
+
+ex:
+---
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class TXNManagementApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the source account no : ");
+		int sno = sc.nextInt();
+		
+		System.out.println("Enter the destination account no : ");
+		int dno = sc.nextInt();
+		
+		System.out.println("Enter the amount to transfer : ");
+		int amt = sc.nextInt();
+		
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		
+		// set auto complete off 
+		con.setAutoCommit(false);
+		
+		Statement st = con.createStatement();
+		
+		String qry1 = "update kotak set accbal = accbal - "+amt+" where accno = "+sno;
+		String qry2 = "update sbi set accbal = accbal +"+amt+" where accno="+dno;
+		
+		//add the queries to batch 
+		st.addBatch(qry1);
+		st.addBatch(qry2);
+		
+		//exeucute the batch
+		int[] result = st.executeBatch();
+		
+		boolean flag = true;
+		for(int i : result)
+		{
+			if(i==0)
+			{
+				flag = false;
+				break;
+			}
+		}
+		if(flag==true)
+		{
+			System.out.println("Transaction Done successfully");
+			con.commit();
+		}
+		else
+		{
+			System.out.println("Transaction Failed");
+			con.rollback();
+		}
+	}
+}
+
+Types of ResultSet objects
+==========================
+We have two types of ResultSet objects.
+
+1) Non-Scrollable ResultSet object
+
+2) Scrollable ResultSet object 
+
+Diagram: jdbc5.3
+
+1) Non-Scrollable ResultSet object
+-----------------------------------
+A ResultSet object which allows us to read the records sequentially, uni-directionally is called non-scrollable ResultSet object.
+
+By default every ResultSet object is a non-scrollable ResultSet object.
+
+
+If JDBC Statement object is created without TYPE and MODE value then such ResultSet
+object is called non-scrollable ResultSet object.
+ex:
+	Statement st  = con.createStatement();
+	ResultSet rs = st.executeQuery("select * from student");
+
+
+2) Scrollable ResultSet object 
+-------------------------------
+A ResultSet object which allows us to read the records non-sequentially, bi-directionally, randomly is called scrollable ResultSet object.
+
+If JDBC Statement object is created with TYPE and MODE value then such ResultSet
+object is called scrollable ResultSet object.
+ex:
+	Statement st  = con.createStatement(TYPE_VALUE, MODE_VALUE);
+	ResultSet rs = st.executeQuery("select * from student");
+
+We have two types of TYPE values.
+ex:
+	ResultSet.TYPE_SCROLL_SENSITIVE
+	ResultSet.TYPE_SCROLL_INSENSITIVE 
+
+We have two types of MODE values.
+ex:
+	ResultSet.CONCUR_READ_ONLY
+	ResultSet.CONCUR_UPDATABLE 
+
+
+ex:
+---
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class ScrollableRSApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		Statement st = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		String qry ="select * from student";
+		ResultSet rs = st.executeQuery(qry);
+		
+		//top to bottom 
+		while(rs.next())
+		{
+			System.out.println(rs.getRow()+" "+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+		}
+		
+		//bottom to top 
+		rs.afterLast();
+		while(rs.previous())
+		{
+			System.out.println(rs.getRow()+" "+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+		}
+		
+		rs.first();
+		System.out.println(rs.getRow()+" "+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+		
+		rs.last();
+		System.out.println(rs.getRow()+" "+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+		
+		//rs.relative(-2);
+		rs.absolute(-2);
+		System.out.println(rs.getRow()+" "+rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+		
+		rs.close();
+		st.close();
+		con.close();
+	} 
+}
+
+
+

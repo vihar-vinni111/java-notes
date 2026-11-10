@@ -1,0 +1,287 @@
+Various ways to declare methods in java 
+=======================================
+There are four ways to declare methods in java.
+
+1) No returntype with No argument method 
+
+2) No returntype with argument method
+
+3) With returntype with No argument method
+
+4) With returntype with argument method
+
+
+1) No returntype with No argument method 
+-----------------------------------------
+If we don't have arguments then we need to read input values inside callie method.
+
+
+import java.util.Scanner;
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		//caller method 
+		sum();
+	}
+	//callie method
+	public static void sum()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the two numbers :");
+		int a = sc.nextInt();
+		int b = sc.nextInt();
+		int c = a + b;
+		System.out.println("sum of two numbers is = "+c);
+	}
+}
+
+2) No returntype with argument method
+---------------------------------------
+If we have arguments then we need to read input values inside main method.
+Number of inputs must be equals to number of arguments.
+
+ex:
+---
+import java.util.Scanner;
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the two numbers :");
+		int a = sc.nextInt();//20
+		int b = sc.nextInt();//30
+		
+		//caller method 
+		sum(a,b);
+	}
+	//callie method
+	public static void sum(int a,int b)
+	{
+		int c = a + b;
+		System.out.println("sum of two numbers is ="+c);
+	}
+}
+
+3) With returntype with No argument method
+------------------------------------------
+At a time we can return only one value.
+A return type is completely depend upon output datatype.
+
+ex:
+---
+import java.util.Scanner;
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		//caller method
+		int k = sum();
+		System.out.println("sum of two numbers is = "+k);
+	}
+	//callie method
+	public static int sum()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the two numbers :");
+		int a = sc.nextInt();//20
+		int b = sc.nextInt();//30
+		int c = a + b;
+		return c;
+	}
+}
+
+4) With returntype with argument method
+---------------------------------------
+We can declare multiple  return statements but we can return only one value at a time.
+
+If we have single output then only we need to use return type.
+
+
+ex:
+---
+import java.util.Scanner;
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the two numbers :");
+		int a = sc.nextInt();//20
+		int b = sc.nextInt();//30
+		//caller method 
+		System.out.println("sum of two numbers is = "+sum(a,b));
+	}
+	//callie method
+	public static int sum(int a,int b)
+	{
+		int c = a + b;
+		return c;
+	}
+}
+
+Assignment
+==========
+Q) Write a java program to check given number is even or odd using four ways?
+
+
+
+Recursion 
+==========
+It is a programming technique which breaks down complex problem into sub-problems.
+
+A method which called itself for many number of times to solve a problem is called recursion.
+
+Recursion is similar to loopings. Whenever we use recursion we should not use loops.
+
+
+Q) Write a java program to display 10 naturals without using loops?
+
+
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		//caller method
+		display(1);
+	}
+	//callie method
+	public static void display(int i)
+	{
+		if(i<=10)
+		{
+			System.out.print(i+" ");//1 2 3 4 5 6 7 8 9 10
+			
+			display(i+1);
+		}
+	}
+}
+
+
+Q) Write a java program to perform sum of two numbers without using arithmetic operator?
+
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		//caller method
+		System.out.println(sum(5,10));
+	}
+	//callie method
+	public static int sum(int a,int b)
+	{
+		if(a==0)
+			return b;
+		
+		return sum(--a,++b);
+	}
+}
+
+Q) Write a java program to find out factorial of a given number using recursion?
+
+input:
+	5
+
+output:
+	120
+
+import java.util.Scanner;
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the number : ");
+		int n = sc.nextInt();//5
+		
+		//caller methohd 
+		System.out.println(factorial(n));
+	}
+	//callie method
+	public static int factorial(int n)
+	{
+		if(n<0)
+			return -1;
+		if(n==0)
+			return 1;
+		return n*factorial(n-1);
+	}
+}
+
+
+Q) Write a java program to find out N-th element of fibonacci series?
+
+fibonacci series : 0 1 1 2 3 5 .......
+
+input:
+	4
+output:
+	2
+
+
+
+import java.util.Scanner;
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the number : ");
+		int n = sc.nextInt();//4
+		
+		//caller methohd 
+		System.out.println(fib(n));
+	}
+	//callie method
+	public static int fib(int n)
+	{
+		if(n==0 || n==1)
+			return 0;
+		if(n==2)
+			return 1;
+		
+		return fib(n-1)+fib(n-2);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

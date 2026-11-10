@@ -1,0 +1,440 @@
+JSP to Java Bean Communication 
+==============================
+JSP to java bean communication is possible by using following tags.
+
+1) <jsp:useBean>
+----------------
+	It is used to create and locate bean class object.
+
+2) <jsp:setProperty>
+------------------
+	It is used to set the values to bean object and calls setter methods.
+
+3) <jsp:getProperty>
+---------------------
+	It is used to get the values from bean object and calls getter methods.
+
+Note:
+----
+All the above tags are independen tags.
+
+Example1
+=========
+
+Deployment Directory Structure 
+-------------------------------
+JspApp10
+|
+|---Java Resources
+	|
+	|-------src
+		|
+		|---com.rt.www
+			|
+			|---Cube.java
+|---WebContent
+	|
+	|---index.jsp 
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+Cube.java
+---------
+package com.rt.www;
+
+public class Cube 
+{
+	public int cube(int n)
+	{
+		return n*n*n;
+	}
+}
+
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+ 
+  <display-name>JspApp10</display-name>
+ 
+  <welcome-file-list>
+ 	<welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+ 
+</web-app>
+
+index.jsp 
+----------
+<jsp:useBean  id="c" class="com.rt.www.Cube" />
+
+<%= "Cube of a given number is = "+c.cube(5) %>
+
+Request url 
+---------
+	http://localhost:2525/JspApp10/
+
+
+
+Example2
+=========
+
+Deployment Directory Structure 
+------------------------------
+JspApp11
+|
+|---Java Resources
+	|
+	|-------src
+		|
+		|---com.rt.www
+			|
+			|---User.java
+|---WebContent
+	|
+	|---form.html 
+	|---process.jsp 
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+form.html
+---------
+
+<form action="process.jsp">
+	<table align="center">
+		<tr>
+			<td>UserName:</td>
+			<td><input type="text" name="username"/></td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td><input type="password" name="password"/></td>
+		</tr>
+		<tr>
+			<td>Email:</td>
+			<td><input type="text" name="email"/></td>
+		</tr>
+		<tr>
+			<td><input type="reset" value="reset"/></td>
+			<td><input type="submit" value="submit"/></td>
+		</tr>
+	</table>
+</form>
+
+User.java
+----------
+package com.rt.www;
+
+public class User 
+{	
+	private String username;
+	private String password;
+	private String email;
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+}
+
+
+process.jsp
+------------
+<jsp:useBean id="u" class="com.rt.www.User"/>
+
+<jsp:setProperty property="*" name="u"/> 
+
+Records Are : <br>
+<jsp:getProperty property="username" name="u"/> <br>
+<jsp:getProperty property="password" name="u"/> <br>
+<jsp:getProperty property="email" name="u"/> <br>
+
+web.xml 
+---------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp11</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+Request url 
+----------
+	http://localhost:2525/JspApp11/
+
+
+MVC in JSP 
+==========
+MVC stands for Model View Controller.
+
+MVC is a design pattern which seperates business logic, persistence logic and data.
+
+It is highly recommanded to use MVC design pattern to develop web applications.
+
+Controller acts like a interface between Model and View.
+
+Controller is used to intercept all incoming requests.
+
+Model contains business logic and some times it contains data.
+
+View represent presentation i.e UI(User Interface).
+
+Diagram: jsp5.1
+
+
+Deployment Directory Structure 
+------------------------------
+MVCApp
+|
+|---Java Resources
+	|
+	|-------src
+		|
+		|---com.rt.www
+			|
+			|---LoginBean.java
+			|---LoginSrv.java
+|---WebContent
+	|
+	|---form.html 
+	|---view.jsp 
+	|---error.jsp 
+	|---WEB-INF
+		|
+		|----web.xml 
+Note:
+----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+form.html 
+---------
+
+<form action="test" method="POST">
+	<table align="center">
+		<tr>
+			<td>UserName:</td>
+			<td><input type="text" name="username"/></td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td><input type="password" name="password"/></td>
+		</tr>
+		<tr>
+			<td><input type="reset" value="reset"/></td>
+			<td><input type="submit" value="login"/></td>
+		</tr>
+	</table>
+</form>
+
+web.xml 
+------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>MVCApp</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+LoginBean.java
+--------------
+package com.rt.www;
+
+public class LoginBean 
+{
+	private String username;
+	private String password;
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+}
+
+LoginSrv.java
+-------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = "/test", name="LoginSrv", loadOnStartup = 1)
+public class LoginSrv extends HttpServlet
+{
+	protected void doPost(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+	
+		//reading form data 
+		String uname = req.getParameter("username");
+		String pwd = req.getParameter("password");
+		
+		LoginBean lb = new LoginBean();
+		lb.setUsername(uname);
+		lb.setPassword(pwd);
+		
+		//add bean object to request
+		req.setAttribute("bean", lb);
+		
+		if(pwd.equals("admin"))
+		{
+			RequestDispatcher rd = req.getRequestDispatcher("view.jsp");
+			rd.forward(req, res);
+		}
+		else
+		{
+			RequestDispatcher rd = req.getRequestDispatcher("error.jsp");
+			rd.forward(req, res);
+		}
+		pw.close();
+	}
+}
+
+view.jsp 
+---------
+
+<%@page import="com.rt.www.LoginBean" %>
+<%
+	LoginBean lb = (LoginBean)request.getAttribute("bean");
+%>
+Login Done Successfully <br>
+<%= lb.getUsername() %> <br>
+<%= lb.getPassword() %> <br>
+
+
+error.jsp
+---------
+
+<center>
+	<b>
+		<i style='color:red'>
+			Invalid Username or Password!!
+		</i>
+	</b>
+</center>
+<%@include file="form.html" %>
+
+Request url 
+---------
+	http://localhost:2525/MVCApp/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,67 @@
+Institute Name 		: RaiseTech 
+Website			: www.raisetech.in 
+Location		: Ameerpet, Hyderabad
+Course Name		: Full Stack Java with GenAI
+Duration		: 5 Months  
+Mode			: Online/Offline 
+Additional classes	: DSA , AWS, AI 
+Recording videos	: Free 
+Batch No		: RT-JAVA-064
+Project			: Employee Management System
+Trainer Name		: Niyaz Sir 
+Experience		: 16+ years of experience in development 
+			  and training.
+
+
+			Full Stack Java
+				|
+	|-------------------------------------------|
+Frontend Technologies				Backend Technologies
+
+> HTML5						> Core Java
+> CSS3						> Advanced Java
+> JavaScript 					> Oracle DB 
+> Bootstrap5 					> Frameworks
+> ReactJS 						> Spring Boot
+> Project 						> Microservices
+							> Spring AI 
+						> DSA 
+						> AWS 
+						> Project
+
+Java
+====
+Object oriented programming language
+Platform independent programming language
+Case sensitive programming language
+Strongly typed checking language
+High level programming language
+Open source programming language
+
+1995 --> James Gosling --> Java (Sun Micro System)
+2010  --> Oracle Corporation
+Java Software --> JDK software 
+
+C
+===
+Procedure oriented programming language
+Platform dependent programming language
+Case sensitive programming language
+Loosely typed checking language
+Middle level language (Low + High)
+
+
+Interview Question 
+==================
+Q) What is Java?
+
+Java is a object oriented, platform independent, case sensitive, strongly typed checking, high level, open source programming language developed by James Gosling in the year of 1995.
+
+
+
+
+
+
+
+
+

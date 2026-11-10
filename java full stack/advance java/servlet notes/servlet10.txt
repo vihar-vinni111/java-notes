@@ -1,0 +1,367 @@
+Servlet Life Cycle Methods 
+==========================
+We have three life cycle methods in servlets.
+
+1) public void init(ServletConfig config)throws ServletException
+-----------------------------------------------------------
+	It is used for instantiation event.
+	This method invokes just once before servlet object creation.
+
+2) public void service(ServletRequest req,ServletResponse res)throws
+						 ServletException,IOException
+---------------------------------------------------------------------------
+	It is used to request processing event.
+	This method invokes when request goes to servlet program.
+
+3) public void destroy() 
+-----------------------
+	It is used for destruction event.
+	This method invokes just once before servlet object destruction.
+
+Diagram: servlet10.1
+
+Deployment Directory Structure 
+------------------------------
+LifeCycleApp
+|
+|---Java Resources
+	|
+	|------src		
+		|
+		|---com.rt.www
+			|		
+			|---TestSrv.java
+|---WebContent
+	|
+	|---index.html
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+index.html 
+----------
+<center>
+	<h1>
+		<a href="test"> clickME </a>
+	</h1>
+</center>
+
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>LifeCycleApp</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+TestSrv.java
+------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+
+@WebServlet(urlPatterns = "/test", name="TestSrv", loadOnStartup = 1)
+public class TestSrv extends HttpServlet 
+{
+	@Override
+	public void init(ServletConfig config)throws ServletException
+	{
+		System.out.println("init-method");
+	}
+	
+	@Override
+	public void service(ServletRequest req,ServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+		
+		pw.println("<center><h1>Welcome to servlet life cycle</h1></center>");
+		
+		pw.close();
+		
+		System.out.println("service-method");
+	}
+	
+	@Override 
+	public void destroy()
+	{
+		System.out.println("destroy-method");
+	}
+}
+
+Request url 
+----------
+	http://localhost:2525/LifeCycleApp/
+
+
+
+Servlet Filters 
+===============
+Servlet Filter is an object which is executed at the time of preprocessing and postprocessing of the request.
+
+Diagram: servlet10.2
+
+Filter is used to perform filtering tasks.
+
+1) To count number of request coming to an application.
+
+2) To perform form validation.
+
+3) To enable encryption or decryption.
+
+and etc.
+
+Like Servlets, Filter contains it's own api.
+
+A javax.servlet package gave following three interfaces for servlet Filter.
+
+1) Filter 
+
+2) FilterConfig
+
+3) FilterChain 
+
+1) Filter 
+---------
+Filter is an interface which is present in javax.servlet package.
+
+To create a Filter our class must implements Filter interface.
+
+It provides following three filter life cycle methods.
+
+1) public void init(FilterConfig)throws ServletException 
+--------------------------------------
+IT is used to initialize the filter.
+It invokes only once .
+
+
+2) public void doFilter(ServletReqeust req,ServletResponse res, FilterChain chain)
+---------------------------------------------
+This method is invoked every time when user request to any resources to which the filter is mappend.
+It is used to perform filtering task.	
+
+
+3) public void destroy() 
+-------------------------
+This method is invoked only once when filter is taken out of the service.
+
+
+
+2) FilterConfig
+---------------
+FilterConfig is an interface which is present in javax.servlet package.
+FilterConfig object created by the web container for every filter.
+
+3) FilterChain 
+--------------
+FilterChain is an interface which is present in javax.servlet.
+It is used to forward the request to other resources(servlets or filter) in the chain.
+It contains following one method.
+ex:
+	public void doFilter(ServletRequest req,ServletResponse res)
+	-------------------------------------------------------------
+	It passes the control to the next filter or resource.
+
+
+
+Deployment Directory Structure 
+------------------------------
+FilterApp
+|
+|---Java Resources
+	|
+	|------src
+		|
+		|---com.rt.www		
+			|
+			|---MyFilter.java
+			|---MyServlet.java	
+|---WebContent
+	|
+	|---index.html
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+index.html 
+----------
+<center>
+	<h1>
+		<a href="test"> click Here </a>
+	</h1>
+</center>
+
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>FilterApp</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+MyFilter.java
+--------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+
+@WebFilter(urlPatterns = "/test",filterName = "MyFilter")
+public class MyFilter implements Filter
+{
+	public void init(ServletConfig config)throws ServletException
+	{
+	}
+
+	@Override
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+			throws IOException, ServletException 
+	{
+			PrintWriter pw =res.getWriter();
+			res.setContentType("text/html");
+		
+			pw.println("<center><h1>Filter Execute Before </h1></center>");
+			chain.doFilter(req, res);
+			pw.println("<center><h1>Filter Execute After </h1></center>");
+			pw.close();
+	}
+
+	public void destroy()
+	{
+	}
+}
+
+MyServlet.java
+---------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = "/test", name="MyServlet")
+public class MyServlet extends HttpServlet
+{
+	protected void doGet(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+		
+		pw.println("<center><h1>This is Servlet </h1></center>");
+
+	}
+}
+
+Request url 
+-----------	
+	http://localhost:2525/FilterApp/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

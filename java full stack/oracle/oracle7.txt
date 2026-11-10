@@ -1,0 +1,184 @@
+iv) Conversion Functions 
+========================
+It is used to convert the value from one datatype to another datatype.
+
+We have following list of conversion functions.
+
+1) TO_NUMBER() 
+-------------
+	It is used to convert character to number.
+	ex:
+		select TO_NUMBER('1234') from dual;
+		select TO_NUMBER('1234') as result from dual;			
+		select TO_NUMBER('100')+50 as result from dual;
+
+2) TO_DATE()
+-----------
+	It is used to convert character to date.
+	ex:
+		select TO_DATE('09-09-2026','dd-MM-yyyy') from dual; -- 09-SEP-26
+
+3) TO_CHAR() 
+------------
+	It is used to convert number/date to character.
+	ex:
+		select eid,ename,TO_CHAR(esal,'99,999') from emp;
+		select eid,ename,TO_CHAR(esal,'$99,999') from emp;
+		select eid,ename,TO_CHAR(esal,'$99,999') as esal from emp;
+
+	ex:
+		
+		select TO_CHAR(sysdate,'dd-MM-yyyy') from dual;
+		select TO_CHAR(current_date,'yyyy-MM-dd') from dual;
+		select eid,ename, TO_CHAR(edoj,'dd-MM-yyyy') from emp1;
+		
+	ex:
+		select TO_CHAR(sysdate,'HH:MI:SS') from dual;
+		select TO_CHAR(sysdate,'dd-MM-yyyy HH:MI:SS') from dual;				select TO_CHAR(sysdate,'YEAR') from dual;
+		select TO_CHAR(sysdate,'MONTH') from dual;
+		select TO_CHAR(sysdate,'DAY') from dual;
+		select TO_CHAR(sysdate,'YYYY') from dual;
+		select TO_CHAR(sysdate,'MM') from dual;
+		select TO_CHAR(sysdate,'DD') from dual;
+	
+4) cast()
+----------
+	It converts from one datatype to another datatype.
+	ex:
+		select CAST(100 as varchar2(10)) from dual;		
+		select cast('500' as number) from dual;
+
+Interview question 
+=================
+Q) Write a query to display employees information from emp table?
+
+	select eid as id,
+		UPPER(ename) as name,
+			TO_CHAR(esal,'$99,999') as salary,
+				abs(deptno)  as dept_on,
+					lower(job) as designation,
+						abs(comm) as commission
+							from emp;
+					
+group by clause 
+===============
+It is used to divide the rows into groups so that we can apply group functions.
+
+A column which we used in select clause, same column we need to use in group by clause.
+
+
+Q)  Write a query to display sum of salary of each department?
+
+	select sum(esal),deptno from emp group by deptno;
+
+
+Q) Write a query to display average salary of each department?
+
+	select avg(esal),deptno from emp group by deptno;
+
+
+Q) Write a query to display highest salary of each job?
+
+	select max(esal),job from emp group by job;
+
+
+Q) Write a query to display least salary of each department?
+
+	select min(esal),deptno from emp group by deptno;
+
+
+Q) Write a query to display number of employees working in each department?
+
+	select count(*),deptno from emp group by deptno;
+
+
+Q) Write a query to  display sum of salary of each department except 10 department?
+
+	select sum(esal),deptno from emp where deptno<>10 group by deptno;	
+
+Having clause 
+=============
+Having clause is used to filter the rows from group by clause.
+
+Having clause must declare after group by clause.
+
+
+Q) Write a query to display sum of salary of each department whose sum of salary is greater then 30000?
+
+	select sum(esal),deptno from emp group by deptno having sum(esal)>30000;
+
+
+
+Q) Write a query to display minimum salary of each job whose minimum salary is less then 15000?
+
+	select min(esal),job from emp group by job having min(esal)<15000;
+
+
+order by clause 
+===============
+It is used to arrange the rows in a table.
+
+By default it arrange the rows in ascending order.
+
+ex:
+	select * from emp order by eid;	
+	select * from emp order by eid desc;	
+
+	select * from emp order by esal;
+	select * from emp order by esal desc;
+
+	select * from emp order by ename;
+	select * from emp order by ename desc;
+
+
+Q) Write a query to display sum of salary of each department whose sum of salary is greater then 30000?
+
+	select sum(esal),deptno from emp group by deptno 
+						having sum(esal)>30000		
+							order by deptno;
+
+
+Integrity Constraints 
+=====================
+Constraints are the rules which are applied on tables to achieve accurracy and quality 
+of data.
+
+We have five types of constraints.
+
+1) NOT NULL 
+
+2) UNIQUE 
+
+3) PRIMARY KEY 
+
+4) FOREIGN KEY 
+
+5) CHECK 
+
+Constraints can be created at two levels.
+
+i) Column Level 
+
+ii) Table Level 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

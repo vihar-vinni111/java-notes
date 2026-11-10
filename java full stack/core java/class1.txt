@@ -1,0 +1,132 @@
+Course Name : Full Stack Java + GenAI 
+Duration    : 5 Months 
+Project	    : Employee Management System 
+Mode        : Online/Offline
+Batch No    : RT-JAVA-064
+Mode	    : Online/Offline
+
+============================================
+
+
+Comments in java
+================
+Comments are created for documentation purpose.
+
+It is highly recommanded to use comments in regular programming.
+
+Comments are used to improve readability of our code.
+
+Diagram: class1.1
+
+Comments won't display in output because they won't compiled by the compiler.
+
+We have two comments in java.
+
+1) Single Line Comment 
+---------------------
+It is used to comment a single line.
+ex:
+	// Comment Here 
+
+2) Multi Line Comment
+---------------------
+It is used to comment multiple lines. 
+ex:
+	/*
+		-
+		-  comment here 
+		-
+	*/
+
+ex:
+---
+//class declaration 
+class Test
+{
+	//main method
+	public static void main(String[] args)
+	{
+		//variable declaration 
+		int x = 10;
+
+		//output stmt
+		System.out.println(x);
+	}
+}
+
+Project 
+=======
+A project is a individual or collaborative enterprise that is carefully planned to achieve perticular goal/aim.
+
+Technically, a project is a collection of modules.
+ex:
+	admin module 
+	customer module 
+	payment module 	
+	addtocart module 
+	report generation module 
+	shipping module 
+	and etc. 
+
+Every project contains two domains.
+
+1) Technical Domain 
+-------------------
+Technical domain describes using which technology , tool or language is used to develop the project.
+ex:
+	Java
+
+2) Functional Domain 
+-------------------
+Functional domain describes business area where our project is used to solve the problems.
+ex:
+	Healthcare domain
+	Banking domain 
+	ERP domain 
+	Insaurance domain 
+	
+
+Types of IT companies 
+=====================
+Mainly we have two types of IT companies.
+
+1) Product Based Company 
+------------------------
+	ex:
+		Oracle, Microsoft, Google, Amazon and etc.
+
+2) Service Based Company 
+----------------------
+	ex:
+		TCS, accenture, cognizant, capgemini and etc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

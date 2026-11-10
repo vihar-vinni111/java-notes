@@ -1,0 +1,416 @@
+Working with date values
+========================
+While dealing with DOB, DOA, DOR, DOD and etc we need to insert and retrieve data values.
+
+It is never recommanded to store date values in the form string because we can't compare
+two dates.
+
+Every database software support date values in different date format.
+ex:
+	oracle - dd-MMM-yy
+	mysql  - yyyy-MM-dd
+	and etc.
+
+Using simple Statement object we can't place date value to query parameter.
+
+To overcome this limitation we need to use PreparedStatement object.
+
+A java.util.Date class object is not suitable to perform database operation.
+
+A java.sql.Date class object is suitable to perform database operation.
+
+Once JDBC driver gets date value then it will insert in the pattern which is supported 
+by underlying data base software.
+
+
+Standard procedure to insert date values
+----------------------------------------
+Diagram: jdbc4.1
+
+1) Enduser gives date value in the form of string.
+
+2) A parse() method of SimpleDateFormat class converts string date to java.util.Date
+   class object.
+
+3) Our application converts java.util.Date class object to java.sql.Date class object.
+
+4) A ps.setDate(-,-) method is used to set the date value to query parameter.
+
+5) Once JDBC driver gets date value then it will insert in the pattern which is 
+   supported by underlying database software. 
+ 
+
+emp1 table 
+==========
+drop table emp1;
+create table emp1(eid number(3),ename varchar2(10),edoj date);
+
+
+DateInsertApp.java
+------------------
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+
+public class DateInsertApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the employee id : ");
+		int id = sc.nextInt();
+		
+		System.out.println("Enter the employee name : ");
+		String name = sc.next();
+		
+		System.out.println("Enter the date of joining(dd-MM-yyyy) :");
+		String doj  = sc.next();
+		
+		//convert string date to util date 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		java.util.Date udoj = sdf.parse(doj);
+		
+		//convert util date to sql date 
+		long ms = udoj.getTime();
+		java.sql.Date sqldoj = new java.sql.Date(ms);
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		String qry = "insert into emp1 values(?,?,?)";
+		PreparedStatement ps = con.prepareStatement(qry);
+		
+		//set the values 
+		ps.setInt(1, id);
+		ps.setString(2, name);
+		ps.setDate(3, sqldoj);
+		
+		//execute the query 
+		int result = ps.executeUpdate();
+		if(result==0)
+			System.out.println("No Record Inserted");
+		else
+			System.out.println("Record Inserted");
+		
+		ps.close();
+		con.close();
+	}
+}
+
+DateRetrieveApp.java
+---------------------
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+
+public class DateRetrieveApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		Statement st = con.createStatement();
+		String qry = "select * from emp1";
+		ResultSet rs = st.executeQuery(qry);
+		while(rs.next())
+		{
+				int id = rs.getInt(1);
+				String name = rs.getString(2);
+				java.sql.Date sqldoj = rs.getDate(3);
+				
+				//convert sql date to util date 
+				java.util.Date udoj = (java.util.Date) sqldoj;
+				
+				//convert util date string date 
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				String doj = sdf.format(udoj);
+				System.out.println(id+" "+name+" "+doj);
+		}
+		rs.close();
+		st.close();
+		con.close();
+	}
+}
+
+
+Working with LOB values
+========================
+Files are also known as LOB's.
+
+We have two types of LOB's.
+
+1) BLOB - (Binary Large Object)
+--------------------------
+	ex:
+		Images, Audio, Video , avi file and etc.
+
+2) CLOB - (Character Large Object)
+---------------------------
+	ex:
+		Text file , advanced text file and etc.	
+
+Using simple Statement object we can't place LOB values to query parameter.
+
+To overcome this limitation we need to use PreparedStatement object.
+
+We can set LOB values to query parameters using 
+
+ex:
+	ps.setBinaryStream(-,-,-) / ps.setBLOB(-,-,-)
+	ps.setCharacterStream(-,-,-) / ps.setCLOB(-,-,-)
+
+emp2 table 
+==========
+drop table emp2;
+create table emp2(eid number(3),ename varchar2(10),ephoto BLOB);
+
+
+
+PhotoInsertApp.java
+-------------------
+package com.rt.www;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Scanner;
+
+public class PhotoInsertApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the employee id : ");
+		int id = sc.nextInt();
+		
+		System.out.println("Enter the employee name : ");
+		String name = sc.next();
+		
+		File f= new File("src/com/rt/www/prabhas.jpg");
+		FileInputStream fis = new FileInputStream(f);
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		String qry = "insert into emp2 values(?,?,?)";
+		PreparedStatement ps = con.prepareStatement(qry);
+		
+		//set the values 
+		ps.setInt(1, id);
+		ps.setString(2, name);
+		ps.setBinaryStream(3, fis, (int)f.length());
+		
+		//execute the query
+		int result = ps.executeUpdate();
+		if(result == 0)
+			System.out.println("No Record Inserted");
+		else
+			System.out.println("Record Inserted");
+		
+		ps.close();
+		con.close();
+	}
+	
+}
+
+
+PhotoRetrieveApp.java
+---------------------
+package com.rt.www;
+
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class PhotoRetrieveApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		String qry = "select * from emp2";
+		PreparedStatement ps = con.prepareStatement(qry);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next())
+		{
+			InputStream is = rs.getBinaryStream(3);
+			FileOutputStream fos = new FileOutputStream("D://prabhas.jpg");
+			int byteReads = 0;
+			byte[] barr = new byte[100];
+			while((byteReads = is.read(barr))!=-1)
+			{
+				fos.write(barr,0, byteReads);
+			}
+			fos.close();
+		}
+		System.out.println("Please check the location");
+		rs.close();
+		ps.close();
+		con.close();
+	}
+}
+
+Working with properties file 
+============================
+In regular intervals our DBA change username and password for security reason.
+
+It is never recommanded to pass database properties directly to an application.
+
+It is always recommanded to read data base properties from properties file.
+
+A properties file contains the data in key and value pair.
+
+
+dbdetails.properties 
+------------------
+driver = oracle.jdbc.driver.OracleDriver
+url = jdbc:oracle:thin:@localhost:1521:XE
+username = system 
+password = admin 
+
+
+PropertiesFileApp.java
+-----------------------
+package com.rt.www;
+
+import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
+
+public class PropertiesFileApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		// file and locate a file 
+		FileInputStream fis = new FileInputStream("src/com/rt/www/dbdetails.properties");
+		
+		//Declare Properties class
+		Properties p = new Properties();
+		
+		//load the data from properties file to class
+		p.load(fis);
+		
+		//reading the data from properties class
+		String s1 = p.getProperty("driver");
+		String s2 = p.getProperty("url");
+		String s3 = p.getProperty("username");
+		String s4 = p.getProperty("password");
+	
+		Class.forName(s1);
+		Connection con = DriverManager.getConnection(s2,s3,s4);
+		Statement st = con.createStatement();
+		String qry = "select * from student";
+		ResultSet rs = st.executeQuery(qry);
+		while(rs.next())
+		{
+			System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+		}
+		rs.close();
+		st.close();
+		con.close();
+	}
+}
+
+Batch Processing 
+================
+Batch processing is used to declare multiple queries to a batch and makes a single 
+call to the database.
+
+To add the queries to a batch we need to use addBatch() method.
+ex:
+	st.addBatch(query)
+
+To execute the batch we need to use executeBatch() method.
+ex:
+	int[] result = st.executeBatch() 
+
+ex:
+---
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class BatchProcessingApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		Statement st = con.createStatement();
+		
+		String qry1 = "insert into student values(104,'ramulu','pune')";
+		String qry2 = "update student set sname='rani' where sno=101";
+		String qry3 = "delete from student where sno=103";
+		
+		//add the queries to batch 
+		st.addBatch(qry1);
+		st.addBatch(qry2);
+		st.addBatch(qry3);
+		
+		//execute batch 
+		int[] result = st.executeBatch();
+		
+		int sum = 0;
+		for(int i : result)
+		{
+			sum += i;
+		}
+		System.out.println("No of records effected are = "+sum);
+		st.close();
+		con.close();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

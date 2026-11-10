@@ -1,0 +1,1023 @@
+Multithreading 
+==============
+
+Q) What is the difference between Thread and Process?
+
+Thread 
+------
+	It is a leight weight sub-process.
+	ex:
+		screen sharing 
+		Mute/Unmute 
+		Pause/Resume screen 
+		and etc.
+
+	We can run multiple threads concurrently.
+	One thread can communicate with another thread.
+		
+Process
+--------
+	It is a collection of threads.
+	ex:
+		zoom meeting 
+
+	We can run multiple process concurrently.
+	One process can't communicate with another process.
+
+Multi-Tasking 
+=============
+Executing several tasks simultenously such concept is called multitasking.
+
+We have two types of multitasking.
+
+1) Thread based multi-tasking 
+----------------------------
+Executing several task simultenously where each task is a same part of a program.
+It is best suitable for programmatic level.
+
+2) Process based multi-tasking 
+--------------------------------
+Executing several task simultenously where each task is a independent process.
+It is best suitable for OS level.
+
+
+Multi-threading 
+===============
+Executing several threads simultenously such concept is called multi-threading.
+
+In multi-threading only 10% of work should be done by a programmer and 90% of work will be
+done by a JAVA API.
+
+The main important application area of multithreading are 
+
+1) To implements multi-media graphics.
+
+2) To develop video games 
+
+3) To develop animations.
+
+
+
+Ways to create a thread in java
+===============================
+There are two ways to create thread in java.
+
+1) By extending Thread class
+
+2) By implementing Runnable interface 
+
+1) By extending Thread class
+----------------------------
+class MyThread extends Thread
+{
+	public void run()
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Child-Thread");
+		}
+	}
+}
+class Test
+{
+	public static void main(String[] args) 
+	{
+		//instantiate a thread 
+		MyThread t = new MyThread();
+		
+		//start a thread 
+		t.start();
+		
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+case1: Thread Schedular 
+------------------------
+If multiple threads are waiting for execution, which thread has to be executed will decided by thread schedular.
+
+What algorithm, behaviour or mechanism used by thread schedular is depend upon JVM vendor.
+
+Hence we can't expect any execution order or exact output in multithreading.
+
+
+
+case2: Difference t.start() and t.run() method 
+----------------------------------------------
+If we invoke t.start() method a new thread will be created which is responsible to execute
+run() method automatically.
+
+ex:
+--
+class MyThread extends Thread
+{
+	public void run()
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Child-Thread");
+		}
+	}
+}
+class Test
+{
+	public static void main(String[] args) 
+	{
+		//instantiate a thread 
+		MyThread t = new MyThread();
+		
+		//start a thread 
+		t.start();
+		
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+If we invoke t.run() method , no new thread will be created but run() method will execute just like normal method.
+
+ex:
+---
+class MyThread extends Thread
+{
+	public void run()
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Child-Thread");
+		}
+	}
+}
+class Test
+{
+	public static void main(String[] args) 
+	{
+		//instantiate a thread 
+		MyThread t = new MyThread();
+		
+		//no new thread 
+		t.run();
+		
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+case3: If we won't override run() method 
+-----------------------------------------
+If we won't override run() method then t.start() method executes Thread class run() method automatically. But Thread class run() is empty implementation. Hence we won't get any output from child thread.
+
+ex:
+--
+class MyThread extends Thread
+{
+	
+}
+class Test
+{
+	public static void main(String[] args) 
+	{
+		//instantiate a thread 
+		MyThread t = new MyThread();
+		
+		//start new thread 
+		t.start();
+		
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+case4: If we override run() method 
+------------------------------------
+If we override run() method then t.start() method always execute run() method with zero argument only.
+
+ex:
+---
+class MyThread extends Thread
+{
+	public void run()
+	{
+		System.out.println("0-arg method");
+	}
+	public void run(int i)
+	{
+		System.out.println("int-arg method");
+	}
+}
+class Test
+{
+	public static void main(String[] args) 
+	{
+		//instantiate a thread 
+		MyThread t = new MyThread();
+		
+		//start new thread 
+		t.start();
+		
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+case5: Thread Life Cycle 
+-------------------------
+Diagram: class41.1
+
+Once if we create a thread, our thread will be in new/born state.
+
+Once t.start() method is called, our thread goes to ready/runnable state.
+
+If thread schedular allocates to CPU our thread goes to running state.
+
+Once run() method execution is completed our thread goes to dead state.
+
+
+2) By implementing Runnable interface 
+======================================
+class MyRunnable implements Runnable 
+{
+	public void run()
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Child-Thread");
+		}
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		MyRunnable r = new MyRunnable();
+		
+		Thread t = new Thread(r); // r is a targatable interface
+		
+		t.start();
+		
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+
+
+Setting and Getting Name of a thread 
+====================================
+In java, every thread has a name automatically generated by JVM or explicitly provided by the programmer.
+
+We have following methods to set and get name of a thread.
+ex:
+	public final void setName(String name)
+	public final String getName() 
+	
+ex:
+---
+class MyThread extends Thread
+{
+	
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		System.out.println(Thread.currentThread().getName()); // main 
+		
+		MyThread t = new MyThread();
+		System.out.println(t.getName()); // Thread-0
+		
+		Thread.currentThread().setName("Parent-Thread");
+		System.out.println(Thread.currentThread().getName()); // Parent-Thread
+		
+		t.setName("child-thread");
+		System.out.println(t.getName()); // child-thread
+		
+	}
+}
+
+
+Thread Priority 
+================
+In java, every thread has a priority automatically generated by JVM or explicitly provided 
+by the programmer.
+
+The valid range of thread priority is 1 to 10. Where 1 is a least priority and 10 is a highest
+priority.
+
+IF we take range out of 10 priority then we will get IllegalArgumentException.
+
+A Thread class defines following standard constants as thread priority.
+ex:
+	Thread.MAX_PRIORITY  - 10
+	Thread.NORM_PRIORITY - 5 
+	Thread.MIN_PRIORITY  - 1 
+ 
+We don't have such constants like LOW_PRIORITY and HIGH_PRIORITY.
+
+A thread schedular uses thread priority while allocating to CPU.
+
+A thread which is having highest priority will execute first.
+
+If multiple threads having same priority then we can't expect execution order.
+
+We have following methods to set and get thread priority.
+ex:
+	public final void setPriority(int priority)
+	public final int getPriority()
+
+ex:
+---
+class MyThread extends Thread
+{
+	
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		System.out.println(Thread.currentThread().getPriority()); // 5
+		
+		MyThread t = new MyThread();
+		System.out.println(t.getPriority()); // 5
+		
+		Thread.currentThread().setPriority(9);
+		System.out.println(Thread.currentThread().getPriority()); // 9
+		
+		t.setPriority(4);
+		System.out.println(t.getPriority()); // 4
+		
+		//t.setPriority(11); // R.E IllegalArgumentException
+		
+	}
+}
+
+
+Daemon thread 
+=============
+It is a low priority thread which runs in a background to provide services to user threads.
+
+The life of daemon thread is depend upon user threads. If user threads died then daemon thread will die automatically.
+
+There are many daemon threads are running internally.
+ex:
+	Garbage Collector 
+	Finalizer 
+	Signal Dispatch 
+	and etc.
+
+We can change behaviour of daemon thread before user threads. If we can change behaviour of 
+deamon thread after user threads then we will get IllegalStateMonitorException.
+
+To change the behaviour of daemon thread we need to use setDaemon(true) method.
+
+To check a thread is a daemon or not we need to use isDaemon() method.
+
+ex:
+---
+class MyThread extends Thread
+{
+	public void run()
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println(Thread.currentThread().isDaemon());
+			System.out.println("Child-Thread");
+		}
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		MyThread t = new MyThread();
+		t.setDaemon(true);
+		t.start();
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+Various ways to prevent a thread from execution 
+===============================================
+There are three ways to prevent(stop) a thread from execution.
+
+1) yield()
+
+2) join()
+
+3) sleep() 
+
+1) yield()
+-----------
+It pause current execution thread and gives the chance to other threads having same priority.
+
+If there is no waiting threads or low priority threads then same thread will continue it's execution.
+
+If multiple waiting threads having same priority then we can't expect any execution order.
+
+A thread which yielded again when it get a chance of execution is depend upon mercy of thread schedular. 
+
+ex:
+	public static native void yield() 
+
+Diagram: class41.2
+
+ex:
+---
+class MyThread extends Thread
+{
+	public void run()
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Child-Thread");
+		}
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		MyThread t = new MyThread();
+		t.start();
+		for(int i=1;i<=5;i++)
+		{
+			Thread.currentThread().yield();
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+2) join()
+----------
+If a thread wants to wait untill the completion of some other threads then we need to 
+use join() method.
+
+A join() method throws one checked exception called InterruptedException so we must and
+should handle that exception by using try and catch block or by using throws statement.
+
+ex:
+	public final void join()throws InterruptedException 
+	public final void join(long ms)throws InterruptedException
+	public final void join(long ms,int ns)throws InterruptedException
+	
+Diagram: class41.3
+
+ex:
+---
+class MyThread extends Thread
+{
+	public void run()
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Child-Thread");
+		}
+	}
+}
+class Test 
+{
+	public static void main(String[] args)throws InterruptedException
+	{
+		MyThread t = new MyThread();
+		t.start();
+		t.join();
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+3) sleep() 
+-----------
+If a thread don't want to perform any operation on perticular amount of time then 
+we need to use sleep() method.
+
+A sleep() method throws one checked exception called InterruptedException so we must and should handle that exception by using try and catch block or by using throws statement.
+
+ex:
+	public static native void sleep()throws InterruptedException 
+	public static native void sleep(long ms)throws InterruptedException 
+	public static native void sleep(long ms,int ns)throws InterruptedException 
+
+Diagram: class41.4
+
+ex:
+---
+class MyThread extends Thread
+{
+	public void run()
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Child-Thread");
+			try
+			{
+				Thread.sleep(2000);
+			}
+			catch (InterruptedException ie)
+			{
+				ie.printStackTrace();
+			}
+		}
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		MyThread t = new MyThread();
+		t.start();
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println("Parent-Thread");
+		}
+	}
+}
+
+Problem without synchronization 
+==============================
+If there is no sychronization in our program then we will face following problems.
+
+1) Data inconsistency 
+
+2) Thread interference 
+
+ex:
+---
+class Table 
+{
+	public void printTable(int n)
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println(n*i);
+			try
+			{
+				Thread.sleep(2000);
+			}
+			catch (InterruptedException ie)
+			{
+				ie.printStackTrace();
+			}
+		}
+	}
+}
+class MyThread1 extends Thread 
+{
+	Table t;
+	MyThread1(Table t)
+	{
+		this.t = t;
+	}
+	public void run()
+	{
+		t.printTable(5);
+	}
+}
+class MyThread2 extends Thread 
+{
+	Table t;
+	MyThread2(Table t)
+	{
+		this.t = t;
+	}
+	public void run()
+	{
+		t.printTable(10);
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Table obj = new Table();
+		MyThread1 t1 = new MyThread1(obj);
+		MyThread2 t2 = new MyThread2(obj);
+		t1.start();
+		t2.start();
+	}
+}
+
+Synchronization 
+================
+A synhronized keyword is applicable for methods and blocks.
+
+Synchronization allows only one thread to execute at a time.
+
+The main advantage of synchronization is we can achieve thread safety.
+
+The main disadvantage of synchronization waiting time of a thread will increase which effects the performance.
+
+In reallife , we will use synchronization concept in 
+ex:
+	whatsapp message 
+	bank transaction 
+	Ticket Booking 
+	and etc.
+
+Synchronization deals with lock mechanism.
+
+In synchronized method thread will get lock automatically and release it when thread completes it's task.
+
+If one thread is executing synchronized method then other threads are not allowed 
+to execute other synchronized methods.But they can execute non-synchronized methods concurrently.
+
+If there is a special requirement is there then only we need to use synchronization otherwise it effects the performance.
+
+
+synchronized method 
+-------------------
+class Table 
+{
+	public synchronized void printTable(int n)
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println(n*i);
+			try
+			{
+				Thread.sleep(2000);
+			}
+			catch (InterruptedException ie)
+			{
+				ie.printStackTrace();
+			}
+		}
+	}
+}
+class MyThread1 extends Thread 
+{
+	Table t;
+	MyThread1(Table t)
+	{
+		this.t = t;
+	}
+	public void run()
+	{
+		t.printTable(5);
+	}
+}
+class MyThread2 extends Thread 
+{
+	Table t;
+	MyThread2(Table t)
+	{
+		this.t = t;
+	}
+	public void run()
+	{
+		t.printTable(10);
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Table obj = new Table();
+		MyThread1 t1 = new MyThread1(obj);
+		MyThread2 t2 = new MyThread2(obj);
+		t1.start();
+		t2.start();
+	}
+}
+
+synchronized block 
+------------------
+If we want to perform synchronization on specific resource of a program then we need to 
+use synchronized block.
+ex:
+	if you have 100 lines of code but we want to perform 
+	synchronization only for 10 lines then we need to use synchronized block.
+
+If we keep all the logic inside the synchronized block then it acts like a synchronized method.
+
+ex:
+---
+class Table 
+{
+	public void printTable(int n)
+	{
+		synchronized(this)
+		{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println(n*i);
+			try
+			{
+				Thread.sleep(2000);
+			}
+			catch (InterruptedException ie)
+			{
+				ie.printStackTrace();
+			}
+		}
+		}//sync
+	}
+}
+class MyThread1 extends Thread 
+{
+	Table t;
+	MyThread1(Table t)
+	{
+		this.t = t;
+	}
+	public void run()
+	{
+		t.printTable(5);
+	}
+}
+class MyThread2 extends Thread 
+{
+	Table t;
+	MyThread2(Table t)
+	{
+		this.t = t;
+	}
+	public void run()
+	{
+		t.printTable(10);
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Table obj = new Table();
+		MyThread1 t1 = new MyThread1(obj);
+		MyThread2 t2 = new MyThread2(obj);
+		t1.start();
+		t2.start();
+	}
+}
+
+static synchronization 
+----------------------
+In static synchronization the lock will be on class but not on object.
+
+If we declare any static method as synchronized then it is called static synchronization.
+
+ex:
+---
+class Table 
+{
+	public static synchronized void printTable(int n)
+	{
+		for(int i=1;i<=5;i++)
+		{
+			System.out.println(n*i);
+			try
+			{
+				Thread.sleep(2000);
+			}
+			catch (InterruptedException ie)
+			{
+				ie.printStackTrace();
+			}
+		}
+	}
+}
+class MyThread1 extends Thread 
+{
+	public void run()
+	{
+		Table.printTable(5);
+	}
+}
+class MyThread2 extends Thread 
+{
+
+	public void run()
+	{
+		Table.printTable(10);
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		MyThread1 t1 = new MyThread1();
+		MyThread2 t2 = new MyThread2();
+		t1.start();
+		t2.start();
+	}
+}
+
+
+DeadLock in Java
+================
+Deadlock will occur in a situation where one thread is waiting for object lock which is 
+acquired by another thread and that thread is waiting for object lock which is acquired by
+first thread. Here both the threads are waiting to release the thread but nobody will release
+this situation is called deadlock.
+
+ex:
+---
+
+class Test 
+{
+	public static void main(String[] args)
+	{
+		final String res1 = "Hi";
+		final String res2 = "Bye";
+		
+		//anonymous inner class
+		Thread t1 = new Thread()
+		{
+			public void run()
+			{
+				synchronized(res1)
+				{
+					System.out.println("Thread1: Locking Resource1");
+					synchronized(res2)
+					{
+						System.out.println("Thread1: Locking Resource2");
+					}
+				}
+			}
+		};
+		
+		//anonymous inner class
+		Thread t2 = new Thread()
+		{
+			public void run()
+			{
+				synchronized(res2)
+				{
+					System.out.println("Thread2: Locking Resource2");
+					synchronized(res1)
+					{
+						System.out.println("Thread2: Locking Resource1");
+					}
+				}
+			}
+		};
+		t1.start();
+		t2.start();
+	}
+}
+
+
+Inter-Thread Communication 
+=========================
+Two threads can communicate with one another using wait(), notify() and notifyAll().
+
+A thread which is waiting has to call wait() method.
+
+A thread which is giving notification has to call notify() or notifyAll() method.
+
+A wait(), notify() or notifyAll() method present in Object class.
+
+To call wait(), notify() or notifyAll() method we required synchronized area.
+
+If we invoke wait() method a thread will release the lock immediately and goes to waiting state.
+
+If we invoke notify() or notifyAll() method a thread will release the lock but not immediately.
+
+Except wait(), notify() and notifyAll() method there is no way to release the lock.
+
+ex:
+---
+class MyThread extends Thread 
+{
+	int total = 0;
+	public void run()
+	{
+		synchronized(this)
+		{
+			System.out.println("Child started calculation ");
+			for(int i=1;i<=10;i++)
+			{
+				total += i;
+			}
+			System.out.println("Child giving notification");
+			this.notify();
+		}
+	}
+}
+class Test 
+{
+	public static void main(String[] args)throws InterruptedException
+	{
+		MyThread t = new MyThread();
+		t.start();
+		synchronized(t)
+		{
+			System.out.println("Main method waiting for notification");
+			t.wait();
+			System.out.println("Main method got notification");
+			System.out.println(t.total);
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

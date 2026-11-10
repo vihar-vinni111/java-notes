@@ -1,0 +1,385 @@
+Servlet to servlet communication 
+================================
+Servlet to servlet communication is also known as servlet chaining.
+
+Servlet to servlet communication is possible in three ways.
+
+1) Forwarding the request 
+
+2) Including the response 
+
+3) Send Redirection 
+
+
+1) Forwarding the request 
+--------------------------
+In forwarding the request, the output of source servlet program discarded and output of 
+destination servlet program goes to browser window as dynamic response.
+
+To forward the request we need to use RequestDispatcher object.
+
+RequestDispatcher is an interface which is present in javax.servlet package.
+
+We can create RequestDispatcher object as follow.
+ex:
+	RequestDispatcher rd = req.getRequestDispatcher("url-pattern");
+	rd.forward(req,res);
+	
+
+2) Including the response
+-------------------------
+In including the response, the output of source servlet program and destination servlet 
+program combinely goes to browser window as dynamic response.
+
+To include the response we need to use RequestDispatcher object.
+
+RequestDispatcher is an interface which is present in javax.servlet package.
+
+We can create RequestDispatcher object as follow.
+ex:
+	RequestDispatcher rd = req.getRequestDispatcher("url-pattern");
+	rd.include(req,res);
+
+Deployment Directory Structure 
+==============================
+STSApp1
+|
+|---Java Resources
+	|
+	|------src
+		|
+		|---com.rt.www
+			|
+			|---TestSrv1.java
+			|---TestSrv2.java
+|---WebContent
+	|
+	|---form.html
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+form.html 
+---------
+<form action="test1" method="POST">
+	
+	<table align="center">
+		<tr>
+			<td>UserName:</td>
+			<td><input type="text" name="t1"/></td>	
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td><input type="password" name="t2"/></td>	
+		</tr>
+		<tr>
+			<td><input type="reset" value="reset"/></td>
+			<td><input type="submit" value="login"/></td>	
+		</tr>
+	</table>
+
+</form>
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>STSApp1</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+TestSrv1.java
+-------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = "/test1", name="TestSrv1")
+public class TestSrv1 extends HttpServlet 
+{
+	protected void doPost(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+		
+		//reading form data 
+		String uname = req.getParameter("t1");
+		String pwd = req.getParameter("t2");
+		
+		if(pwd.equals("admin"))
+		{
+			RequestDispatcher rd = req.getRequestDispatcher("test2");
+			rd.forward(req, res);
+		}
+		else
+		{
+			pw.println("<center><b style='color:red'>Invalid! username or password</b></center>");
+			RequestDispatcher rd = req.getRequestDispatcher("form.html");
+			rd.include(req, res);
+		}
+		pw.close();
+	}
+}
+
+
+TestSrv2.java
+---------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = "/test2", name="TestSrv2")
+public class TestSrv2 extends HttpServlet 
+{
+	protected void doPost(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+		
+		pw.println("<center><h1>Login Done Successfully</h1></center>");
+		
+		pw.close();
+	}
+}
+
+Request url 
+----------
+	http://localhost:2525/STSApp1/
+
+
+
+
+3) Send Redirection 
+===================
+It is used to forward the request to an application which is present in same server or 
+different server.
+
+It uses browser window to send the request and it always sends new request.
+
+It is used to redirect the response or errors to other resources.
+
+We can perform send redirection by using sendRedirect() method of HttpServletResponse object.
+ex:
+	res.sendRedirect("url");
+
+
+Deployment Directory Structure 
+------------------------------
+STSApp2
+|
+|---Java Resources
+	|	
+	|------src
+		|
+		|---com.rt.www
+			|
+			|---TestSrv.java		
+|---WebContent
+	|
+	|---index.html 
+	|---WEB-INF
+		|		
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file project build path.
+
+
+index.html 
+----------
+<center>
+	<h2>
+		<a href="test?t1=flights"> Flights </a>
+	</h2>
+	
+	<h2>
+		<a href="test?t1=hotels"> Hotels </a>
+	</h2>
+	
+	<h2>
+		<a href="test?t1=railways"> Trains </a>
+	</h2>
+</center>
+
+web.xml 
+------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>STSApp2</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+
+TestSrv.java
+-------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = "/test", name="TestSrv")
+public class TestSrv extends HttpServlet
+{
+	protected void doGet(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+		
+		//reading form data 
+		String value = req.getParameter("t1");
+		
+		res.sendRedirect("https://www.makemytrip.com/"+value);
+		
+		pw.close();
+	}
+}
+
+Request url 
+------------
+	http://localhost:2525/STSApp2/
+
+
+
+Q) How to enable load-on-startup and what happens if we enable load-on-startup?
+
+We can enable load-on-startup as follow.
+
+ex:
+	@WebServlet(urlPatterns = "/test", name="TestSrv", loadOnStartup = 1)
+
+If we enable load-on-startup then servlet container creates servlet object during server 
+startup or during the deployment of web application.
+
+Our serlvet container creates servlet object before we give the request.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,161 @@
+Example application on HTML based form page to servlet communication 
+====================================================================
+Diagram: servlet6.1
+
+Deployment Directory Structure
+---------------------------
+VoteApp
+|
+|---Java Resources
+	|
+	|------src
+		|
+		|---com.rt.www
+			|
+			|---VoteSrv.java
+|---WebContent
+	|
+	|---form.html 
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+We can give the request to servlet program in two methodologies.
+
+1) GET Methodology 
+-----------------
+	It carries limited amount of data.
+
+2) POST Methodology 
+------------------
+	It carries unlimited amount of data.
+
+While working with HttpServlet , it is never recommanded to use service(-,-) method because it does not design according to HTTP protocol.
+
+It is recommanded to use doXxx(-,-) methods because they have designed according to HTTP protocol.
+
+We have seven doXxx(-,-) methods as given below.
+ex:
+	doGet(-,-)
+	doPost(-,-)
+	doOption(-,-)
+	doTrace(-,-)
+	doHead(-,-)
+	doDelete(-,-)
+	doPut(-,-)
+
+prototype of doXxx(-,-)
+-----------------------
+protected void doGet(HttpServletRequest req,HttpServletResponse res)throws 
+					ServletException,IOException 
+{
+
+}
+
+form.html
+---------
+<form action="test" method="GET">
+
+	Name : <input type="text" name="t1"/>
+	<br>
+	Age: <input type="text" name="t2"/> 
+	<br>
+	<input type="submit" value="vote"/>
+	
+</form>
+	
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>VoteApp</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+VoteSrv.java
+------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = "/test", name="VoteSrv")
+public class VoteSrv extends HttpServlet
+{
+	protected void doGet(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+		
+		//reading form data
+		String name = req.getParameter("t1");
+		String sage = req.getParameter("t2");
+		int age = Integer.parseInt(sage);
+		
+		if(age>=18)
+			pw.println("<center><h1 style='color:green'>"+name+" U r eligible to vote </h1></center>");
+		else
+			pw.println("<center><h1 style='color:red'>"+name+" U r not eligible to vote </h1></center>");
+		
+		pw.close();
+	}
+}
+
+Request url
+----------
+	http://localhost:2525/VoteApp/
+
+
+Q) What is the difference between GET and POST methodology?
+
+GET					POST 
+--------				---------
+It is a default methodology.		It is not a default methodology.
+
+It carries limited amount of data.	It carries unlimited amount of data.
+
+It sends the request fastly.		It is bit slow.
+
+It is not good for secure data.		It is good for secure data.
+
+It is not suitable for file uploading 	IT is suitable for file uploading and 
+and encryption.				encryption.
+
+To process GET methodology we will 	To process POST methodology we will use 
+use doGet(-,-) method.			doPost(-,-) method.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

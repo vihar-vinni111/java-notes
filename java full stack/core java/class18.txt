@@ -1,0 +1,529 @@
+8) Unary operators 
+==================
+
+Increment/Decrement (++/--)
+---------------------------
+We have two types of increment operators.
+
+1) Post Increment 
+---------------
+	ex:
+		i++
+
+2) Pre Increment 
+----------------
+	ex:
+		++i
+
+We have two types of decrement operators.
+
+1) Post decrement 
+---------------
+	ex:
+		i--
+
+2) Pre decrement
+----------------
+	ex:
+		--i
+
+Post Increment/Decrement 
+------------------------
+Rule1: First Take 
+Rule2 : Then Change 
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		
+		i++;
+		
+		System.out.println(i); // 11
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		
+		System.out.println(i++);// 10
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		
+		int j = i++; 
+		
+		System.out.println(i+" "+j);//11  10
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		
+		int j = i-- + i--; // 10 + 9 
+		
+		System.out.println(i+" "+j);//8  19
+	}
+}
+
+ex:
+----
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		
+		int j = i++ + i++;//10 + 11
+		
+		System.out.println(i+" "+j);//12  21
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		
+		int j = i++ + i++ + i--; //10 + 11 + 12
+		
+		System.out.println(i+" "+j);//11  33
+	}
+}
+
+PRE increment/decrement 
+-----------------------
+Rule1: First Change 
+Rule2: Then Take
+
+ex:
+	
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		
+		++i;
+		
+		System.out.println(i); // 11
+	}
+}
+
+ex:
+---
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		
+		System.out.println(++i); // 11
+	}
+}
+
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		int j = ++i;
+		System.out.println(i+" "+j); // 11  11
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		int j = ++i + ++i;//11 12
+		System.out.println(i+" "+j); //12  23 
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		int j = --i + --i + --i;//9 + 8 + 7 
+		System.out.println(i+" "+j); //7  24
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 100;
+		100++;
+		System.out.println(i); //C.T.E 
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		System.out.println(++(i++)); //C.T.E  
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		byte b = 127;
+		
+		b++;
+		
+		System.out.println(b); //-128 
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i = 10;
+		System.out.println(i++ + ++i); // 10 + 12 
+	}
+}
+
+Control Statements 
+==================
+Control statement enables the programmer to control flow of a program.
+
+Control statement allows us to make decisions, to jump from one section of code to another section and to execute the code repeatedly.
+
+We have three control statements in java.
+
+1) Decision Making Statement 
+
+2) Iteration Statement 
+
+3) Jump Statement 
+
+1) Decision Making Statement 
+----------------------------
+It is used to execute the source code based on the condition.
+
+Decision making statement is possible by using following ways.
+
+i) if stmt 
+
+ii) if else stmt 
+
+iii) if else if ladder 
+
+iv) nested if stmt 
+
+v) switch case 
+
+
+i) if stmt 
+==========
+It executes the source code only if our condition is true.
+
+syntax:
+-------
+	if(condition)
+	{
+		-
+		- //code to be execute 
+		-
+	}
+	
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		System.out.println("stmt1");
+		if(true)
+		{
+			System.out.println("stmt2");
+		}
+		System.out.println("stmt3");
+	}
+}
+o/p:
+	stmt1
+	stmt2
+	stmt3
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		System.out.println("stmt1");
+		if(5>20)
+		{
+			System.out.println("stmt2");
+		}
+		System.out.println("stmt3");
+	}
+}
+o/p:
+	stmt1
+	stmt3
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		if(5>20)
+			System.out.println("stmt1");
+			System.out.println("stmt2");
+			System.out.println("stmt3");
+	}
+}
+o/p:
+	stmt2
+	stmt3
+
+
+Q) Write a java program to find out greatest of two numbers?
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the first number : ");
+		int a = sc.nextInt();
+		System.out.println("Enter the second number : ");
+		int b = sc.nextInt();
+		
+		if(a>b)
+			System.out.println(a+" is greatest");
+		
+		if(b>a)
+			System.out.println(b+" is greatest");
+	}
+}
+
+Q) Write a java program to find out greatest of three numbers?
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the first number : ");
+		int a = sc.nextInt();
+		System.out.println("Enter the second number : ");
+		int b = sc.nextInt();
+		System.out.println("Enter the third number : ");
+		int c = sc.nextInt();
+		
+		if((a>b) && (a>c))
+			System.out.println(a+" is greatest");
+		
+		if((b>a) && (b>c))
+			System.out.println(b+" is greatest");
+		
+		if((c>a) && (c>b))
+			System.out.println(c+" is greatest");
+	}
+}
+
+ii) if else stmt 
+----------------
+It is used to execute the source code either our condition is true or false.
+
+syntax:
+------
+	if(condition)
+	{
+		- //code to be execute if cond is true 
+	}
+	else
+	{	
+		- //code to be execute if cond is false
+	}
+
+ex:
+---
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		System.out.println("stmt1");
+		if(!(5>20))
+		{
+			System.out.println("stmt2");
+		}
+		else
+		{
+			System.out.println("stmt3");
+		}
+		System.out.println("stmt4");
+	}
+}
+o/p:
+	stmt1
+	stmt2
+	stmt4
+
+ex:
+---
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		System.out.println("stmt1");
+		if(!(5>2))
+		{
+			System.out.println("stmt2");
+		}
+		else
+		{
+			System.out.println("stmt3");
+		}
+		System.out.println("stmt4");
+	}
+}
+o/p:
+	stmt1
+	stmt3
+	stmt4
+
+
+Q) Write a java program to find out given age is eligible to vote or not?
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the age : ");
+		int age = sc.nextInt();
+		if(age>=18)
+			System.out.println("U r eligible to vote");
+		else
+			System.out.println("U r not eligible to vote");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

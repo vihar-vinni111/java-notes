@@ -1,0 +1,522 @@
+Multi-Dimensional Array 
+=======================
+If array contains more then two dimensions is called multi-dimensional array.
+
+Multi dimensional array is used to display the data in structured and tabular format.
+
+We can declare and create multi dimensional array as follow.
+
+ex:				base index
+			        |
+	int[][][] arr = new int[2][3][3];	
+				   |  |
+				rows columns 	
+
+	Here we can store 18 elements.
+
+We can initialize multi-dimensional array as follow.
+ex:
+	int[][][] arr = {
+				{{1,2,3},{4,5,6},{7,8,9}},
+				{{1,2,3},{4,5,6},{7,8,9}}
+			};
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int[][][] arr = {
+				{{1,2,3},{4,5,6},{7,8,9}},
+				{{1,2,3},{4,5,6},{7,8,9}}
+			};
+			
+		for(int i=0;i<arr.length;i++)
+		{
+			for(int j=0;j<arr[i].length;j++)
+			{
+				for(int k=0;k<arr[i][j].length;k++)
+				{
+					System.out.print(arr[i][j][k]+" ");
+				}
+				System.out.println();
+			}
+			System.out.println("");
+		}
+	
+	}
+}
+
+Jagged Array 
+============
+Jagged array is a also known as array of arrays.
+It is a multi-dimensional array where each row contains different column size.
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int[][] arr = { {1,2},
+						{3,4,5},
+						{6,7,8,9}
+		              };
+					  
+		for(int i=0;i<arr.length;i++)
+		{
+			for(int j=0;j<arr[i].length;j++)
+			{
+				System.out.print(arr[i][j]+" ");
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+
+Anonymous Array 
+===============
+Sometime we will declare an array without name such type of nameless array is called anonymous array. 
+
+The main objective of anonymous array is just for instance use.
+
+We can declare anonymous array as follow.
+ex:
+	new int[]{10,20,30}
+	new int[][]{{1,2,3},{4,5,6},{7,8,9}}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		System.out.println(sum(new int[]{10,20,30,40}));
+	}
+	public static int sum(int[] arr)
+	{
+		int sum = 0;
+		for(int n : arr)
+		{
+			sum+=n;
+		}
+		return sum;
+	}
+}
+
+
+
+
+OOPS
+=====
+OOPS stands for Object Oriented Programming System.
+
+OOPS introduced to deal with realworld entities using programming language.
+
+A language which allows us to declare classes and objects and supports OOPS principals(abstraction, encapsulation, inheritance and polymorphism) is called object oriented programming language.  
+
+A language is said to be object oriented if it is supports following features.
+
+ex:
+	class 
+	object 
+	abstraction 	
+	encapsulation 
+	inheritance 		
+	and
+	polymorphism 
+
+class
+=======
+A class is a blue print of an object.
+ex:
+	design 
+	template 
+
+It is a logical entity.
+
+It is a collection of objects.
+
+A class will accept following modifiers.
+ex:
+	default 
+	public 
+	final 
+	abstract 
+	sealed 
+	non-sealed
+
+We can declare a class as follow.
+
+syntax:
+------
+	class class_name <extends> parent_class_name
+			 <implements> interface_name
+	{
+		-
+		-	// set of objects
+		-
+	}
+
+
+object
+=========
+It is a outcome of a blue print.
+
+It is a instance of a class. Here instance means allocating memory for our data members.
+
+It is a physical entity.
+
+It is a collection of properties and behaviours.
+ex:
+			Dog
+			|
+	|------------------------------------|
+Properties				Behaviours
+
+	> Name					> Eating 
+	> Color 				> Sleeping 
+	> Breed 				> playing 
+	> Height 				> running 
+	> Weight 				> barking 
+	and etc.				and etc.
+
+
+We can create multiple objects in a single class.
+
+We can create an object as follow.
+
+ex:
+	reference variable 
+             |
+	Test t = new Test();
+	 |       |     |
+classname    keyword  constructor
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Test t1 = new Test();
+		Test t2 = new Test();
+		System.out.println(t1.hashCode());//876213901
+		System.out.println(t2.hashCode());//230528013 
+		System.out.println(t1); // Test@Hexadecimalno 
+		System.out.println(t2.toString()); // Test@Hexadecimalno
+	}
+}
+
+Q) What is hashcode in java?
+
+For every object, JVM creates a unique identification number i.e hash code. 
+In order to read hashcode of an object we need to use hashCode() method. 
+A hashCode() method present in java.lang.Object class.
+
+Diagram: class29.1
+
+
+Q) What is toString() method?
+
+Whenever we are trying to display any object reference directly or indirectly toString() method will be executed.
+
+A toString() method present in java.lang.Object class.
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int[] arr = new int[10];
+		System.out.println(arr); // [I@hexadecimalno
+		System.out.println(arr.toString()); // [I@hexadecimalno
+	}
+}
+ 
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Test t = new Test();
+		System.out.println(t); // Test@hexadecimalno
+		System.out.println(t.toString()); // Test@hexadecimalno
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Test t = new Test();
+		System.out.println(t); 
+	}
+	@Override
+	public String toString()
+	{
+		return "welcome to java";
+	}	
+}
+
+Q) What is the difference between class and object?
+
+class						object
+----------					-----------
+It is a blue print of an object.		It is a instance of a class.
+
+It is a logical entity.				It is a physical entity.
+
+It is a collection of objects.			It is a collection of properties & behaviours.
+
+To declare a class we will use 			To declare an object we will use 
+class keyword.					new keyword.
+
+It can't be redeclared.				It can be redeclared.
+
+It can't be modified.				It can be modified.
+
+
+Data Hiding 
+=============
+The process of hiding object data from unauthorized access is called data hiding.
+
+The main objective of data hiding is to provide security.
+
+Using private modifier we can achieve data hiding concept.
+
+ex:
+----
+class Account 
+{
+	private double balance = 10000d;
+}
+class Test
+{
+	public static void main(String[] args)
+	{
+		Account acc = new Account();
+		System.out.println(acc.balance);
+	}
+}
+
+
+Abstraction 
+===========
+Hiding internal implementation and highlighting the setof services is called abstraction.
+
+Using abstract classes and interfaces we can implement abstraction.
+
+Best example of abstraction is GUI ATM machine where bank people will hide internal implementation and highlights set of services like banking, withdrawl, mini statement and etc.
+
+The main advantages of abstraction are 
+
+1) It gives security because it hides internal implementation.
+
+2) Enhancement becomes more easy becaue without effecting enduser they can perform any 
+   changes in our internal system.
+
+3) It provides flexibility to the enduser to use the system.
+
+4) It improves maintainability of an application.
+
+
+
+Encapsulation 
+=============
+Encapsulation is related to capsule.
+
+The process of encapsulating or wrapping variables and it's associate methods in a single entity is called encapusulation.
+
+A class is said to be encapsulated class if it supports data hiding and abtraction.
+
+Abstraction is used to hide the data and encapsulation is used to protect the data.
+
+In encapsulation for every variable we need to declare setter and getter methods.
+
+The main advantages of encapsulation are 
+
+1) It gives security
+2) Enhacement becomes more easy.
+3) It provides flexibility to the enduser.
+4) It improves maintainability of an application.
+
+The main disadvantage of encapsulation is, it increases length of our code and slowdown the execution process.
+
+ex:
+---
+class Student
+{
+	//current class variables 
+	private int studId;
+	private String studName;
+	private double studFee;
+	
+	//setter methods
+	public void setStudId(int studId)
+	{
+		this.studId = studId;
+	}
+	public void setStudName(String studName)
+	{
+		this.studName = studName;
+	}
+	public void setStudFee(double studFee)
+	{
+		this.studFee = studFee;
+	}
+	
+	//getter methods
+	public int getStudId()
+	{
+		return studId;
+	}
+	public String getStudName()
+	{
+		return studName;
+	}
+	public double getStudFee()
+	{
+		return studFee;
+	}
+}
+class Test
+{
+	public static void main(String[] args)
+	{
+		Student s = new Student();
+		s.setStudId(101);
+		s.setStudName("Alan");
+		s.setStudFee(10000d);
+		
+		System.out.println("Student Id : "+s.getStudId());
+		System.out.println("Student Name : "+s.getStudName());
+		System.out.println("Student Fee : "+s.getStudFee());
+	}
+}
+
+
+ex:
+---
+class Student
+{
+	//current class variables 
+	private int studId;
+	private String studName;
+	private double studFee;
+	
+	//setter methods
+	public void setStudId(int studId)
+	{
+		this.studId = studId;
+	}
+	public void setStudName(String studName)
+	{
+		this.studName = studName;
+	}
+	public void setStudFee(double studFee)
+	{
+		this.studFee = studFee;
+	}
+	
+	//getter methods
+	public int getStudId()
+	{
+		return studId;
+	}
+	public String getStudName()
+	{
+		return studName;
+	}
+	public double getStudFee()
+	{
+		return studFee;
+	}
+	
+	//toString method 
+	@Override
+	public String toString()
+	{
+		return studId+" "+studName+" "+studFee;
+	}
+}
+class Test
+{
+	public static void main(String[] args)
+	{
+		Student s = new Student();
+		s.setStudId(101);
+		s.setStudName("Alan");
+		s.setStudFee(10000d);
+		
+		System.out.println("Student Id : "+s.getStudId());
+		System.out.println("Student Name : "+s.getStudName());
+		System.out.println("Student Fee : "+s.getStudFee());
+		
+		System.out.println(s);
+	}
+}
+
+Q) What is the difference between Abstraction and Encapsulation?
+
+Abstraction					Encapsulation 
+---------------					-------------
+Hiding internal implementation and highlighting	The process of encapsulationg or wrapping 
+set of services is called abstraction. 		variables and it's associate methods in a 
+						single entity is called encapsulation.
+
+It is used to hide the data.			It is used to protect the data.
+
+Using abtract classes and interface we can 	Using access modifiers we can implements
+implements abstraction.				encapsulation.
+
+It is a process of gaining the information.	It is a process of containing the formation.
+
+It solves the issue at design level.		It solves the issue at implementation level.
+
+
+Q) What is difference between POJO and Java Bean class?
+
+POJO						Java Bean 
+---------------					----------------
+It can't be serialized.				It can be serialized.
+
+Fields can have any visibility.			Fields must have private visibility.
+
+It may or may not have constructor.		It must have atleast zero argument constructor.
+
+It can't extend outside classes.		It can extends outside class.
+
+It can't implement outside interfaces.		It can implements outside interfaces.
+
+It can't use outside annotations.		It can use outside annotations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

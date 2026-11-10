@@ -1,0 +1,197 @@
+4) Self Join 
+============
+A table which joined to itself is called self join.
+
+In self join we need to create two table alias for same table.
+
+ex:
+	drop table employee;
+	create table employee(employee_id int primary key, 
+				employee_name varchar2(40),
+					manager_id int);
+	Note:
+	-----
+		int/integer - whole numbers  
+		number      - whole numbers / decimal numbers 	
+
+	insert ALL
+	into employee(employee_id,employee_name,manager_id) values(101,'John',NULL)
+	into employee(employee_id,employee_name,manager_id) values(102,'Kelvin',101)
+	into employee(employee_id,employee_name,manager_id) values(103,'Mark',101)
+	into employee(employee_id,employee_name,manager_id) values(104,'Jose',102)
+	into employee(employee_id,employee_name,manager_id) values(105,'Alan',102)
+	into employee(employee_id,employee_name,manager_id) values(106,'Maria',103)
+	select * from dual;
+	commit;				
+
+
+SQL 
+----
+	column employee format A10
+	column manager format A10
+	select e.employee_name as Employee, m.employee_name as Manager
+	from employee e,employee m	 
+	where(e.manager_id = m.employee_id);
+	
+ANSI 
+-----
+	column employee format A10
+	column manager format A10
+	select e.employee_name as Employee,m.employee_name as Manager
+	from employee e JOIN employee m	 
+	ON (e.manager_id = m.employee_id);
+
+
+5) Natural JOIN 
+----------------
+Natural join is used to join two tables automatically when column names are same and compatible datatypes.
+
+ex:
+	select eid,ename,dname,dloc from emp e natural join dept d; 
+
+	Note:
+	-----
+	Internally natural joins behaves as given below.
+	ex:
+		ON (e.deptno = d.deptno)
+		or
+		ON (e.deptno = d.deptno) AND (e.location = d.location)
+
+		
+	
+6) Inner JOIN 
+--------------
+It is similar to equi join.
+It returns matching rows.
+It is given by ANSI.
+ex:
+	select e.eid,e.ename,e.esal,d.dname,d.dloc 
+	from emp e INNER JOIN dept d 
+	ON(e.deptno = d.deptno);
+
+	or
+
+	select e.eid,e.ename,e.esal,d.dname,d.dloc 
+	from emp e JOIN dept d 
+	ON(e.deptno = d.deptno);
+	
+
+7) OUTER JOIN 
+------------
+It is a extension of equi join.
+It returns matching as well as not matching rows.
+A '+' symbol denoted as outer join operator.
+Outer join is classified into three types.
+
+i) LEFT OUTER JOIN 
+------------------
+	SQL 
+	---
+		select e.eid,e.ename,e.esal,e.deptno,d.deptno,d.dname,d.dloc 
+		from emp e,dept d 
+		where(e.deptno = d.deptno(+));
+	ANSI
+	---
+		select e.eid,e.ename,e.esal,e.deptno,d.deptno,d.dname,d.dloc 
+		from emp e LEFT OUTER JOIN dept d 
+		ON(e.deptno = d.deptno);
+
+
+ii) RIGHT OUTER JOIN 
+---------------------
+	SQL 
+	---
+		select e.eid,e.ename,e.esal,e.deptno,d.deptno,d.dname,d.dloc 
+		from emp e,dept d 
+		where(e.deptno(+) = d.deptno);
+	ANSI
+	---
+		select e.eid,e.ename,e.esal,e.deptno,d.deptno,d.dname,d.dloc 
+		from emp e RIGHT OUTER JOIN dept d 
+		ON(e.deptno = d.deptno);
+
+iii) FULL OUTER JOIN 
+--------------------
+	ANSI 
+	----
+		select e.eid,e.ename,e.esal,e.deptno,d.deptno,d.dname,d.dloc 
+		from emp e FULL OUTER JOIN dept d 
+		ON(e.deptno = d.deptno);
+
+
+Duplicate Table 
+================
+We can create duplicate table using create and select command.
+
+If something goes wrong we can recover that situation using duplicate table or copy of 
+a table.
+
+ex:
+	drop table stud;
+	create table stud as select * from emp;
+	create table stud as select eid,ename,esal from emp;		
+	create table stud as select * from emp where deptno=10;
+	create table stud as select * from emp where ename like 'A%';
+	create table stud as select * from emp where eid IN (201,202,203);
+	create table stud as select * from emp where esal > 35000;
+	create table stud as select * from emp where comm is null;
+
+
+CL SCR
+======
+It is used to clear the output screen of a SQL prompt.
+ex:
+	cl scr
+
+
+
+Merge Command 
+=============
+Merge command is possible by using insert and update command.
+
+student10
+---------
+drop table student10;
+create table student10(sno number(3),sname varchar2(10),sadd varchar2(12));
+insert into student10 values(101,'raja','hyd');
+insert into student10 values(102,'ravi','delhi');
+insert into student10 values(103,'ramana','vizag');
+commit;
+
+student20
+----------
+drop table student20;
+create table student20(sno number(3),sname varchar2(10),sadd varchar2(12));
+insert into student20 values(103,'Alan','Texas');
+insert into student20 values(104,'Kelvin','Florida');
+commit;
+
+
+	merge into student10 s1
+	using student20 s2 
+	ON(s1.sno = s2.sno)
+	when matched then 
+	update set s1.sname=s2.sname,s1.sadd=s2.sadd
+	when not matched then 
+	insert values(s2.sno,s2.sname,s2.sadd);
+
+	select * from student10;
+	select * from student20;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

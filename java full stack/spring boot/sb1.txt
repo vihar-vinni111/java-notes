@@ -1,0 +1,191 @@
+Limitations with Spring Framework 
+=================================
+In spring framework a programmer is responsible to perform following things.
+
+1) Adding dependencies/jar files. 
+
+2) Performing configuration using xml, annotation and java config.
+
+3) Deployment of web application on servers like Tomcat, Weblogic and etc.
+
+4) Interacting with databases using JDBC or Hibernate.
+
+To overcome above limitations we need to use spring boot.
+
+ex:
+		Developer
+		   |
+		Spring Boot 
+		   |
+		Spring Framework 
+
+
+
+Spring Boot 
+===========
+It is a application framework developed by Pivotal Team.
+
+It provides RAD(Rapid Application Development) features for building spring applications.
+
+It is a standalone, production ready grade spring based applications with minimum configurations.
+
+In short, spring boot is a combination of 
+ex:
+	Spring Framework + Embedded Server + Embedded Database
+
+
+Advantages of Spring Boot 
+=========================
+> It is used to develop standalone application which can be run by using java -jar.
+
+> It provides optional starters to simplify maven development process.
+
+> It gives production ready grade features like metrics, healthcheck, externalized configuration and etc.
+
+> It does not support xml configurations instead we will use annotations.
+
+> To deploy web applications it provides HTTP servers like Tomcat, Jetty and Undertow.
+
+> It gives in-memory databases like H2, HSQL and Derby.
+
+> It contains CLI Tools for creating and testing spring boot applications.
+
+
+Q) What is the difference between Spring Framework And Spring Boot ?
+
+Spring Framework				Spring Boot 
+------------------				-------------
+It is a open source framework that is widely 	It is built on top of spring framework 
+used to develop enterprise applications.	that is widely used to develop REST API's.
+
+The main feature of spring framework 		The main feature of spring boot is  
+is dependency injection.			auto configuration.
+
+It is used to develop loosely coupled 		It is used to develop standalone applications.
+applications.
+
+For web applications we need to 		It comes with embedded servers like Tomcat,
+arrange HTTP servers like Tomcat, Weblogic	Jetty and Undertow.
+and etc.
+
+It does not provide in-memory databases.	It provides in-memory databases.
+
+It supports xml configurations.			It does not support xml configurations instead
+						we will use annotations.
+
+
+Q) What is Spring bean? 
+
+In spring boot, any object which is created and managed by spring IoC container is called spring bean.
+
+
+Q) What is Spring IoC container?
+
+Spring IoC (Inversion of Control) container is the core engine of the Spring Boot framework that automatically instantiates, configures, and manages the lifecycle of application objects (known as beans).
+
+
+Q) What is Dependency Injection? 
+
+Dependency injection is a design pattern in which classes get's their dependency from external resources(IoC) rather then manually.
+
+In short, dependency injection makes our class independent to it's dependencies.
+
+To perform automatic dependency injection in spring boot we need to use @Autowired Annotation.
+
+There are three ways to perform dependency injection in spring boot.
+
+1) Field Injection 
+
+2) Constructor Injection 
+
+3) Setter Injection 
+
+1) Field Injection (Not Recommand)
+----------------------------------
+ex
+	class Recording 
+	{
+	}
+	class Student
+	{
+		@Autowired
+		Recording r;	
+	}
+
+2) Constructor Injection (Recommanded)
+--------------------------------------
+ex:
+	class Recording 
+	{
+	}
+	class Student
+	{
+		Recording r;
+		Student(Recording r)
+		{
+			this.r = r;
+		}	
+	}
+
+3) Setter Injection (It is recommanded when values are changing rapidly)
+------------------------------------------------------------------------
+ex:
+	class Recording 
+	{
+	}
+	class Student
+	{
+		Recording r;
+
+		@Autowired
+		public void setRecording(Recording r)
+		{
+			this.r = r;
+		}	
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

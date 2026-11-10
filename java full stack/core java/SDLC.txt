@@ -1,0 +1,107 @@
+SDLC
+====
+SDLC stands for Software Development Life Cycle.
+
+SDLC is a process adopt by IT industries to develop accurate and quality of software.
+
+There are six phases in SDLC.
+
+1) Feasibility study 
+2) Analysis
+3) Designing 
+4) Coding 
+5) Testing 
+6) Delivery and Maintainence 
+
+1) Feasibility study 
+-------------------
+Feasibility study completely relay on TELOS formulea.
+ex:
+	T - Technical Feasibility 
+	E - Economical Feasibility 
+	L - Legal Feasibility 
+	O - Operational Feasibility 
+	S - Schedule Feasibility
+
+All the above information they will keep in a document called BDD.
+BDD stands for Business Design Document. 
+
+
+2) Analysis
+------------
+In analysis phase, system analyst or product owner will involved.
+They will seperate system requirements and software requirements.
+They will keep above information in a document called SRS.
+SRS stands for Software Requirement Specification.
+
+
+3) Designing 
+-------------
+We have two types of designing.
+
+1) High Level Designing (HLD)
+-----------------------------
+In high level designing, we will design main/major modules.
+A technical manager is responsible to perform high level designing.
+ex:
+	Payment Module 
+
+2) Low Level Designing 
+---------------------
+In low level designing, we will design child/sub modules.
+A team lead or project lead is responsible to perform low level designing.
+ex:
+	Payment Initiation 
+	Payment gateway integration
+	payment history 
+	payment process
+	payment refund 
+	and etc.
+
+All the above information they will keep in a document called PDD/TDD.
+PDD stands for Project Design Document.
+TDD stands for Technical Design Document.
+
+
+4) Coding 
+---------
+In coding phase, developers will involved.
+
+They are responsible to write the code, generate the build and perform unit testing.
+
+Checking piece of code working as per requirement or not is called unit testing.
+
+
+5) Testing 
+-----------
+In testing phase, testing team or QA team will involved.
+
+They will use one software component called STLC(Software Testing Life Cycle) to remove all the bugs from project.
+
+
+6) Delivery and maintainence 
+----------------------------
+Before delivery we perform UAT testing.
+UAT stands for User Acceptance Testing.
+It is categories into two types.
+i) Alpha Testing 
+ii) Beta Testing 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,323 @@
+Interview Questions 
+====================
+drop table items;
+CREATE TABLE items (
+    item_id      NUMBER(5),
+    item_name    VARCHAR2(30),
+    expiry_date  DATE,
+    price        NUMBER(8,2)
+);
+
+INSERT INTO items VALUES (101, 'Milk',    DATE '2026-09-10', 50);
+INSERT INTO items VALUES (102, 'Bread',   DATE '2026-09-12', 40);
+INSERT INTO items VALUES (103, 'Biscuits',DATE '2026-09-20', 30);
+INSERT INTO items VALUES (104, 'Juice',   DATE '2026-09-05', 80);
+INSERT INTO items VALUES (105, 'Cheese',  DATE '2026-10-15', 120);
+
+COMMIT;
+
+
+Q) Write a query to display the items which are expired?
+
+	select * from items where expiry_date < sysdate;
+	column expiry_date format A12;
+	
+
+Q) What is the difference between Oracle and MongoDB ?
+
+Oracle						MongoDB
+---------					--------
+It is a relational databaase. 			It is a non-relational database.
+						(It is document based database)
+
+It is not designed for hierchical data.		It is designed for hierachical data.
+
+It supports structured query language.		It supports JSON query language.
+
+It does not store the data in key and value	It stores the data in key and value
+pair.						pair.
+
+It contains tables.				It contains collections.
+
+It is row based.				It is document based.
+
+It is column based.				It is field based.
+
+
+
+Q) What is the difference between Normalization and Denormalization ?
+
+Normalization				Denormalization 
+---------------				---------------
+It increase the complexity due 		It reduce the complexity due to 
+to multiple tables.			single table.
+
+No data redundant.			Data redundant.
+
+No waste of memory.			Waste of memory.
+
+Need of joins.				No need of joins.
+
+Low data availability.			High data availability.
+ 
+Slower to read.				Slower to write.
+
+
+
+
+
+Q) What is difference between SQL and PL/SQL ?
+
+SQL						PL/SQL
+-------						---------
+SQL stands for Structured Query Language.	PL/SQL stands for Procedural Language 							Extensions to SQL.
+
+It executes single command/query.		It executes block of code.
+
+It is a data oriented language.			It is a application oriented language.
+
+It does not provide exceptions and errors.	It provides exceptions and errors.
+
+It directly interacts with database server.	It does not interact with database server.
+
+It does not give programming features 		It gives programming features like 
+like variables, loops, control statements 	variables, loops, control statements 
+and etc.					and etc.
+
+It is used to create queries in DDL,DML,	It is used to create procedures,functions
+DRL,TCL and DCL.				cursors, triggers and packages.
+
+
+
+PL/SQL 
+======
+PL/SQL stands for Procedural language extensions to SQL.
+
+It gives following features.
+
+1) We can achieve programming features like variables, control statements , loops and etc.
+
+2) It reduces network traffic.
+
+3) It allows us to display custom messages by using the concept of exception handling.
+
+4) We can perform related operations by using the concept of triggers.
+
+5) We can save the source code permanent to database for repeated execution.
+
+PL/SQL Block 
+=============
+PL/SQL block is also known as PL/SQL program.
+
+syntax:
+-------
+	DECLARE 
+	-
+	-  -- declaration section 
+	-
+	BEGIN 
+	-
+	- -- executable section 
+	-
+	EXCEPTION
+	-
+	- -- exception section 
+	-	
+	END;
+	/
+
+	Here '/' is used to submit the program in database.
+
+Declaration Section 
+------------------
+It is used to declare variables, cursors, exceptions and etc.
+It is optional section.
+
+
+Executable Section 
+-----------------
+It contains lines of code which is used to complete a table.
+It contains actual logic.
+It is a mandatory section.
+
+Exception Section 
+----------------
+It contains lines of code which is executed when exception is occured.
+It is optional section.
+
+To see the output in PL/SQL we need to execute below command.
+ex:
+	SET SERVEROUTPUT ON 
+
+
+Q) Write a PL/SQL program to display Hello World ? 
+
+	BEGIN 
+	DBMS_OUTPUT.PUT_LINE('Hello World');
+	END;
+	/
+
+	Here
+	DBMS_OUTPUT is a package name.
+	PUT_LINE is a procedure name.
+	
+
+Q) Write a PL/SQL program to perform sum of two numbers? 
+
+	DECLARE 
+	A number;
+	B number;
+	C number;
+	BEGIN 
+	A := 10;
+	B := 20;
+	C := A+B;
+	DBMS_OUTPUT.PUT_LINE(C);
+	END;
+	/
+
+Declaration and initialization using single line 
+----------------------------------------------
+
+	DECLARE 
+	A number := 10;
+	B number := 20;
+	C number := A+B;
+	BEGIN 
+	DBMS_OUTPUT.PUT_LINE('Sum of two numbers is '||C);
+	END;
+	/
+
+Using '&' symbol we can read dynamic inputs.
+
+ex:
+	DECLARE 
+	A number(3);
+	B number(3);
+	C number(6);
+	BEGIN 
+	A := &a;
+	B := &b;
+	C := A+B;
+	DBMS_OUTPUT.PUT_LINE('sum of two numbers is = '||C);
+	END;
+	/
+
+In PL/SQL , DRL operations are allowed.
+
+To perform select operation in PL/SQL we need to use "into" clause.
+
+
+Q) Write a PL/SQL program to display employee name whose employee id is 202?
+
+	DECLARE 
+	L_ename varchar2(10);
+	BEGIN 
+	select ename into L_ename from emp where eid = 202;
+	DBMS_OUTPUT.PUT_LINE(L_ename);
+	END;
+	/	
+
+
+Q) Write a PL/SQL program to display employee name, employee salary whose employee id is 204?
+
+	DECLARE 
+	L_ename varchar2(10);
+	L_esal  NUMBER(8,2);
+	BEGIN 
+	select ename,esal into L_ename,L_esal from emp where eid = 204;
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal);
+	END;
+	/
+
+Q) Write a PL/SQL program to display employee name, employee salary based on employee id?
+
+
+	DECLARE 
+	L_eid number(3);
+	L_ename varchar2(10);
+	L_esal number(8,2);
+	BEGIN 
+	L_eid := &id;
+	select ename,esal into L_ename,L_esal from emp where eid = L_eid;
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal);
+	END;
+	/	
+
+Percentage(%) TYPE Attribute 
+============================
+It is used to declare a local variable with respect to column type.
+
+syntax:
+-------
+	<variable_name>  <table_name>.<col_name>%TYPE;
+
+
+Q) Write a PL/SQL program to display employee name, employee salary based on employee id?
+
+
+	DECLARE 
+	L_eid  emp.eid%TYPE;
+	L_ename emp.ename%TYPE;
+	L_esal  emp.esal%TYPE;
+	BEGIN 
+	L_eid := &eid;
+	select ename,esal into L_ename,L_esal from emp where eid = L_eid;
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal);
+	END;
+	/
+
+
+Percentage(%) ROWTYPE attribute 
+===============================
+It is used to a local variables which holds complete row of a column.
+
+syntax:
+-------
+	<variable>  <table_name>%ROWTYPE;
+
+Rowtype variable we can't print directly.
+
+To print the data from rowtype variable we need to use <variable_name>.<column_name>.
+
+
+Q) Write a PL/SQL program to display employee information whose employee id is 203?
+
+
+	DECLARE 
+	A emp%ROWTYPE;
+	BEGIN 
+	select * into A from emp where eid=203;
+	DBMS_OUTPUT.PUT_LINE(A.eid||' '||A.ename||' '||A.esal||' '||A.deptno||' '||A.job);
+	END;
+	/
+
+
+Q) Write a PL/SQL program to display employee information based on employee id?
+
+
+	DECLARE 
+	A emp%ROWTYPE;
+	L_eid emp.eid%TYPE;
+	BEGIN 
+	L_eid := &eid;
+	select * into A from emp where eid=L_eid;
+	DBMS_OUTPUT.PUT_LINE(A.eid||' '||A.ename||' '||A.esal||' '||A.deptno||' '||A.job);
+	END;
+	/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

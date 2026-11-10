@@ -1,0 +1,217 @@
+Q) Difference between GIT and GITHUB ?
+
+GIT						GITHUB 
+--------					--------
+It is a distributed version control 		It is a hosting server for GIT.
+system which is used to track the changes
+in each file during project development.
+
+It is locally need to be installed.		It is hosted on a web.
+
+It is a software.				It is a service.
+
+It is command based.				It is GUI.
+
+It contains local repository.			It contains remote repository.
+
+GIT Stages
+==========
+We have three stages in GIT.
+
+1) Working Directory 
+
+2) Staging Area 
+
+3) Repository 
+
+Diagram: jsp8.1
+
+
+Steps to push the code to GITHUB 
+================================
+step1:
+-----
+	Create a account in GITHUB.
+	ex:
+		https://github.com
+
+step2:
+------
+	Login to GITHUB account.
+	ex:	
+		username or email : NiyazulHasan
+		password : *********
+
+step3:
+-----
+	Create a remote repository.
+	ex:
+		https://github.com/NiyazulHasan/my-java-batch
+
+step4:
+-----
+	Download and Install GIT.
+	ex:
+		https://git-scm.com/install/windows
+
+step5:
+------
+	Create a "demo" folder on desktop.
+
+step6:
+------
+	Open GIT bash from "demo" folder location.
+	
+step7:
+-----	
+	Initialized git empty repository.
+	ex:
+		git init 
+
+step8:
+------
+	Change the GIT branch.
+ 	ex:	
+		git branch --move master main 
+
+step9:
+------
+	Add the files to working directory.
+
+step10:
+-------
+	Check the git status.
+	ex:
+		git status 
+
+
+step11:
+-------
+	Add the files to staging area.
+	ex:		
+		git add . 
+
+step12:
+-------
+	Commit the changes.
+	ex:
+		git commit -m "core java notes"	
+
+
+step13:
+-------
+	Add remote repository to origin.
+	ex:
+		git remote add origin https://github.com/NiyazulHasan/my-java-batch
+
+step14:
+-----
+	Push the code to remote repository.
+	ex:
+		git push -f origin main 
+
+step15:
+-------
+	Refresh remote repository.
+	ex:
+		https://github.com/NiyazulHasan/my-java-batch
+
+
+Steps to pull the code from GITHUB
+==================================
+step1:
+------
+	Take a remote repository from where we want make pull request.
+	ex:
+		https://github.com/NiyazulHasan/my-java-batch
+
+step2:
+------
+	Create a "java" folder on desktop.
+
+step3:
+-----
+	Open git bash from "java" folder.
+	
+step4:
+------	
+	Initialized git empty repository.
+	ex:
+		git init
+
+step5:
+------
+	Make a pull request.
+	ex:
+		git pull https://github.com/NiyazulHasan/my-java-batch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

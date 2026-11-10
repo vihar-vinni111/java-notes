@@ -1,0 +1,176 @@
+Q) What is the difference between PC and Server?
+
+PC						Server
+-------						-------
+It is designed for perticular user.		It is designed to operate multiple user's.
+
+It has simple structure.			It has complex structure.
+
+It contains less storage from gegabytes to 	It contains more storage from terabytes to 
+terabytes.					petabytes.
+
+Low network capability.				High network capability.
+
+It contains single processor.			It contains multiple processors.
+
+
+Q) Will company use one server or multiple server's ? 
+
+It depends upon scale of a company because companies revenue completely relay on servers and they must ensure that these servers are operating all the times.
+
+To host an application on top of the server we required infrastructure.
+
+Every IT company maintain data center.
+
+Data center is a place where we can host all the server's. 
+
+Diagram: aws2.1
+
+
+
+Q) Is it easy to maintain data center?
+
+No, it is not easy to maintain data center because it is capital intensive. Specially to startup's.
+
+To maintain data center we required following things.
+
+1) Secure and Private place 
+2) Server maintainence team 
+3) Dual power supply 
+4) Dual Network (ISP)
+5) Need to follow geographical standards to provide security physicall and over the network.
+6) Hardware Refresh 
+and etc.
+
+To overcome above limitations cloud computing came into an existence.
+
+
+Cloud Computing 
+===============
+It is a on-demand delivery of IT resources over the network with pay-as-you-go model.
+
+Cloud computing started in 2004.
+
+We have following list of cloud providers.
+
+ex:
+	Cloud Providers			Cloud
+	---------------			------
+	Oracle				OCI (Oracle Cloud Infrastructure)
+	Microsoft			Azure 
+	Google				GCP (Google Cloud Platform)
+	Amazon				AWS (Amazon Web Services)
+	IBM				IBM Cloud 
+	and etc.			
+
+
+AWS
+====
+AWS stands for Amazon Web Services.
+
+AWS is a most comprehensive, broadely adopted cloud computing that provides 200+ services over the network from it's data center.
+
+AWS officially launched to the public on 14 March,2006.
+
+It was monopoly/leader for 10 years(1 Decade).
+
+
+
+Cloud Business/Service Models
+=============================
+We have three cloud business/service models.
+
+1) IaaS (Infrastructure As a Service)
+
+2) PaaS (Platform As a Service)
+
+3) SaaS (Software As a Service)
+
+All above service models comes with shared responsibility model.
+
+Group of expertise engineers in a company decide which business model is best for their organization.
+
+Diagram: aws2.2
+
+
+How to create AWS Account 
+========================
+To create AwS account we required following things.
+
+1) Gmail Id 
+
+2) Debit/Credit Card 
+
+3) Minimum 2 rupees must be there in an account.
+
+Note:
+-----
+If we use debit card to create an account then it takes 24 hours .
+If we use credit card to create an account then it takes 3 to 4 hours.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

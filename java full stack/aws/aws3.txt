@@ -1,0 +1,143 @@
+Operating System 
+================
+It is a mediator between user and hardware.
+
+It is classified into two types.
+
+1) GUI (Graphical User Interface)
+-----------------------------
+ex:
+	windows
+
+2) CLI (Command Line Interface)
+------------------------------
+ex:
+	linux 
+Note:
+-----
+	In the space of operating system CLI is widely used.
+	90% of enterprise is CLI and that to linux.
+
+
+
+Linux History 
+=============
+Linux created by Linus Torvalds
+
+The idea behind linux is why we should pay money to use operating system.
+
+Linus Torvalds has started one project called Linux.
+
+He has created linux kernel.
+
+Linux kernel is a first layer of operating system.
+
+Linux kernal is used to interact with hardware components.
+
+The main purpose of linux is 
+
+1) To develop free CLI OS 
+
+2) It should be open source 
+
+3) It works on any hardware
+
+4) GNUX (Generally Not a Unix)
+
+Today, we have total 300+ distributions in linux. 
+
+
+EC2 
+====
+EC2 stands for Elastic Cloud Compute.
+
+EC2 comes in Infrastructure As a Service (IaaS).
+
+It is a web service managed by AWS to create servers in cloud.
+
+Cloud servers are also known as instances.
+
+
+Steps to create EC2 instance 
+============================
+step1:
+-----
+	Login in AWS account.
+
+step2:
+-----
+	Select the region.
+	ex:
+		N. Virginia
+
+step3:
+------
+	Goto EC2 service and Create a security group.
+	ex:
+		mySecurityGroup62
+
+step4:
+------
+	Create a EC2 instance.
+
+step5:
+-----
+	Download and install putty.
+	ex:
+		https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+
+
+step6:
+------
+	Copy IP address and paste in putty with PPK(Putty Private Key). 
+
+step7:
+------
+	Login to Linux server.
+	Login as : ec2-user  
+
+step8:
+-----
+	Terminate EC2 Instance.
+
+
+
+RDS 
+====
+RDS stands for Relational Database Service.
+
+RDS comes in DBaaS (Database As a Service)
+
+It is a web service managed by AWS to setup, process, scale relational databases in cloud.
+
+
+Steps to interact with MySQL Database in RDS service 
+====================================================
+step1:
+------
+	Launch eclipse IDE.
+
+step2:
+------
+	Create a java project i.e AWSProj.
+
+step3:
+------
+	Add "mysql-connector.jar" file in project build path.
+
+
+step4:
+------
+	Create a MySQL database in RDS service.
+	
+
+
+
+
+
+
+
+
+
+
+

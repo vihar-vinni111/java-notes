@@ -1,0 +1,248 @@
+Project Structure 
+------------------
+SecondSB
+|
+|---src/main/java
+	|
+	|---com.rt.www (base package)
+		|
+		|---SecondSbApplication.java
+
+	|---com.rt.www.controller	
+		|
+		|---WebController.java
+
+|---src/main/resources
+	|
+	|---application.properties 
+
+|---src/test/java
+|
+|----src
+      |
+      |-------main
+		|
+		|-----webapp (custom folder)
+			|	
+			|---index.jsp 
+|
+|---pom.xml 
+
+step1:
+------
+	Create a spring boot starter project i.e SecondSB.
+	ex:
+		Starter : Spring Web 
+
+step2:
+------
+	Create  "com.rt.www.controller" package inside "src/main/java" folder.
+	
+
+step3:
+-----
+	Create a "WebController.java" file inside "com.rt.www.controller" package.
+
+WebController.java 
+------------------
+package com.rt.www.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class WebController 
+{
+	//handler methods 
+	@RequestMapping("/msg")
+	public String home()
+	{
+		return "index.jsp";
+	}
+}
+
+step4:
+------
+	Create a "webapp" folder inside "src/main" folder.
+
+step5:
+------
+	Create a "index.jsp" file inside "src/main/webapp" folder.
+
+index.jsp
+--------
+<center>
+	<h1>	
+		Welcome to First Web Application
+	</h1>		
+</center>
+
+step6:
+-----
+	Add Tomcat Embed Jasper Dependency in pom.xml file.	
+	ex:
+		<dependency>
+    			<groupId>org.apache.tomcat.embed</groupId>
+    			<artifactId>tomcat-embed-jasper</artifactId>
+   		</dependency>		
+
+step7:
+------
+	Configure Application name and server port inside application.properties file.
+
+application.properties 
+---------------------
+spring.application.name=SecondSB
+server.port=9090
+
+step8:
+------
+	Run spring boot starter project.
+
+step9:
+-----
+	Test the application.
+	ex:
+		http://localhost:9090/msg
+
+
+Interview Questions 
+--------------------
+
+Q) What is stereotype annotation?
+
+Spring Stereotype Annotations are specialized markers applied to Java classes that define their specific role or architectural layer within an application. When Spring performs component scanning, it automatically detects these annotated classes, instantiates them, and registers them as beans in the application context.
+
+We have following list of stereotype annotaitons.
+ex:
+	@Controller 
+	@Service 
+	@Repository 
+	@Component 
+	and etc.
+
+
+Q) What is @Controller annotation?
+
+It is a class level annotation.
+It is a stereotype annotation.
+It serves a class as controller to intercept all incoming request.
+
+
+
+Q) What is @RequestMapping anntoation ?
+
+It is a method level annotation.
+It is used to map the request to perticular handler method.
+It accept all HTTP request like GET, POST, PUT, DELETE and etc.
+
+
+ex:2
+-----
+
+WebController.java
+-----------------
+package com.rt.www.controller;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class WebController 
+{
+	//handler methods 
+	@RequestMapping("/msg")
+	@ResponseBody
+	public String home()
+	{
+		return "I Love Spring Boot";
+	}
+}
+
+
+Q) What is @ResponseBody annotation?
+
+It is a method level annotation.
+It tells to controller a return object automatically serialized to text/xml/JSON.
+
+
+Spring Data JPA 
+================
+Spring Data JPA is also known as Data Access Framework.
+
+It is a module of spring framework that simplifies to interact with relational databases in java application using JPA (Java Persistence API).
+
+It is a part of a spring framework which is used to communicate with databases using objects instead of writing complex SQL queries.
+
+ex:
+	To fetch the data, we need to use below query.
+	ex:
+		select * from student;
+
+	In spring data jpa, we need to use below method.
+	ex:
+		findAll();
+
+It reduce boiler plate code by providing common database operations like save(), update(), delete and etc.
+
+It allows us to declare method names like findByName() and it writes the query for you.
+
+It allows us to work with JPA provider i.e hibernate to deal with object relational mapping (ORM).
+
+It provides various repository interfaces which can be extends in our project to perform database operations, pagination ,sorting and etc.
+
+We have following core repositories commonly used in spring data jpa.
+
+1) Repository<T,ID> 
+-------------------
+> It is a base repository for all spring data JPA repositories.
+> It is not intend to use.
+
+2) CrudRepository<T,ID>
+----------------------
+> It is a extension of Repository.
+> It is used to perform database operations.
+ex:
+	save(), delete(), findById(), findAll() and etc.
+
+3) PagingAndSortingRepository<T,ID>
+-------------------------------------
+> It is a extension of CrudRepository.
+> IT is used to perform database operations along with paging and sorting.
+ex:
+	findAll(Pageable pageable)
+	findAll(Sort sort)
+
+4) JpaRepository<T,ID> 
+-----------------------
+> It is most commonly used repository in spring data jpa.
+> It is a extension of CrudRepository and PagingAndSortingRepository.
+> It contains JPA specific methods.
+ex:
+	flush()
+	saveAndFlush(S entity)
+	deleteAllInBatch()
+	and etc.	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

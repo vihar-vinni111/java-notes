@@ -1,0 +1,320 @@
+customer-service 
+================
+Diagram: sb8.1
+
+
+Project Structure 
+-----------------
+customer-service
+|
+|---src/main/java	
+	|
+	|---com.rt.www
+	|
+	|---com.rt.www.entity 
+		|
+		|---Customer.java
+
+	|---com.rt.www.repo
+		|
+		|---CustomerRepository.java (interface)
+
+	|---com.rt.www.service
+		|
+		|---CustomerService.java
+
+	|---com.rt.www.controller
+		|		
+		|---CustomerController.java
+
+|---src/main/resources
+	|
+	|---application.yml 
+
+|---src/test/java
+|
+|---pom.xml
+
+step1:
+-----
+	Download and install project lombok.
+	ex:
+		https://projectlombok.org/download
+
+step2:
+------
+	Copy lombok.jar file and paste in "sts" folder.
+
+step3:
+------	
+	Goto "SpringToolsForEclipse" configuration file and add below code.
+	ex:
+		-javaagent:lombok.jar
+
+		save the file --> CTRL + S  ---> close.
+
+step4:
+-----
+	Create a spring boot starter project i.e customer-service.	
+	ex:	
+		starters:	
+				Spring Web 
+				Spring Data JPA 
+				Lombok
+				MySQL Driver 
+
+step5:
+-----
+	Create a "Customer.java" file inside "com.rt.www.entity" package.
+
+Customer.java
+-------------
+package com.rt.www.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name="customers")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Customer 
+{
+	@Id
+	private Long custId;
+	
+	@Column
+	private String custName;
+	
+	@Column
+	private String custAddress;
+}
+
+step6:
+-----
+	Create a "CustomerRepository.java" file inside "com.rt.www.repo" package.
+
+CustomerRepository.java
+-----------------------
+package com.rt.www.repo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import com.rt.www.entity.Customer;
+
+@Repository
+public interface CustomerRepository extends JpaRepository<Customer, Long>
+{
+
+}
+
+step7:
+------	
+	Create and use schema in mysql database.
+	ex:
+		show databases;
+		create schema java_batch;
+		use java_batch;
+
+step8:
+------
+	Rename application.properties file to application.yml file.
+
+application.yml 
+---------------
+server:
+  port: 9090
+
+spring:
+  application:
+    name: CUSTOMER-SERVICE
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/JAVA_BATCH
+    username: root
+    password: root
+  jpa:
+    hibernate.ddl-auto: update 
+    generate-ddl: true
+    show-sql: true
+
+step9:
+-----
+	Create a "CustomerService.java" file inside "com.rt.www.service" package.
+
+CustomerService.java
+---------------------
+package com.rt.www.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.rt.www.entity.Customer;
+import com.rt.www.service.CustomerService;
+
+@RestController
+@RequestMapping("/customer")
+public class CustomerController 
+{
+	@Autowired
+	private CustomerService customerService;
+	
+	@PostMapping("/add")
+	public Customer addCustomer(@RequestBody Customer customer)
+	{
+		return customerService.addCustomer(customer);
+	}
+	
+	@GetMapping("/fetch")
+	public List<Customer> getAllCustomers()
+	{
+		return customerService.getAllCustomers();
+	}
+	
+	@GetMapping("/fetch/{custId}")
+	public ResponseEntity<Customer> getCustomerById(@PathVariable Long custId)
+	{
+		return customerService.getCustomerById(custId);
+	}
+}
+
+
+step10:
+------
+	Create a "CustomerController.java" file inside "com.rt.www.controller" package.
+
+CustomerController.java
+------------------------
+package com.rt.www.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.rt.www.entity.Customer;
+import com.rt.www.repo.CustomerRepository;
+
+@Service
+public class CustomerService 
+{
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	public Customer addCustomer(Customer customer)
+	{
+		return customerRepository.save(customer);
+	}
+	public List<Customer> getAllCustomers()
+	{
+		return customerRepository.findAll();
+	}
+	public ResponseEntity<Customer> getCustomerById(Long custId)
+	{
+		Customer customer = customerRepository.findById(custId).get();
+		return new ResponseEntity<>(customer, HttpStatus.OK);
+	}
+}
+
+
+step11:
+------
+	Download and install postman tool.
+
+
+step12:
+------
+	Run spring boot starter project.
+
+step13:
+------
+	Test the application by using below request url.
+	ex:
+		HTTP Method	URL
+		----------	----------
+		POST		http://localhost:9090/customer/add
+				Body (Raw)
+					(JSON)
+
+				{
+    					"custId" : 101,
+    					"custName" :"Alan",
+    					"custAddress": "Texas"
+				}
+
+		GET		http://localhost:9090/customer/fetch
+
+		GET		http://localhost:9090/customer/fetch/101
+	
+
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,370 @@
+2) Userdefined exceptions 
+=========================
+Exeptions which are created by the user are called userdefined exceptions.
+
+Steps to create userdefined exception 
+------------------------------------
+step1:
+------
+	Declare the exception 
+
+step2:
+-----
+	Raise the exception 
+
+step3:
+------
+	Handle the exception 
+
+
+To see the output in PL/SQL we need to execute below command.
+ex:
+	SET SERVEROUTPUT ON 
+
+ex:
+	DECLARE 
+	A number:= 5000;
+	MY_EX1 EXCEPTION;
+	BEGIN 
+	IF A>2000 THEN 
+	RAISE MY_EX1;
+	END IF;
+	DBMS_OUTPUT.PUT_LINE(A);
+	EXCEPTION 
+	WHEN MY_EX1 THEN 
+	DBMS_OUTPUT.PUT_LINE('Number is Too Large');
+	END;
+	/
+
+
+Cursors 
+========
+In PL/SQL, a cursor is a pointer to a private memory area (known as the context area) that Oracle uses to process SQL statements.
+
+Cursors are divided into two types.
+
+1) Implicit cursors 
+
+2) Explicit cursors 
+
+1) Implicit cursors
+--------------------
+All the activity related to cursor like opening the cursor , processing the cursor and closing the cursor which is done automatically is called implicit cursor.
+
+We have four types of implicit cursor attributes.
+
+i) SQL%ISOPEN 
+-------------
+	It is a boolean attribute which always returns false.
+
+ii) SQL%FOUND 
+-----------
+	It is a boolean attribute which returns true if sql command is success and 
+	returns false if sql command is failed.
+
+iii) SQL%NOTFOUND 
+-----------------
+	It is inverse of SQL%FOUND.
+	It is a boolean attribute which returns false if sql command is success and 
+	returns true if sql command is failed.
+
+
+iv) SQL%ROWCOUNT 
+-----------------
+	It returns number of records effected in a database table.
+
+ex:
+---
+	BEGIN 
+	IF  SQL%ISOPEN THEN 
+	DBMS_OUTPUT.PUT_LINE('Cursor is opened');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Cursor is closed');
+	END IF;
+	END;
+	/
+
+ex:
+---
+	BEGIN 
+	update student set sname= 'Alan' where sno=104;
+	IF SQL%FOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Record Updated');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Record Not Updated');
+	END IF;
+	END;
+	/	
+
+ex:
+---
+	BEGIN 
+	update student set sname= 'Alan' where sno=109;
+	IF SQL%NOTFOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Record Updated');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Record Not Updated');
+	END IF;
+	END;
+	/	
+
+ex:
+----
+	BEGIN 
+	update student set sname='raja';
+	DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT ||' Records Updated ');
+	END;
+	/
+
+2) Explicit cursors
+-------------------
+All the activities related to cursor like opening the cursor, processing the cursor and closing the cursor which is done by a programmer is called explicit cursor.
+
+We need to explicit cursor when select statement returns more then one row.
+
+We have four types of explicit cursor attributes.
+
+i) %ISOPEN 
+--------
+	It is a boolean attribute which returns true if cursor is opened and 
+	returns false if cursor is closed.
+
+ii) %FOUND 
+---------
+	It is a boolean attribute which returns true if SQL command is success and 
+	returns false is SQL command is failed.
+
+iii) %NOTFOUND 
+--------------
+	It is a inverse of %FOUND.
+	It is a boolean attribute which returns false if SQL command is success and 
+	returns true is SQL command is failed.
+
+iv) %ROWCOUNT 
+------------
+	It returns number of records effected in a database table.
+
+Steps to work with explicit cursor 
+---------------------------------
+step1:
+------
+	Declare the cursor. 
+
+step2:
+------
+	Open the cursor. 
+
+step3:
+-----
+	Fetch the data from cursor to local variables.
+
+step4:
+-----
+	Close the cursor.
+
+
+Q) Write a PL/SQL program to display employee names from employee table?
+
+	DECLARE 
+	CURSOR C1 is select ename from emp;
+	L_ename  emp.ename%TYPE;
+	BEGIN 
+	OPEN C1;
+	LOOP
+	FETCH C1 into L_ename;
+	EXIT WHEN C1%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(L_ename);
+	END LOOP;
+	CLOSE C1;
+	END;
+	/
+
+Q) Write a PL/SQL program to display employee names and employee salaries from employee table?
+
+	DECLARE 
+	CURSOR C2 is select ename,esal from emp;
+	L_ename  emp.ename%TYPE;	
+	L_esal   emp.esal%TYPE;
+	BEGIN 
+	OPEN C2;
+	LOOP
+	FETCH C2 into L_ename,L_esal;
+	EXIT WHEN C2%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal);
+	END LOOP;
+	CLOSE C2;
+	END;
+	/
+
+
+Q) Write a PL/SQL program to display employee id, employee name and employee salary from employee table?
+
+	DECLARE 
+	CURSOR C3 is select eid,ename,esal from emp;
+	L_eid   emp.eid%TYPE;
+	L_ename  emp.ename%TYPE;	
+	L_esal   emp.esal%TYPE;
+	BEGIN 
+	OPEN C3;
+	LOOP
+	FETCH C3 into L_eid,L_ename,L_esal;
+	EXIT WHEN C3%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(L_eid||' '||L_ename||' '||L_esal);
+	END LOOP;
+	CLOSE C3;
+	END;
+	/
+
+
+Q) Write a PL/SQL program to display employees information from employee table?
+
+	DECLARE 
+	CURSOR C4 is select * from emp;
+	A emp%ROWTYPE;
+	BEGIN 
+	OPEN C4;
+	LOOP
+	FETCH C4 into A;
+	EXIT WHEN C4%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(A.eid||' '||A.ename||' '||A.esal||' '||A.deptno||' '||A.job);
+	END LOOP;
+	CLOSE C4;
+	END;
+	/
+
+
+PL/SQL procedure 
+=================
+It is a named PL/SQL block which compiled and stored in a database permanently for repeated execution. 
+
+syntax:
+------
+	create or replace procedure <procedure_name> 
+	is
+	begin 
+	-
+	-
+	-
+	end;
+	/
+
+Q) Write a PL/SQL procedure to display Hello World?
+
+	create or replace procedure p1 
+	is
+	begin 
+	DBMS_OUTPUT.PUT_LINE('Hello World');
+	END;
+	/
+
+	To execute the procedure we need to use below command.
+	ex:
+		exec p1;
+
+Every procedure may contains three parameters.
+
+1) IN Parameter 
+
+2) OUT Parameter 
+
+3) IN OUT Parameter 
+
+1) IN Parameter 
+--------------
+It is used to accept the values from the user.
+
+Q) Write a PL/SQL procedure to perform sum of two numbers?
+
+	create or replace procedure sum_of_two(A IN number,B IN number)
+	is
+	C number;		
+	begin 
+	C := A+B;
+	DBMS_OUTPUT.PUT_LINE('Sum of two numbers is = '||C);
+	END;
+	/	
+
+	To execute above procedure we need to use below command.
+	ex:
+		exec sum_of_two(10,20);
+
+2) OUT Parameter
+----------------
+It is used to return the value to the user.
+
+Q) Write a PL/SQL procedure to perform sum of two numbers and return sum?
+
+	create or replace procedure two_sum(A IN number,B IN number,C OUT number)
+	is	
+	begin 
+	C := A + B;
+ 	END;
+	/
+
+Steps to invoke a procedure having OUT parameter
+----------------------------------------------
+step1:
+-----
+	Declare a bind variable.
+	ex:
+		variable N number;
+
+step2:
+-----
+	Execute the procedure.
+	ex:
+		exec two_sum(10,20,:N);
+
+step3:
+-----
+	Print the bind variable.
+	ex:
+		pint N;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

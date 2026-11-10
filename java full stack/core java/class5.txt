@@ -1,0 +1,99 @@
+Java
+====
+Version			:	JDK 25 or JDK 26 
+
+Vendor			:	Oracle Corporation 
+
+Creator			:	James Gosling 
+
+Open source		:	Open source 
+
+Website			:	www.oracle.com/in/java/
+
+Tutorials		:	www.geeksforgeeks.org	
+				www.w3schools.com
+				www.tutorialspoint.com								and etc.
+Download link		:
+https://www.oracle.com/in/java/technologies/downloads/#jdk26-windows
+
+Steps to setup environment variables
+====================================
+step1:
+------	
+	Make sure JDK software installed successfully.
+
+step2:
+------
+	Copy "bin" directory from "JAVA" home folder.
+	ex:
+		C:\Program Files\Java\jdk-25\bin
+	
+step3:
+-----
+	Paste "bin" directory in environment variables.
+	ex:
+		Right click to This PC --> properties --> Advanced System 
+		settings --> Environment variables --> 
+		system variables --> click to new button -->
+		variable name : path
+		variable value : C:\Program Files\Java\jdk-25\bin;
+		--> ok --> ok --> ok.
+
+step4:
+------	
+	Check environment variables setup done perfectly or not.
+	ex:
+		cmd>  javap
+		cmd>  java  -version 
+
+Steps to develop first java application 
+======================================
+step1:
+------
+	Create a "javaprog" folder inside "D" drive.
+
+step2:
+------
+	Open the notepad and develop Hello World program.
+	ex:
+		class  Test
+		{
+			public static void main(String[] args)
+			{
+				System.out.println("Hello World");	
+			}	
+		}	
+
+step3:
+------
+	Save java program with same name as class name inside javaprog folder.
+
+step4:
+-------
+	Open the command prompt from "javaprog" location.
+	
+step5:
+------
+	Compile java program by using below command.
+	ex:
+		javac   Test.java
+			|
+			filename 	
+step6:
+------
+	Execute java program by using below command.
+	ex:
+		java   Test 
+			|
+			classname 
+
+Note:
+-----
+Since Java 11, we can execute our program directly.
+ex:
+	java    Test.java
+
+
+
+
+

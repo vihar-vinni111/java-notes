@@ -1,0 +1,235 @@
+
+What is Java?
+What are the main features of Java?
+Why is Java platform independent?
+What is bytecode?
+Difference between JDK, JRE and JVM.
+What happens when we execute a Java program?
+Why is Java not 100% object-oriented?
+What is a class?
+What is an object?
+What is a reference variable?
+What is the difference between primitive and non-primitive data types?
+What are Java's primitive data types?
+What is type casting?
+Difference between implicit and explicit casting.
+What is a wrapper class?
+What is autoboxing and unboxing?
+What is the difference between == and equals()?
+What is hashCode()?
+What is the contract between equals() and hashCode()?
+What is immutability?
+
+
+What are the four pillars of OOP?
+What is encapsulation?
+What is inheritance?
+What is polymorphism?
+What is abstraction?
+Difference between abstraction and encapsulation.
+What is method overloading?
+What is method overriding?
+Overloading vs overriding.
+Can we overload a static method?
+Can we override a static method?
+Can we override a private method?
+Can we override a final method?
+What is dynamic method dispatch?
+What is upcasting?
+What is downcasting?
+What is an abstract class?
+What is an interface?
+Abstract class vs interface.
+Can an interface have methods with implementation?
+What are default methods in interfaces?
+What are static methods in interfaces?
+Can an interface have variables?
+What is multiple inheritance?
+Does Java support multiple inheritance?
+How does Java achieve multiple inheritance using interfaces?
+
+
+What is a constructor?
+What is a default constructor?
+What is a parameterized constructor?
+Can a constructor be overloaded?
+Can a constructor be inherited?
+Can a constructor be overridden?
+Can a constructor be static?
+Can a constructor be final?
+What is this?
+What is super?
+Difference between this() and super().
+Can this() and super() be used together?
+What is constructor chaining?
+
+
+Why is String immutable?
+What is the String Constant Pool?
+Difference between String, StringBuilder and StringBuffer.
+String vs StringBuilder.
+StringBuilder vs StringBuffer.
+Why should String be immutable?
+What is intern()?
+How do you reverse a String?
+How do you check whether a String is palindrome?
+How do you find duplicate characters?
+How do you find the first non-repeated character?
+
+
+What is an exception?
+Difference between Error and Exception.
+Checked vs unchecked exceptions.
+What is try?
+What is catch?
+What is finally?
+Can we have multiple catch blocks?
+Can we have try without catch?
+Can we have try without catch and finally?
+What happens if an exception occurs in finally?
+Difference between throw and throws.
+What is a custom exception?
+How do you create a custom exception?
+Can we have multiple exceptions in throws?
+What is try-with-resources?
+What is the difference between final, finally and finalize?
+
+
+What is the Java Collections Framework?
+Difference between Collection and Collections.
+Difference between Collection and Map.
+What is List?
+What is Set?
+What is Map?
+ArrayList vs LinkedList.
+ArrayList vs Vector.
+HashSet vs LinkedHashSet.
+HashSet vs TreeSet.
+HashMap vs Hashtable.
+HashMap vs LinkedHashMap.
+HashMap vs TreeMap.
+How does HashMap work internally?
+Can HashMap contain null keys?
+Can HashSet contain null?
+Comparable vs Comparator.
+What is an Iterator?
+Iterator vs ListIterator.
+
+
+
+What are the important features introduced in Java 8?
+What is a lambda expression?
+Why do we need lambda expressions?
+What is a functional interface?
+What is @FunctionalInterface?
+What is the Stream API?
+Stream vs Collection.
+What is map()?
+What is filter()?
+What is reduce()?
+What is collect()?
+Difference between map() and flatMap().
+What is sorted()?
+What is distinct()?
+What is limit()?
+What is skip()?
+What is forEach()?
+What is Optional?
+Why was Optional introduced?
+Difference between orElse() and orElseGet().
+What are method references?
+What are default methods?
+What are static methods in interfaces?
+
+
+
+ind even numbers using Stream API.
+Find odd numbers.
+Find duplicate numbers.
+Find unique numbers.
+Find maximum number.
+Find minimum number.
+Find second-highest number.
+Sort numbers ascending/descending.
+Find sum and average.
+Count occurrences of each element.
+Find duplicate characters in a String.
+Find frequency of characters.
+Find first non-repeated character.
+Find employees with salary greater than 50,000.
+Sort employees by salary.
+Find the highest-paid employee.
+Group employees by department.
+Count employees by department.
+Find the highest salary in each department.
+Partition employees based on salary.
+Convert List to Map using Streams.
+
+
+
+What is a thread?
+Process vs thread.
+How can you create a thread in Java?
+Thread class vs Runnable.
+What is synchronization?
+Why is synchronization required?
+What is a synchronized method?
+What is a synchronized block?
+What is deadlock?
+How can you prevent deadlock?
+What is starvation?
+What is volatile?
+volatile vs synchronized.
+What is wait()?
+What is notify()?
+What is notifyAll()?
+Difference between sleep() and wait().
+
+
+What is garbage collection?
+How does Garbage Collector work?
+What makes an object eligible for GC?
+What is memory leak?
+What is OutOfMemoryError?
+What is StackOverflowError?
+What are strong, weak and soft references?
+What are different Garbage Collectors?
+
+
+Programs
+========
+Reverse a String.
+Check palindrome.
+Check prime number.
+Generate Fibonacci series.
+Find factorial.
+Reverse an integer.
+Check Armstrong number.
+Find largest element in an array.
+Find smallest element.
+Find second-largest element.
+Find duplicate elements.
+Remove duplicates.
+Count character frequency.
+Count vowels.
+Check whether two Strings are anagrams.
+Intermediate
+Find missing number in an array.
+Find common elements between two arrays.
+Merge two sorted arrays.
+Sort an array without using built-in sorting.
+Find two numbers whose sum equals target.
+Find first non-repeated character.
+Find first repeated character.
+Find maximum occurring character.
+Rotate an array.
+Find intersection of arrays.
+Find union of arrays.
+Find maximum subarray sum.
+Binary search.
+Implement Stack.
+Implement Queue.
+Implement LinkedList.
+Reverse a LinkedList.
+Detect cycle in LinkedList.
+Find middle element of LinkedList.

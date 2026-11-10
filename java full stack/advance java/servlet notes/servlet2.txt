@@ -1,0 +1,137 @@
+Web Server 
+==========
+It is a combination of software and hardware that is used to store, manage and generate dynamic content like text, images, videos and etc.
+
+It is used to automate whole process of web appication and web resource program 
+execution.
+
+ex:
+	Apache Tomcat , Eclipse Jetty, Undertow and etc.
+
+Responsibilities of a web server 
+-------------------------------
+> It takes contineous requests from client.
+
+> It passes that request to appropriate web resource program.
+
+> It provides environment to deploy and undeploy the web applications.
+
+> It allows client side web resource programs to execute at browser window.
+
+> It addes middleware services only to deployed web application.
+
+> It gathers the result from web resource program.
+
+> It sends the output to browser window as dynamic web page.
+
+> It is used to automate whole process of web application an web resource program 
+  execution.
+
+Note:
+------
+	To execute java program we required JRE/JVM.
+	To execute servlet program we required servlet container.
+	To execute JSP program we required JSP container.
+
+
+Web Container
+==============
+It is a software application or a program which is used to manage whole life cycle of 
+web resource program i.e from birth to death.
+
+Servlet container manage whole life of servlet program.
+
+JSP container manage whole life cycle of jsp program.
+
+Some part of industry consider servlet container and jsp container are web containers.
+
+Every server is designed to support servlet container and jsp container.So don't 
+need to arrange seperately.
+
+
+Apache Tomcat 
+=============
+Version			:	9.x
+
+Vendor			:	ASF (Apache Software Foundation)
+
+Website			:	https://tomcat.apache.org
+
+Port No			:	8080 (2525)
+
+Servlet container	:	Catalina 
+
+JSP container		:	Jasper
+
+File Format		:	exe file 
+
+Download link		:	
+https://drive.google.com/file/d/1u547booDvVY630rN4drEQ8c8lU0In7T6/view?usp=drive_link
+
+
+Tomcat installation 
+==================
+double click on Tomcat server --> yes --> Next --> I Agree --> select Full -->
+next --> adminstrator login username : admin 
+	                    password : admin  --> Next --> Next --> Install.
+
+
+Steps to setup Tomcat server to manual mode
+============================================
+goto services --> select Apache Tomcat --> click to stop link ---> double click to Apache Tomcat --> startup type : manual --> apply --> ok.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

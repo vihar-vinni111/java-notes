@@ -1,0 +1,338 @@
+Fault Tolerance 
+===============
+Fault Tolerance is the ability of a microservice applications to continue working even when one or more services fail.
+
+In Spring Boot microservices, we commonly use Resilience4j.
+
+Resilience4j is the standard, lightweight fault tolerance library for modern Java applications.
+
+Resilience4j provides:
+
+- Circuit Breaker
+- Retry
+- Rate Limiter
+- Bulkhead
+- Time Limiter
+
+and etc.
+
+
+Complete execution flow
+=======================
+		Client
+	   GET /order/place
+		  |
+		  |
+	      Rate Limiter
+	Maximum 5 requests per 10 seconds
+	          |
+		  |
+	     OrderController
+           Calls OrderService
+		  |
+		  |
+             Circuit Breaker
+            Checks circuit state
+		  |
+		  |
+	      Retry Mechanism
+	Maximum 3 attempts, 2 seconds interval
+		  |
+		  |
+	   PaymentService
+	   Processes payment
+		  |
+		  |
+	   Possible outcomes
+	          |
+		  |
+   |---------------------------------------|
+Success					Failure
+Payment Successful			Circuit Breaker fallback
+
+
+Circuit Breaker State Transition
+--------------------------------
+              NORMAL OPERATION
+                     |
+                     v
+                +---------+
+                | CLOSED  |
+                +---------+
+                     |
+                     | Failure rate >= 50%
+                     | Minimum calls reached
+                     v
+                +---------+
+                |  OPEN   |
+                +---------+
+                     |
+                     | Wait 10 seconds
+                     v
+              +-------------+
+              | HALF-OPEN   |
+              +-------------+
+                     |
+              Test 3 requests
+                     |
+             +-------+-------+
+             |               |
+          Success          Failure
+             |               |
+             v               v
+         +--------+      +--------+
+         | CLOSED |      |  OPEN  |
+         +--------+      +--------+
+
+
+
+
+
+
+
+Project structure 
+-----------------
+fault-tolerance 
+|
+|-----src/main/java
+	|
+	|---com.rt.www
+	|
+	|---com.rt.www.controller
+		|
+		|---OrderController.java
+	|
+	|---com.rt.www.service
+		|
+		|---PaymentService.java
+		|---OrderService.java
+	
+|-----src/main/resources
+	|
+	|---application.yml 
+
+|-----src/test/java
+|
+|-----pom.xml 
+
+
+step1:
+------
+	Create a spring boot starter project i.e fault-tolerance.
+	ex:
+		starters:	
+				Spring Web 
+				Spring Boot Actuator 
+step2:
+------
+	Add  resilience4j dependency for spring boot 4.0.1.
+	ex:
+		<dependency>
+            		<groupId>io.github.resilience4j</groupId>
+            		<artifactId>resilience4j-spring-boot4</artifactId>
+            		<version>2.4.0</version>
+        	</dependency>
+step3:
+------
+	Resilience4j works using AOP proxies so add below dependency.
+	ex:
+		<dependency>
+    			<groupId>org.springframework.boot</groupId>
+    			<artifactId>spring-boot-starter-aspectj</artifactId>
+		</dependency>
+
+		AspectJ/AOP = how the method gets intercepted
+		Resilience4j = what happens when it is intercepted
+
+step4:
+------
+	Convert application.properties file to application.yml file for 
+	below configurations.
+
+application.yml
+---------------
+server:
+  port: 9191
+
+spring:
+  application:
+    name: fault-tolerance
+
+resilience4j:
+
+  # CIRCUIT BREAKER
+  circuitbreaker:
+    instances:
+      paymentService:
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        sliding-window-size: 10
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+
+  # RETRY
+  retry:
+    instances:
+      paymentRetry:
+        max-attempts: 3
+        wait-duration: 2s
+        retry-exceptions:
+          - java.lang.RuntimeException
+
+  # RATE LIMITER
+  ratelimiter:
+    instances:
+      orderApi:
+        limit-for-period: 5
+        limit-refresh-period: 10s
+        timeout-duration: 0
+
+
+step5:
+------
+	Create a PaymentService.java file inside "com.rt.www.service" package.
+
+PaymentService.java
+--------------------
+package com.rt.www.service;
+import org.springframework.stereotype.Service;
+import io.github.resilience4j.retry.annotation.Retry;
+
+@Service
+public class PaymentService 
+{
+	private int count = 0;
+	
+	@Retry(name = "paymentRetry")
+	public String makePayment()
+	{
+			count++;
+			
+			System.out.println("Calling Payment service");
+			
+			if(count>3)
+			{
+				//simulate the request
+				if(true)
+				{
+					throw new RuntimeException("Payment Service Down");
+				}
+			}
+			
+			return "Payment Successfull";
+	}
+}
+
+
+
+step6:
+-----
+	Create a OrderService.java file inside "com.rt.www.service" package.
+
+OrderService.java
+------------------
+package com.rt.www.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
+@Service
+public class OrderService 
+{
+	@Autowired
+	private PaymentService paymentService;
+	
+	@CircuitBreaker(name = "PaymentService", fallbackMethod = "paymentFallBack")
+	public String placeOrder()
+	{
+		return paymentService.makePayment();
+	}
+	
+	//fallback method 
+	public String paymentFallBack(Exception ex)
+	{
+		return "Payment Service Unavailable. Go for COD";
+	}
+}
+
+
+
+step7:
+------
+	Create a OrderController.java file inside "com.rt.www.controller" package.
+
+OrderController.java
+--------------------
+package com.rt.www.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.rt.www.service.OrderService;
+
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+
+@RestController
+@RequestMapping("/order")
+public class OrderController 
+{
+	@Autowired
+	private OrderService orderService;
+	
+	@GetMapping("/place")
+	@RateLimiter(name = "orderApi" , fallbackMethod = "rateLimitFallback")
+	public String placeOrder()
+	{
+		return orderService.placeOrder();
+	}
+	
+	//fallback method 
+	public String rateLimitFallback(RequestNotPermitted ex)
+	{
+		return "Too Many Request. Please Try Again later!!!";
+	}
+}
+
+
+
+
+step8:
+-----
+	Run spring boot starter project.
+
+step9:
+------
+	Test the application by using below request url.
+	ex:
+		http://localhost:9191/order/place
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

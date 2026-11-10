@@ -1,0 +1,834 @@
+Java 8 Features
+===============
+
+Functional interface 
+====================
+Functional interface introduced in Java 8.
+
+Interface which contains only one abstract method is called functional interface.
+
+It can have any number of default methods, static methods and private methods.
+
+We have following list of functional interfaces.
+ex:
+	Comparable -  compareTo() 
+	Runnable   -  run() 
+	ActionalListener - actionPerformed() 
+	and etc.
+
+Functional interface is also as SAM or Single Abstract Method interface.
+
+@FunctionalInterface annotation is used to declare functional interface which is optional.
+
+ex:
+---
+@FunctionalInterface 
+interface ATM
+{
+	//abstract method 
+	public abstract void deposit();
+}
+class ATMImpl implements ATM
+{
+	@Override
+	public void deposit()
+	{
+		System.out.println("Deposit Method");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		ATM atm = new ATMImpl();	
+		atm.deposit();
+	}
+}
+
+ex:
+---
+@FunctionalInterface 
+interface ATM
+{
+	//abstract method 
+	public abstract void deposit();
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		//Anonymous inner class
+		ATM atm = new ATM()
+		{
+			public void deposit()
+			{
+				System.out.println("My Deposit Method");
+			}
+		};
+		atm.deposit();
+	}
+}
+
+Lambda Expression 
+================
+Lambda expression introduced in Java 8.
+
+Lambda expression is used to concise the code.
+
+We can use lambda expression when we have functional interface.
+
+Lambda expression consider as method.
+
+The main objective of lambda expression is to achieve functional programming.
+ex:
+	a = f1() 
+
+	f1(f2(){})
+	{
+	}
+
+Lamda expression does not allow name, returntype and modifier.
+
+ex:
+	Java Method 
+	-----------
+	public void methodOne()
+	{
+		System.out.println("Hello");
+	}
+
+	Lamda Expression 
+	----------------
+	()->
+	{
+		System.out.println("Hello");
+	};
+
+ex:
+---
+@FunctionalInterface 
+interface ATM
+{
+	//abstract method 
+	public abstract void deposit();
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		ATM atm = ()->{ 
+				System.out.println("Deposit Method");
+			};
+			
+		atm.deposit();
+	}
+}
+
+ex:
+---
+@FunctionalInterface 
+interface ATM
+{
+	//abstract method 
+	public abstract void deposit(int amt);
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		ATM atm = (int amt)->{ 
+				System.out.println("Deposit Amount : "+amt);
+			};
+			
+		atm.deposit(10000);
+	}
+}
+
+ex:
+---
+@FunctionalInterface 
+interface ATM
+{
+	//abstract method 
+	public abstract String deposit(int amt);
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		ATM atm = (int amt)->{ 
+				return "Deposit Amount : "+amt;
+			};
+			
+		System.out.println(atm.deposit(20000));
+	}
+}
+
+
+Default methods in interface 
+============================
+Default methods in interface introduced in Java 9.
+
+Java provides facility to declare methods in interface and tagged with default keyword.
+
+Default methods are non-abstract methods.
+
+Default methods we can override.
+
+ex:
+---
+interface A 
+{
+	//abstract method 
+	public abstract void m1();
+	
+	//default method 
+	default void m2()
+	{
+		System.out.println("Default Method");
+	}
+}
+class B implements A 
+{
+	@Override 
+	public void m1()
+	{
+		System.out.println("M1-Method");
+	}
+}
+
+class Test 
+{
+	public static void main(String[] args)
+	{
+		A a = new B();
+		a.m1();
+		a.m2();
+	}
+}
+
+
+ex:
+---
+interface A 
+{
+	//abstract method 
+	public abstract void m1();
+	
+	//default method 
+	default void m2()
+	{
+		System.out.println("Default Method");
+	}
+}
+class B implements A 
+{
+	@Override 
+	public void m1()
+	{
+		System.out.println("M1-Method");
+	}
+	
+	@Override
+	public void m2()
+	{
+		System.out.println("M2-Method");
+	}
+}
+
+class Test 
+{
+	public static void main(String[] args)
+	{
+		A a = new B();
+		a.m1();
+		a.m2();
+	}
+}
+
+Static methods in interface 
+=========================
+Static methods in interface introduced in Java 8.
+
+Java provides facility to declare methods in interface and tagged with static keyword.
+
+Static methods are non-abstract methods.
+
+Static methods can't override.
+
+ex:
+---
+interface A 
+{
+	static void m1()
+	{
+		System.out.println("M1-Method");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		A.m1();
+	}
+}
+
+Stream API 
+==========
+Stream API introduced in Java 8.
+
+Stream API present in java.util.stream package.
+
+It allows us to achieve functional style programming and makes our code simple and elegant.
+
+It is used to process the objects/data.
+
+It is used to perform bulk operations on Collections.
+
+ex:
+---
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(6,9,5,4,2);
+		List<Integer> newList = list.stream().map(i -> i + 10).collect(Collectors.toList());
+		System.out.println(newList);
+	}
+}
+
+ex:
+---
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(6,9,5,4,2);
+		List<Integer> newList = list.stream().filter(i->i%2==0).toList();
+		System.out.println(newList);
+	}
+}
+
+ex:
+---
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(6,9,5,4,2);
+		long cnt = list.stream().filter(i->i%2==0).count();
+		System.out.println(cnt);
+	}
+}
+
+ex:
+---
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(6,9,5,4,2);
+		List<Integer> newList = list.stream().sorted().toList();
+		System.out.println(newList);
+	}
+}
+
+ex:
+---
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(6,9,5,4,2);
+		List<Integer> newList = list.stream().sorted(Comparator.reverseOrder()).toList();
+		System.out.println(newList);
+	}
+}
+
+ex:
+---
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(6,9,5,4,2);
+		long max = list.stream().max((i1,i2)-> i1.compareTo(i2)).get();
+		System.out.println(max);
+	}
+}
+
+ex:
+---
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(6,9,5,4,2);
+		long min = list.stream().min((i1,i2)-> i1.compareTo(i2)).get();
+		System.out.println(min);
+	}
+}
+
+ex:
+---
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(6,9,5,4,2,9,2,5);
+		List<Integer> newList = list.stream().distinct().sorted().toList();
+		System.out.println(newList);
+	}
+}
+
+
+Q) Write a java program to convert list of map ?
+
+input:
+	["Apple","Banana","Orange","Kiwi"]
+output:
+	{Apple=1, Banana=2, Orange=3, Kiwi=4}
+
+
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<String> list = List.of("Apple","Banana","Orange","Kiwi");
+		Map<String,Integer> map = new LinkedHashMap<>();
+		for(int i=0;i<list.size();i++)
+		{
+			map.put(list.get(i),i+1);
+		}
+		System.out.println(map);
+	}
+}
+
+
+Q) Write a java program to merge the maps ?
+
+input:
+	{3=6, 4=1, 9=2}
+	{9=11, 10=20, 4=7}
+
+output:
+	{3=6, 4=8, 9=13, 10=20}
+
+
+import java.util.*;
+import java.util.stream.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Map<Integer,Integer> map1 = Map.of(3,6,4,1,9,2);
+		Map<Integer,Integer> map2 = Map.of(9,11,10,20,4,7);
+		
+		Map<Integer,Integer> result = new LinkedHashMap<>(map1);
+		
+		for(Map.Entry<Integer,Integer> entry : map2.entrySet())
+		{
+			result.merge(entry.getKey(), entry.getValue(), Integer::sum);
+		}
+		System.out.println(result);
+	}
+}
+
+forEach() Method 
+=================
+It is introduced in Java 8.
+
+It is used to iterate the objects one by one from Collections.
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(6,9,2,5,4);
+		list.forEach(ele  -> System.out.print(ele+" "));
+	}
+}
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Set<Integer> set = Set.of(6,9,2,5,4);
+		set.forEach(ele  -> System.out.print(ele+" "));
+	}
+}
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Map<Integer,String> map = Map.of(1,"one",2,"two",3,"three");
+		map.forEach((key,value)  -> System.out.println(key+"="+value));
+	}
+}
+
+Method Reference(::)
+====================
+It is introduced in Java 8.
+
+Is a special type of lamda expression.
+
+It is a concise way to call existing methods.
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		List<Integer> list = List.of(7,9,1,4,8);
+		list.forEach(System.out::println);
+	}
+}
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Map<Integer,String> map = Map.of(1,"one",6,"six",9,"nine");
+		map.forEach(Test::entry);
+	}
+	public static void entry(Integer key,String value)
+	{
+		System.out.println(key+"="+value);
+	}
+}
+
+
+Q) When java throws NullPointerException ? 
+
+When our code attempts to read object reference which is not initialized then 
+we will get NullPointerException.
+ex:
+	int[] arr = null;
+	System.out.println(arr[0]);  // NullPointerException 
+
+ex:
+	ArrayList al = null;
+	al.get(0);
+	// NullPointerException 
+
+ex:
+	Test t = null;
+	synchronized(t)
+	{
+	}
+	// NullPointerException 
+
+
+Optional 
+=========
+It is introduced in Java 8.
+
+Optional class present in java.util package.
+
+Optional class is used to perform null checks gracefully.
+
+There are three ways to create Optional class object.
+ex:
+	Optional optional = Optional.empty()
+	Optional optional = Optional.of() 
+	Optional optional = Optional.ofNullable() 
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Optional optional = Optional.empty();
+		System.out.println(optional);
+	}
+}
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		String str = "Hi";
+		Optional optional = Optional.of(str);
+		System.out.println(optional.get());
+	}
+}
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		String str = null;
+		Optional optional = Optional.of(str);
+		System.out.println(optional.get());
+	}
+}
+o/p:
+	R.E NullPointerException 
+
+ex:
+----
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		String str = "Hello";
+		Optional<String> optional = Optional.ofNullable(str);
+		System.out.println(optional.orElse("Value Not Found"));
+	}
+}
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		String str = null;
+		Optional<String> optional = Optional.ofNullable(str);
+		System.out.println(optional.orElse("Value Not Found"));
+	}
+}
+
+ex:
+---
+import java.util.*;
+class Test 
+{
+	int i = 10;
+	
+	public static void main(String[] args)
+	{
+		Test t = null;
+		
+		Optional<Test> optional = Optional.ofNullable(t);
+		if(!optional.isPresent())
+		{
+			t = new Test();
+		}
+		System.out.println(t.i);
+	}
+}
+
+
+Private methods in interface 
+============================
+Private methods introduced in Java 9.
+
+It is introduced to remove redundant code inside an interface.
+
+ex:
+---
+interface Connector 
+{
+	default void developmentEnvironment()
+	{
+		databaseProperties();	
+	}
+	static void testingEnvironment()
+	{
+		databaseProperties();
+	}
+	private static void databaseProperties()
+	{
+		System.out.println("Driver, URL, Username, Password");
+	}
+}
+class MyDatabase implements Connector 
+{
+	// don't override 
+}
+class Test
+{
+	public static void main(String[] args)
+	{
+		Connector c = new MyDatabase();
+		c.developmentEnvironment();
+		Connector.testingEnvironment();
+	}
+}
+
+Sealed class
+=============
+A sealed class introduced in Java 17.
+
+It provides a mechanism to restrict which other classes can't extend or implement a given class or interface. 
+
+sealed modifier: 
+----------------
+The superclass or interface is declared with the sealed keyword.
+
+permits clause:
+---------------
+The declaration must include a permits clause to explicitly list the direct subclasses or subinterfaces that are allowed to extend or implement it.
+
+
+Every permitted subclass must be declared with one of three modifiers to define how the hierarchy continues:
+
+final: 
+------
+The class cannot be extended any further (record classes are implicitly final).
+
+sealed: 
+-------
+The class can be extended further, but only by its own specific permitted subclasses.
+
+non-sealed: 
+-----------
+The class breaks the sealing hierarchy and can be extended by any unknown class (reverts to traditional open inheritance). 
+
+
+
+
+ex:
+---
+sealed class Parent permits Child1
+{
+	public void m1()
+	{
+		System.out.println("M1-Method");
+	}
+}
+final class Child1 extends Parent 
+{
+	public void m2()
+	{
+		System.out.println("M2-Methohd");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Parent p = new Parent();
+		p.m1();
+		
+		Child1 c = new Child1();
+		c.m1();
+		c.m2();
+	}
+}
+
+ex:
+---
+sealed class Parent permits Child1
+{
+	public void m1()
+	{
+		System.out.println("M1-Method");
+	}
+}
+non-sealed class Child1 extends Parent 
+{
+	public void m2()
+	{
+		System.out.println("M2-Methohd");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Parent p = new Parent();
+		p.m1();
+		
+		Child1 c = new Child1();
+		c.m1();
+		c.m2();
+	}
+}
+
+
+ex:
+---
+sealed class Parent permits Child1 
+{
+	public void m1()
+	{
+		System.out.println("M1-Method");
+	}
+}
+final class Child1 extends Parent 
+{
+	public void m2()
+	{
+		System.out.println("M2-Methohd");
+	}
+}
+final class Child2 extends Parent 
+{
+	public void m3()
+	{
+		System.out.println("M3-Methohd");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Parent p = new Parent();
+		p.m1();
+		
+		Child1 c = new Child1();
+		c.m1();
+		c.m2();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

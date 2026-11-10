@@ -1,0 +1,420 @@
+
+How to read the data from properties file 
+===========================================
+There are three ways to read the data from application.properties file.
+
+1) Using @Value annotation 
+
+2) Using Environment object
+
+2) Using @ConfigurationProperties annotation
+
+
+1) Using @Value annotation 
+----------------------------------
+The @Value annotation in Spring Boot is used to inject values from external sources (such as property files, environment variables, or system properties) into fields, method parameters, or constructor parameters in Spring-managed beans.
+
+
+Project Structure 
+-----------------
+PropertiesFile1
+|
+|---src/main/java
+	|
+	|---com.rt.www	
+
+	|---com.rt.www.controller
+		|
+		|---WebController.java
+
+	
+|---src/main/resources
+	|	
+	|---application.properties 
+
+|---src/test/java
+|---pom.xml
+
+step1:
+-------
+	Create a spring boot starter project i.e PropertiesFile1.
+	ex:
+		starter:
+				Spring Web 
+
+step2:
+------
+	Configure application name and server port inside application.properties file.
+
+application.properties 
+-------------------
+spring.application.name=PropertiesFile1
+server.port=9191
+
+step3:
+------
+	Create a "com.rt.www.controller" package inside "src/main/java" folder.	
+
+step4:
+------
+	Create a "WebController.java" file inside "com.rt.www.controller" package.
+
+WebController.java
+-------------------
+package com.rt.www.controller;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class WebController 
+{
+	@Value("${spring.application.name}")
+	private String name;
+	
+	@Value("${server.port}")
+	private String port;
+	
+	@GetMapping("/details")
+	public String getDetails()
+	{
+		return "Application Name : "+name+" Port No : "+port;
+	}
+}
+
+step5:
+------
+	Run spring boot starter project.
+
+step6:
+------
+	Test the application.
+	ex:
+		http://localhost:9191/details
+
+
+
+
+2) Using Environment object
+----------------------------
+You can autowire the Environment object into any Spring-managed component and retrieve properties programmatically using the getProperty() method.
+
+Project Structure 
+-----------------
+PropertiesFile2
+|
+|---src/main/java
+	|
+	|---com.rt.www	
+
+	|---com.rt.www.controller
+		|
+		|---WebController.java
+
+	
+|---src/main/resources
+	|	
+	|---application.properties 
+
+|---src/test/java
+|---pom.xml
+
+step1:
+-------
+	Create a spring boot starter project i.e PropertiesFile2.
+	ex:
+		starter:
+				Spring Web 
+
+step2:
+------
+	Configure application name and server port inside application.properties file.
+
+application.properties 
+-------------------
+spring.application.name=PropertiesFile2
+server.port=9292
+
+step3:
+------
+	Create a "com.rt.www.controller" package inside "src/main/java" folder.	
+
+step4:
+------
+	Create a "WebController.java" file inside "com.rt.www.controller" package.
+
+WebController.java
+-------------------
+package com.rt.www.controller;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class WebController 
+{
+	private Environment env;
+	public WebController(Environment env)
+	{
+		this.env=env;
+	}
+	
+	@GetMapping("/details")
+	public String getDetails()
+	{
+		String name = env.getProperty("spring.application.name");
+		String port = env.getProperty("server.port");
+		return name+" "+port;
+	}
+}
+
+
+step5:
+------
+	Run spring boot starter project.
+
+step6:
+------
+	Test the application.
+	ex:
+		http://localhost:9292/details
+
+
+
+3) Using @ConfigurationProperties annotation 
+----------------------------------------------
+@ConfigurationProperties: This approach is useful for binding related properties to a single, type-safe Java object (POJO). This eliminates the need for @Value on each individual field.
+
+
+
+
+Project Structure 
+-----------------
+PropertiesFile3
+|
+|---src/main/java
+	|
+	|---com.rt.www	
+
+	|---com.rt.www.controller
+		|
+		|---WebController.java
+
+	|---com.rt.www.config
+		|
+		|---AppConfig.java 
+	
+	
+|---src/main/resources
+	|	
+	|---application.properties 
+
+|---src/test/java
+|---pom.xml
+
+step1:
+-------
+	Create a spring boot starter project i.e PropertiesFile3.
+	ex:
+		starter:
+				Spring Web 
+step2:
+-----
+	Configure application name and server port inside application.properties.
+
+application.properties 
+----------------------
+spring.application.name=PropertiesFile3
+server.port=9393
+
+step3:
+------
+	Create a "com.rt.www.config" package.
+
+step4:
+------
+	Create a "ConfigApp.java" file inside "com.rt.www.config" package.
+
+ConfigApp.java
+--------------
+package com.rt.www.config;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+@Component
+@ConfigurationProperties("spring.application")
+public class AppConfig 
+{
+	private String name;
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+}
+
+
+step5:
+----
+	Create a "com.rt.www.controller" package inside "src/main/java" folder.
+
+step6:
+------
+	Create a "WebController.java" file inside "com.rt.www.controller" package.
+
+WebController.java
+------------------
+package com.rt.www.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.rt.www.config.AppConfig;
+
+@RestController
+public class WebController 
+{
+	@Autowired
+	private AppConfig config;
+	
+	@GetMapping("/details")
+	public String getDetails()
+	{
+		return config.getName();
+	}
+}
+
+
+step7:
+-----
+	Run spring boot starter project.
+	
+step8:
+-----
+	Test the application.
+	ex:
+		http://localhost:9393/details 
+
+
+
+Interview question
+==================
+
+Q) What is @Component annotation?
+
+The @Component annotation in Spring Boot marks a Java class as a Spring-managed bean, allowing Spring’s Inversion of Control (IoC) container to automatically detect, instantiate, and manage its lifecycle.
+
+
+
+
+Q) Difference between Monolithic Architecture vs Microservice Architecture ? 
+
+Monolithic Architecture
+-----------------------
+It is a software design pattern in which all software components are tightly coupled and build as single unified unit.
+
+In monolithic architecture we develop services independently and at the end of the development we pack all the services in a single war file.
+
+Diagram: sb7.1
+
+
+Advantages:
+
+1) Simple to Develop 
+
+2) Simple to Deploy 
+
+3) Simple to Test 
+
+Disadvantages
+
+1) Large and Complex applications 
+
+2) Blocks continues development 
+
+3) Slow Development 
+
+4) Inreliable 
+
+5) Inflexible 
+
+
+
+Microservice Architecture 
+=========================
+It is a software development approach where our large and complex application 
+breaks down into small or mini services where each service contains business capabilities.
+
+Diagram:7.2
+
+Advantages:
+
+1) Independent Development 
+2) Independent Deployment 
+3) Granular Scaling 
+4) Mixed Technology Stack
+5) Fault Tolerance Library 
+6) Loose coupling 
+
+
+Interview Preparation 
+=====================
+1) What is the difference between Spring and Spring Boot 
+
+2) What is Spring Boot?
+
+3) Difference between @Controller and @RestController annotation ?
+
+4) What is dependency injection?
+
+5) In how many ways we can achieve dependency injection?
+
+6) How many components are there in Spring Boot?
+
+7) What is @SpringBootApplication annotation?
+
+8) What is Steroetype annotation and explain some examples?
+
+9) Difference between CurdRepository and JpaRepository?
+
+10) In how ways we can read the data from properties file?
+
+11) What is @Component annotation ?
+
+12) What is @ResponseBody annotation? 
+
+13) What is @Controller annotation?
+
+14) What is @RequestMapping annotation?
+
+15) What is the difference between Monolithic architecture vs Micorservice Architecture? 
+
+
+
+Microservice 
+============
+It is a software architectural style where our application divided into small or independent services and each service contains bussiness functionality.
+
+Spring boot is used to develop RESTful web services and microservices.
+
+To develop microservice we need to follow spring boot flow layered architecture.
+
+
+
+
+
+
+
+
+
+

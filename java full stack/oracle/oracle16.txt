@@ -1,0 +1,223 @@
+iii) IN OUT parameter
+=====================
+It is used to accept and return the value to the user.
+
+Q) Write a PL/SQL procedure to find out square of a given number?
+
+	create or replace procedure ret_square(A IN OUT number)
+	is
+	begin 
+	A := A * A;	
+	END;
+	/
+
+Steps to invoke a procedure having IN OUT parameter
+---------------------------------------------------
+step1:
+-----
+	Declare a bind variable.
+	ex:
+		variable N number;
+
+step2:
+-----
+	Initialize bind variable.
+	ex:
+		begin 
+		:N := 5;		
+		end;
+		/
+
+step3:
+------
+	Execute the procedure.
+	ex:
+		exec ret_square(:N);
+
+step4:
+-----
+	Print bind variable.
+	ex:
+		print N;
+
+Q) Write a query to see the list of procedures present in database?
+
+	select object_name from user_objects where object_type='PROCEDURE';
+
+
+Q) Write a query to see the source code of a procedure?
+
+	select text from user_source where name='P1';
+
+
+Q) Write a query to drop the procedure?
+
+	drop procedure p1;
+	drop procedure ret_square;
+	drop procedure sum_of_two;
+
+PL/SQL stored procedures support DML operations. 
+
+Q) Write a procedure to insert a record into student table?
+
+	create or replace procedure insert_student(L_sno IN student.sno%TYPE,
+							L_sname IN student.sname%TYPE,
+								L_sadd IN student.sadd%TYPE)
+	is
+	begin 
+	insert into student values(L_sno,L_sname,L_sadd);
+	DBMS_OUTPUT.PUT_LINE('Record Inserted');
+	END;
+	/
+
+	We can invoke above procedure as follow.
+	ex:
+		exec  insert_student(105,'Alan','Texas');
+
+
+
+Q) Write a PL/SQL procedure to update student record?
+
+	create or replace procedure update_student(L_sno IN student.sno%TYPE)
+	is
+	begin 
+	update student set sname='Jessica' where sno = L_sno;
+	DBMS_OUTPUT.PUT_LINE('Record Updated');
+	END;
+	/
+
+	We can invoke above procedure as follow.
+	ex:	
+		exec  update_student(105);
+
+
+Q) Write a PL/SQL procedure to delete student record based on student number?
+
+	create or replace procedure delete_student(L_sno IN student.sno%TYPE)
+	is
+	begin 
+	delete from student where sno = L_sno;
+	DBMS_OUTPUT.PUT_LINE('Record Deleted');
+	END;
+	/	
+
+	We can invoke above procedure as follow.
+	ex:
+		exec  delete_student(105);
+
+
+Interview Queries 
+=================
+Q) Write a query to display duplicate records from database table?
+
+	select * from student where sno IN (
+			select sno from student group by sno having count(*)>1
+		);
+
+
+Q) Write a query to display unique records from database table?
+
+	select * from student where sno IN (
+			select sno from student group by sno having count(*)<=1
+		)
+
+Q) Write a query to display distinct records from database table?
+
+	select distinct sno, sname, sadd from student;
+
+Functions 
+=========
+It is a named PL/SQL block which must and should return a value.
+
+syntax:
+------
+	create or replace function <function_name> 
+	return datatype 
+	is
+	begin 
+	-
+	-
+	end;
+	/ 	
+
+
+Q) Write a PL/SQL function to perform sum of two numbers and return it sum?
+
+	create or replace function ret_sumof(A number,B number)
+	return number
+	is
+	C number;
+	begin 
+	C:=A+B;	
+	return C;
+	end;
+	/
+
+	We can invoke above function as follow.
+	ex:
+		select  ret_sumof(10,20) from dual;
+
+
+
+Q) Write a function to accept one salary and find out 10% of TDS?
+
+	create or replace function tax_return(L_esal emp.esal%TYPE)
+	return number 
+	is
+	TAX number;
+	begin 
+	TAX := L_esal * 10/100;
+	return TAX;
+	END;
+	/
+	
+	We can invoke above function as follow.
+	ex:
+		select tax_return(10000) from dual;
+		select eid,ename,esal, tax_return(esal) as TDS from emp;
+
+
+Interview Queries 
+------------
+Q) Write a query to display list of functions present in database?
+
+	select object_name from user_objects where object_type='FUNCTION';
+
+Q) Write a query to see the source code of a function?
+
+	select text from user_source where name='RET_SUMOF';
+
+Q) Write a query to drop the function?
+
+	drop function RET_SUMOF;
+	drop function TAX_RETURN;
+
+
+Q) What is difference between stored PL/SQL procedures and functions?
+
+Procedures					Functions 
+-------------					------------
+It may or may not returns a value.		It always returns a value.
+
+DML operations are allowed.			DML operations are not allowed.
+
+We can't invoke by using select command.	We can invoke by using select command.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

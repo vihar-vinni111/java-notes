@@ -1,0 +1,516 @@
+Q) Write a java program to display the string in a given format?
+
+Input:
+	H2ow Ar3e Hello1 Yo4u
+
+Output:
+	Hello How Are You
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "H2ow Ar3e Hello1 Yo4u";
+		String[] words = str.split(" ");
+		String[] result = new String[words.length];
+		for(String word : words)
+		{
+			int position = 0;
+			String text = "";
+			
+			for(char ch : word.toCharArray())
+			{
+				if(Character.isDigit(ch))
+				{
+					position = ch - '0';
+				}
+				else
+				{
+					text += ch;
+				}
+			}
+			result[position-1] = text;
+		}
+		
+		for(String s : result)
+		{
+			System.out.print(s+" ");
+		}
+	}
+}
+
+
+
+Q) Write a java program to display unique and duplicate characters from given string?
+
+Input:
+	messissippi
+
+Output:
+	Unique characters : mesip
+	Duplicate characters : sip 
+
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "messissippi";
+		String duplicate="";
+		String unique="";
+		
+		for(int i=0;i<str.length();i++)
+		{
+			String current = Character.toString(str.charAt(i));
+			
+			if(unique.contains(current))
+			{
+				if(!duplicate.contains(current))
+				{
+					duplicate+=current;
+					continue;
+				}
+				else
+				{
+					continue;
+				}
+			}
+			unique+=current;
+		}
+		System.out.println("Unique Elements : "+unique);
+		System.out.println("Duplicate Elements : "+duplicate);
+	}
+}
+
+
+
+Q) Write a java program to encode the string?
+
+input:
+	1106
+	
+Output:
+	AAJF
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "1106";
+		for(int i=0;i<str.length();i++)
+		{
+			int n =  Character.getNumericValue(str.charAt(i));
+			if(n>0)
+			{
+				System.out.print((char)('A'+n-1));
+			}
+			else
+			{
+				int k = Integer.parseInt(str.substring(i-1,i+1));
+				System.out.print((char)('A'+k-1));
+			}
+		}
+	}
+}
+
+
+Q) Write a java program to decode the string?
+
+input:
+	AAJF
+	
+Output:
+	1106
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "AAJF";
+		
+		for(int i=0;i<str.length();i++)
+		{
+			char ch = str.charAt(i);
+			
+			int n = ch - 'A' + 1;
+			
+			if(Integer.toString(n).contains("0"))
+			{
+				System.out.print(n%10);
+			}
+			else
+			{
+				System.out.print(n);
+			}
+		}
+	}
+}
+
+
+
+Q) Write a java program to display the string in a given format?
+
+Input:
+	A1B2C3D4
+Output:
+	ABBCCCDDDD
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "A1B2C3D4";
+		
+		for(int i=0;i<str.length();i++)
+		{
+			if(Character.isAlphabetic(str.charAt(i)))
+			{
+				System.out.print(str.charAt(i));
+			}
+			else
+			{
+				int n = Character.getNumericValue(str.charAt(i));
+				for(int k=1;k<n;k++)
+				{
+					System.out.print(str.charAt(i-1));
+				}
+			}
+		}
+	}
+}
+
+
+Q) Write a java program to display the string in a given format?
+
+Input:
+	ABBCCCDDDD
+Output:
+	A1B2C3D4
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "ABBCCCDDDD";
+		String result = "";
+		int cnt = 1;
+		
+		for(int i=0;i<str.length();i++)
+		{
+			if(i<str.length()-1 && str.charAt(i) == str.charAt(i+1))
+			{
+				cnt++;
+			}
+			else
+			{
+				result += str.charAt(i);
+				result += cnt;
+				cnt = 1;
+			}
+		}
+		System.out.println(result);
+	}
+}
+
+StringBuffer 
+===========
+If our content change frequently then it is never recommanded to use String object because 
+for every change a new object will be created.
+
+To overcome this limitation Sun Micro System introduced StringBuffer concept.
+
+In StringBuffer all the required changes will be done in a same object.
+
+constructors 
+------------
+
+1) StringBuffer sb = new StringBuffer() 
+--------------------------------------
+It creates empty StringBuffer object with default initial capacity 16.
+
+If capacity reaches to maximum capacity then new capacity will be created with below formulea.
+ex:
+	new capacity = current_capacity + 1 * 2;
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		StringBuffer sb = new StringBuffer();
+		System.out.println(sb.capacity()); //16
+		
+		sb.append("abcdefghijklmnop");
+		System.out.println(sb.capacity()); // 16
+		
+		sb.append("qr");
+		System.out.println(sb.capacity()); // 16+1*2 = 34
+	}
+}
+
+2) StringBuffer sb = new StringBuffer(int capacity)
+---------------------------------------------------
+It creates StringBuffer object with specified initial capacity.
+
+ex:
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		StringBuffer sb = new StringBuffer(19);
+		System.out.println(sb.capacity()); //19
+	}
+}
+
+
+3) StringBuffer sb = new StringBuffer(String s)
+------------------------------------------------
+It creates StringBuffer object equivalent to String.
+
+Here capacity will be created with below formulea.
+ex:
+	capacity = s.length() + 16
+
+ex:
+--
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		StringBuffer sb = new StringBuffer("raisetech");
+		System.out.println(sb.capacity()); //9+16 = 25
+	}
+}
+
+
+Q) Write a java program to display reverse of a string?
+
+input:
+	hello 
+
+output:
+	olleh 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "hello";
+		StringBuffer sb = new StringBuffer(str);
+		String rev = sb.reverse().toString();
+		System.out.println(rev);
+	}
+}
+
+
+Q) Write a java program to display given string is palindrome or not?
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "racar";
+		StringBuffer sb = new StringBuffer(str);
+		String rev = sb.reverse().toString();
+		if(str.equals(rev))
+			System.out.println("It is a palindrome string");
+		else
+			System.out.println("It is not a palindrome string");
+	}
+}
+
+Q) Write a java program to multiply two arrays?
+
+input:
+	1 7 2
+	3 5
+output:
+	6020 (172*35)
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int[] arr1 = {1,7,2};
+		int[] arr2 = {3,5};
+		
+		int a = Integer.parseInt(arrayToString(arr1));
+		int b = Integer.parseInt(arrayToString(arr2));
+		System.out.println(a*b);
+	}
+	public static String arrayToString(int[] arr)
+	{
+		StringBuffer sb = new StringBuffer();
+		for(int i : arr)
+		{
+			sb.append(i);
+		}
+		return sb.toString();
+	}
+}
+
+
+Q) Write a java program to count number of 2's?
+
+input:
+	22
+output:
+	6 (2,12,20,21,22)
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int n = 22;
+		StringBuffer sb = new StringBuffer();
+		for(int i=1;i<=n;i++)
+		{
+			sb.append(i);
+		}
+		
+		int cnt = 0;
+		for(int i=0;i<sb.length();i++)
+		{
+			if(sb.charAt(i) == '2')
+			{
+				cnt++;
+			}
+		}
+		System.out.println(cnt);
+	}
+}
+
+StringBuilder 
+============
+StringBuilder is exactly same as StringBuffer with following differences.
+
+StringBuffer					StringBuilder
+-------------					---------------
+Methods are synchronized.			Methods are not synchronized.
+
+At a time only one thread is allowed 		At a time multiple threads are allowed 
+to execute. Hence StringBuffer is 		to execute. Hence StringBuilder is 
+thread safe.					not thread safe.
+
+Performance is low due to waiting 		Performance is high due to there is no 
+threads.					waiting threads.
+
+It is introduced in 1.0 version.		It is introduced in 1.5 version.
+
+Note:
+----
+If our content is fixed then we need to use String.
+
+If our content change frequently where thread safety is required then we need to use StringBuffer.
+
+If our content change frequently where thread safety is not required then we need to use 
+StringBuilder.
+
+
+Q) Write a java program to find out reverse of a given number?
+
+input:
+	123
+
+output:
+	321
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int n = 123;
+		String s = Integer.toString(n);
+		StringBuilder sb = new StringBuilder(s);
+		s = sb.reverse().toString();
+		n = Integer.parseInt(s);
+		System.out.println(n);
+	}
+}
+
+ex:
+--
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int n = 121;
+		String s = Integer.toString(n);
+		StringBuilder sb = new StringBuilder(s);
+		s = sb.reverse().toString();
+		int temp = Integer.parseInt(s);
+		if(n == temp)
+			System.out.println("It is a palindrome number");
+		else
+			System.out.println("It is not a palindrome number");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

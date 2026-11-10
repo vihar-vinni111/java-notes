@@ -1,0 +1,415 @@
+Jsp Application to read the data from database
+===============================================
+
+Deployment Directory Structure 
+------------------------------
+JspApp7
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---index.jsp	
+	|---WEB-INF
+		|
+		|------web.xml
+		|------lib
+			|
+			|---ojdbc14.jar 
+Note:
+-----
+In above application we need to add "servlet-api.jar" and "ojdbc14.jar" file in project build path.
+
+index.jsp 
+---------
+<%@page import="java.sql.*" %>
+<center>
+	<h3>
+		<a href="index.jsp?flag=true"> Fetch Details </a>
+	</h3>
+</center>
+
+<%
+	if ("true".equals(request.getParameter("flag")))
+	{
+%>
+		<table border="1" width="100%">
+			<tr>
+				<th>SNO</th>
+				<th>SNAME</th>
+				<th>SADD</th>
+			</tr>
+		<%
+			Connection con = null;
+			Statement st = null; 
+			ResultSet rs = null;
+			String qry = null;
+			try
+			{
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+				st = con.createStatement();
+				qry = "select * from student";
+				rs = st.executeQuery(qry);
+				while(rs.next())
+				{
+		%>
+					<tr>
+							<td><%= rs.getInt(1) %></td>
+							<td><%= rs.getString(2) %></td>
+							<td><%= rs.getString(3) %></td>
+					</tr>
+		<% 							
+				}
+				rs.close();
+				st.close();
+				con.close();
+			}
+			catch(Exception e)
+			{
+					out.println(e);
+			}
+		%>	
+		</table>
+<%	
+	}
+%>
+	
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp7</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+</web-app>	
+	
+Request url 
+-----------
+	http://localhost:2525/JspApp7/
+
+
+
+Include Directive Tag
+=====================
+Include directive tag is a mechanism that is used to embed static content to current JSP  during the translation phase. 
+
+syntax:
+-------
+	<%@include attribute=value %>
+
+
+Deployment Directory Structure 
+------------------------------
+JspApp8
+|
+|---Java Resources
+|
+|---WebContent	
+	|
+	|-----header.jsp 
+	|-----home.jsp 
+	|-----about.jsp 
+	|-----footer.jsp 
+	|-----css 
+		|
+		|---mystyles.css
+	|
+	|-----WEB-INF
+		|
+		|----web.xml 
+	
+Note:
+---
+In above application we need to add "servlet-api.jar" file in project build path.
+
+header.jsp 
+----------
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>RaiseTech</title>
+		<link rel="stylesheet" type="text/css" href="css/mystyles.css">		
+	</head>
+	<body>
+		<header class="header">
+			<center>
+			<ul>
+				<li><a href="home.jsp"> Home </a></li>
+				<li><a href="about.jsp"> About </a></li>
+				<li><a href="service.jsp"> Service </a></li>
+			</ul>
+			</center>
+		</header>
+	</body>
+</html>
+
+mystyles.css
+-----------
+
+*
+{
+	margin : 0;
+	padding : 0;
+}
+.header
+{
+	background-color : cyan;
+	width : 100%;
+	height : 40px;
+}
+ul
+{
+	list-style-type : none;	
+}
+ul li 
+{
+	display : inline-block;
+	margin : 10px 50px;
+}
+ul li a 
+{
+	text-decoration : none;
+	color : black;
+}
+
+home.jsp 
+---------
+<%@include  file="header.jsp" %>
+
+<center>
+	<h1>
+			Home Page 
+	</h1>
+</center>
+
+about.jsp 
+---------
+<%@include  file="header.jsp" %>
+<center>
+	<h1>
+			About Page 
+	</h1>
+</center>
+
+service.jsp 
+-----------
+<%@include  file="header.jsp" %>
+
+<center>
+	<h1>
+			Service Page 
+	</h1>
+</center>
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp8</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>home.jsp</welcome-file>
+  </welcome-file-list>
+
+</web-app>
+
+Request url 
+-----------
+	http://localhost:2525/JspApp8/
+
+
+
+3) Action Tags 
+===============
+Action tags are used to perform perticular task.
+
+Action tags are used to control flow of a program.
+
+Action tags are executed dynamically at runtime.
+
+Action tags are divided into two types.
+
+1) Standard Action Tags 
+
+2) Custom Action Tags 
+
+1) Standard Action Tags 
+------------------------
+Built-In action tags are called standard action tags.
+
+ex:
+	<jsp:forward>	
+	<jsp:include>
+	<jsp:useBean>
+	<jsp:setProperty>
+	<jsp:getProperty> 
+	and etc.
+
+Action Forward Tag 
+===================
+In action forward, the output of source JSP program will be discarded and output of destination JSP program goes to browser window as dynamic response.
+
+It internally uses servlet API functionality called rd.forward(req,res). 
+
+syntax
+-----
+	<jsp:forward  page="page_name" />
+
+Deployment Directroy Structure 
+------------------------------
+JspApp9
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---A.jsp 
+	|---B.jsp 
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+A.jsp
+-----
+<b><i> Beginning of A.jsp File </i></b>
+<br>
+<jsp:forward page="B.jsp"/>
+<br>
+<b><i> Ending of A.jsp File </i></b>
+
+B.jsp
+-----
+<b><i> Welcome to B.jsp file </i></b>
+
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+
+  <display-name>JspApp9</display-name>
+
+  <welcome-file-list>
+   		<welcome-file>A.jsp</welcome-file>
+  </welcome-file-list>
+	 
+</web-app>
+
+Request url 
+---------
+	http://localhost:2525/JspApp9/
+
+
+Action Include  Tag 
+===================
+In action include, the output of source jsp program and destination jsp program combinely
+goes to browser window as dynamic response.
+
+It internally uses servlet API functionality called rd.include(req,res). 
+
+syntax:
+------
+	<jsp:include page="page_name"/>
+
+Deployment Directroy Structure 
+------------------------------
+JspApp9
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---A.jsp 
+	|---B.jsp 
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+A.jsp
+-----
+<b><i> Beginning of A.jsp File </i></b>
+<br>
+<jsp:include page="B.jsp"/>
+<br>
+<b><i> Ending of A.jsp File </i></b>
+
+B.jsp
+-----
+<b><i> Welcome to B.jsp file </i></b>
+
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+
+  <display-name>JspApp9</display-name>
+
+  <welcome-file-list>
+   		<welcome-file>A.jsp</welcome-file>
+  </welcome-file-list>
+	 
+</web-app>
+
+Request url 
+---------
+	http://localhost:2525/JspApp9/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+	
+

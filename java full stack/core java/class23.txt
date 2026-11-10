@@ -1,0 +1,460 @@
+iii) return stmt 
+================
+It is used to exit from methods.
+
+It contains optional value.
+
+syntax:
+------
+		optional 
+		  |
+	return <value>;
+
+ex:
+----
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter error status code : ");
+		int code = sc.nextInt();
+		
+		if(code==200)
+			System.out.println("OK");
+		else if(code==404)
+			System.out.println("Client Side Error");
+		else if(code==500)
+			System.out.println("Server Side Error");
+		else
+			return;
+	}
+}
+
+
+Loop Patterns 
+=============
+1)
+1 1 1 1 
+2 2 2 2
+3 3 3 3 
+4 4 4 4 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols
+			for(int j=1;j<=4;j++)
+			{
+				System.out.print(i+" ");	
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+
+2)
+1 2 3 4 
+1 2 3 4
+1 2 3 4
+1 2 3 4
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols
+			for(int j=1;j<=4;j++)
+			{
+				System.out.print(j+" ");	
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+3) 
+* * * * 
+* * * *
+* * * * 
+* * * * 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols
+			for(int j=1;j<=4;j++)
+			{
+				System.out.print("* ");	
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+4) 
+4 4 4 4 
+3 3 3 3
+2 2 2 2
+1 1 1 1 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=4;i>=1;i--)
+		{
+			//cols
+			for(int j=1;j<=4;j++)
+			{
+				System.out.print(i+" ");	
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+
+5) 
+* * * * 
+*     *
+*     *
+* * * *
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols
+			for(int j=1;j<=4;j++)
+			{
+				if(i==1 || i==4 || j==1 || j==4)
+					System.out.print("* ");
+				else
+					System.out.print("  ");
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+
+6)
+
+* - - - 
+- * - -
+- - * - 
+- - - * 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols
+			for(int j=1;j<=4;j++)
+			{
+				if(i==j)
+					System.out.print("* ");
+				else
+					System.out.print("- ");
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+7)
+* - - - * 
+- * - * - 
+- - * - - 
+- * - * - 
+* - - - * 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=5;i++)
+		{
+			//cols
+			for(int j=1;j<=5;j++)
+			{
+				if(i==j || i+j==6)
+					System.out.print("* ");
+				else
+					System.out.print("- ");
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+8)
+    *
+    *
+* * * * * 
+    *
+    * 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=5;i++)
+		{
+			//cols
+			for(int j=1;j<=5;j++)
+			{
+				if(i==3 || j==3)
+					System.out.print("* ");
+				else
+					System.out.print("  ");
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+9)
+4 4 4 4 4 4 4
+4 3 3 3 3 3 4
+4 3 2 2 2 3 4
+4 3 2 1 2 3 4
+4 3 2 2 2 3 4
+4 3 3 3 3 3 4
+4 4 4 4 4 4 4 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int size = 7;
+		int n = 4;
+		for(int i=0;i<size;i++)
+		{
+			for(int j=0;j<size;j++)
+			{
+			int result = n - Math.min(Math.min(i,j), Math.min(size-i-1,size-j-1));
+				System.out.print(result+" ");
+			}
+			//new line
+			System.out.println();
+		}
+	}
+}
+
+Left side pattern 
+=================
+1)
+1
+2 2 
+3 3 3 
+4 4 4 4
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols 
+			for(int j=1;j<=i;j++)
+			{
+				System.out.print(i+" ");	
+			}
+			//new line
+			System.out.println();
+		}
+	}
+}
+
+2) 
+
+4 4 4 4
+3 3 3 
+2 2 
+1 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=4;i>=1;i--)
+		{
+			//cols 
+			for(int j=1;j<=i;j++)
+			{
+				System.out.print(i+" ");	
+			}
+			//new line
+			System.out.println();
+		}
+	}
+}
+
+
+3) 
+
+*
+* *
+* * *
+* * * * 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols 
+			for(int j=1;j<=i;j++)
+			{
+				System.out.print("* ");	
+			}
+			//new line
+			System.out.println();
+		}
+	}
+}
+
+4)
+
+1
+1 # 2 
+1 # 2 # 3 
+1 # 2 # 3 # 4 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols 
+			for(int j=1;j<=i;j++)
+			{
+				if(j==1)
+					System.out.print(j);
+				else
+					System.out.print(" # "+j);	
+			}
+			//new line
+			System.out.println();
+		}
+	}
+}
+
+5)
+2
+4  6 
+8  10  12 
+14 16  18  20
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int n = 2;
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols 
+			for(int j=1;j<=i;j++)
+			{
+				System.out.print(n+" ");
+				n+=2;
+			}
+			//new line
+			System.out.println();
+		}
+	}
+}
+
+6)
+1
+2 3 
+4 5 6
+7 8 9 0 
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int n = 1;
+		//rows
+		for(int i=1;i<=4;i++)
+		{
+			//cols 
+			for(int j=1;j<=i;j++)
+			{
+				if(n<=9)
+					System.out.print(n++ +" ");
+				else
+					System.out.print("0 ");
+			}
+			//new line
+			System.out.println();
+		}
+	}
+}
+
+Assignment 
+----------
+1)
+*
+* * 
+* * *
+* * * *
+* * *
+* *
+* 
+
+
+
+
+
+
+
+
+
+
+

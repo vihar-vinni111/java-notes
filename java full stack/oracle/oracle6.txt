@@ -1,0 +1,277 @@
+Dual table 
+===========
+Dual table is a dummy table which contains one row and one column.
+
+It is used to perform arithmetic operations and to see current system date.
+
+ex:
+	select 10+20 from dual;
+	select 5*10 from dual;		
+	select sysdate from dual;
+	select current_date from dual;
+
+2) Scalar Functions 
+===================
+We have following list of scalar functions.
+
+i) Character Functions 
+
+ii) Number Functions 
+
+iii) Date Functions 
+
+iv) Convertion Functions 
+
+
+i) Character Functions
+----------------------
+We have following list of character functions.
+
+upper()
+-------
+	select upper('oracle training') from dual;
+	select upper('oracle training') as result from dual;
+	
+lower()
+-------
+	select lower('ORACLE TRAINING') from dual;
+	select lower('ORACLE TRAINING') as result from dual;	
+
+initcap()
+--------
+	select initcap('oracle training') from dual;
+	select initcap('oracle training') as result from dual;
+
+lpad()
+------
+	select lpad('oracle',10,'z') from dual; --zzzzoracle
+	select lpad('oracle',10,'z') as result from dual;
+
+rpad()
+-------
+	select rpad('oracle',10,'z') from dual; -- oraclezzzz
+	select rpad('oracle',10,'z') as result from dual;
+	
+
+ltrim()
+---------
+	select ltrim('zzoraclezz','z') from dual; -- oralcezz	
+	select ltrim('zzoraclezz','z') as result from dual; -- oralcezz
+	
+
+rtrim()
+-------
+	select rtrim('zzoraclezz','z') from dual; -- zzoralce	
+	select rtrim('zzoraclezz','z') as result from dual; -- zzoralce
+
+trim()
+-----
+	select trim('z' from 'zzoraclezz') from dual; -- oralce	
+	select trim('z' from 'zzoraclezz') as result from dual; -- oralce
+
+
+replace()
+--------
+	select replace('oracle','a','A') from dual;
+	select replace('oracle','a','A') as result from dual;
+
+concat()
+--------
+	select concat('oracle','training') from dual;
+	select concat('oracle','training') as result from dual;
+	select concat(concat('mega','star'),'chiru') as result from dual;
+	
+
+Interview Question 
+=================
+Q) Write a query to display employee id , employee name and employee salary in a given format?
+
+	eid		ename		esal
+	----		-----		-----
+	201		Alan		9000
+	202		Mark		15000
+	203		James		45000
+	204		Kelvin		37000
+
+
+Output:
+	
+	eid		ename		esal
+	----		-----		-----
+	201		Alan		9999
+	202		Mark		15999
+	203		James		45999
+	204		Kelvin		37999
+
+
+	select eid,ename, replace(esal,'0','9') as esal from emp;
+
+
+Q) Write a query to display customer information in a given format?
+
+customer 
+--------
+drop table customer;
+create table customer(id number(3),name varchar2(15),address varchar2(12));
+insert into customer values(501,'Alan Morries','Texas');
+insert into customer values(502,'Erick Anderson','Florida');
+insert into customer values(503,'Ana Julie','Chicago');
+insert into customer values(504,'Hendry Jose','Dellas');
+commit;
+
+Input:
+ 	ID 		NAME            ADDRESS
+	---------- 	--------------- ------------
+       501 		Alan Morries    Texas
+       502 		Erick Anderson  Florida
+       503 		Ana Julie       Chicago
+       504 		Hendry Jose     Dellas
+
+Output:
+	Alan 
+	Erick 
+	Ana 
+	Hendry 
+
+	select regexp_substr(name,'\S+',1,1) as name from customer;
+
+
+
+
+Input:
+ 	ID 		NAME            ADDRESS
+	---------- 	--------------- ------------
+       501 		Alan Morries    Texas
+       502 		Erick Anderson  Florida
+       503 		Ana Julie       Chicago
+       504 		Hendry Jose     Dellas
+
+Output:
+	Morries
+	Anderson 
+	Julie 
+	Jose 
+
+	select regexp_substr(name,'\S+',1,2) as name from customer;
+
+
+ii) Number functions 
+--------------------
+We have following list of number functions.
+
+abs()
+------
+	select abs(-10) from dual; -- 10
+	select abs(-87.89) as result from dual; -- 87.89
+
+power(A,B)
+----------
+	select power(2,4) as result from dual; -- 16
+	select power(5,3) as result from dual; -- 125
+
+sqrt()
+------
+	select sqrt(25) as result from dual; -- 5
+	select sqrt(26) as result from dual; -- 5.09
+
+ceil()
+------	
+	select ceil(10.4) as result from dual; -- 11
+	select ceil(6.8) as result  from dual;  -- 7 
+
+floor()
+------
+	select floor(10.4) as result from dual; -- 10
+	select floor(6.8) as result  from dual;  -- 6
+
+round()
+-------
+	select round(10.5) as result from dual; -- 11
+	select round(10.4) as result from dual; -- 10
+ 
+trunc()
+---------
+	select trunc(10.567) as result from dual; -- 10
+	select trunc(-45.78) as result from dual; -- -45
+
+greatest()
+----------
+	select greatest(7,1,9,2) as result from dual; --9
+
+least() 
+-----
+	select least(7,1,9,2) as result from dual; --1
+
+Working with date values 
+========================
+Every database software supports date values in different format.
+ex:
+	oracle - dd-MMM-yy
+	mysql  - yyyy-MM-dd
+	and etc.
+
+drop table emp1;
+create table emp1(eid number(3),ename varchar2(10),edoj date);
+insert into emp1 values(301,'Alan','01-JAN-26');
+insert into emp1 values(302,'Mark',current_date);
+insert into emp1 values(303,'Jose',sysdate);
+commit;
+
+ADD_MONTHS()
+------------
+	select ADD_MONTHS('01-JAN-26',4) as result from dual; --01-MAY-26
+
+MONTHS_BETWEEN()
+---------------
+	select MONTHS_BETWEEN('15-MAR-26','15-DEC-26') as result from dual; -- -9 
+	select ABS(MONTHS_BETWEEN('15-MAR-26','15-DEC-26')) as result from dual; --9
+
+NEXT_DAY()
+---------
+	select NEXT_DAY(sysdate,'SUNDAY') as result from dual; --13-SEP-26
+	select NEXT_DAY(sysdate,'TUESDAY') as result from dual; --15-SEP-26
+
+LAST_DAY() 
+----------
+	select LAST_DAY(sysdate) from dual; --30-SEP-26
+	select LAST_DAY('15-FEB-26') from dual;	 --28-FEB-26
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

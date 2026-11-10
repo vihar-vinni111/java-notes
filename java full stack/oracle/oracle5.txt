@@ -1,0 +1,258 @@
+2) Underscore (_)
+-----------------
+Q) Write a query to display employees information whose employee name having second 
+   letter as 'e'?
+   
+	select * from emp where ename like '_e%';    
+	
+
+Q) Write a query to display employees information whose employee name having second last 
+   letter as 'o'?
+
+	select * from emp where ename like '%o_';
+
+Q) Write a query to display employees information whose employee name having third letter 
+   as 'l'?
+
+	select * from emp where ename like '__l%';
+
+
+DDL commands
+============
+1) create - tables 
+2) alter  - columns 
+3) drop   - tables 
+4) truncate - rows/records 
+5) rename - tables 
+
+
+alter command 
+=============
+Using alter command we can perform following activities very easily.
+
+i) Adding new columns 
+
+ii) Modifying existing columns 
+
+iii) Renaming the columns 
+
+iv) Dropping the columns 
+
+
+i) Adding new columns 
+-----------------------
+Using alter command we can add new columns in existing table.
+
+syntax:
+-------
+	alter table <table_name> ADD (col datatype(size));
+ex:
+	alter table student ADD (state varchar2(10),pincode number(8));
+
+	update student set state='Telangana' where sno=101;
+
+
+ii) Modifying existing columns
+-------------------------------
+Using alter command we can modify the columns.
+
+We can change the size of a column only when existing values are fit into new size.
+
+
+syntax:
+-----
+	alter table <table_name> modify (col1,col2,....,colN);
+ex:
+	desc student;
+	alter table student modify (state varchar2(15));
+	desc student;
+
+
+We can change the datatype of a column only when that column is empty.
+
+ex:
+	desc student;
+	alter table student modify (pincode varchar2(8));
+	desc student;		
+
+iii) Renaming the columns
+--------------------------
+Using alter command we can rename the column.
+
+syntax:
+------
+	alter table <table_name> RENAME column  old_name to new_name;
+ex:
+	alter table student rename column  sadd to city;	
+	alter table emp rename column esal to dailywages;
+	alter table emp reanme column job to designation;
+
+iv) Dropping the columns 
+--------------------------
+Using alter command we can drop the columns.
+
+syntax:
+-------
+	alter table <table_name> DROP (col1,col2,...,colN);
+ex:
+	alter table student drop (state,pincode);
+
+
+drop command 
+=============
+It is used to drop the tables from database.
+
+syntax:
+-------
+	drop table <table_name>;
+
+ex:
+	drop table student;
+	drop table emp;
+	drop table dept;
+
+
+truncate command
+================
+It is used to delete the rows permanently from database.
+
+syntax:
+------
+	truncate table <table_name>;
+ex:
+	truncate table student;
+	truncate table dept;
+	truncate table emp;
+
+
+Q) What is the difference between delete and truncate command?
+
+delete					truncate 
+-------					-----------
+It is a DML command.			It is a DDL command.
+
+It delete the rows temperory.		It delete the rows permanently.
+
+We can rollback the data.		We can't rollback the data.
+
+Where clause can be used.		Where clause can't be used.
+
+
+rename command 
+===============
+It is used to rename table name.
+
+syntax:
+--------
+	rename <old_name> to <new_name>;
+
+ex:
+	rename student to students;
+	rename emp to employees;
+	rename dept to department;
+
+Functions 
+==========
+Functions are used to manipulate the data items and gives the result.
+
+We have two types of functions.
+
+1) Group Functions / Multiple Rows Functions 
+
+2) Scalar Functions / Single Row Functions 
+
+1) Group Functions
+--------------------
+Group functions are applicable for multiple rows.
+
+We have following list of group functions.
+
+ex:
+	sum(), avg(), max(), min(), count(*) and count(exp). 
+
+
+Q) Write a query to display sum of salary of each employee?
+
+	select sum(esal) from emp;
+
+Q) Write a query to display average of salary of each employee?
+
+	select avg(esal) from emp;
+
+Q) Write a query to display highest salary from emp table?
+
+	select max(esal) from emp;
+
+Q) Write a query to display least salary from emp table?
+
+	select min(esal) from emp;
+
+
+Q) What is the difference between count(*) and count(exp) ? 
+
+count(*) 
+--------
+	It returns number of rows present in database table.	
+	It includes null records.
+	ex:
+		select count(*) from emp;
+
+count(exp) 
+--------
+	It returns number of values present in a column.
+	It does not include null values.
+	ex:	
+		select count(eid) from emp;
+		select count(comm) from emp;
+
+Interview Question 
+=================
+
+userlist table 
+-------------
+drop table userlist;
+create table userlist(uname varchar2(10),pwd varchar2(10));
+insert into userlist values('raja','rani');
+insert into userlist values('king','kingdom');
+commit;
+
+Q) Write a query to check username and password valid or not?
+
+	select count(*) from userlist where uname='raja' and pwd='rani';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

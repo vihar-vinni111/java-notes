@@ -1,0 +1,353 @@
+Ways to develop spring boot application
+========================================
+There are two ways to develop spring boot application.
+
+1) Using Spring Initializr
+
+2) Using IDE's (Intellij / STS-Spring Tool Suit). 
+
+
+
+Spring Initializr
+==================
+It is a web based tool for creating spring boot project structure.
+
+It creates spring boot project structure in zip format.
+
+We need to extract that zip file to open in a IDE(Intellij/STS).
+
+To build project structure using spring initializr we need to use https://start.spring.io.
+
+STS IDE
+=======
+STS stands for Spring Tool Suit.
+
+Environment	:	Spring Environment 
+
+Website		: 	https://spring.io
+
+Format		:	Zip file 
+
+Download link	:  	https://spring.io/tools#eclipse
+
+
+First Spring boot Application 
+=============================
+
+Project Structure 
+-----------------
+SIApp
+|
+|---src/main/java
+	|
+	|---com.rt.www
+		|
+		|--SIAppApplication.java
+
+|---src/main/resources
+	|
+	|---application.properties
+
+|---src/test/java 
+|
+|---pom.xml 
+
+step1:
+------
+	Launch STS IDE by choosing workspace location.
+
+step2:
+------
+	Open the project from STS IDE.
+	ex:
+		File --> Open projects from file system --> 
+		Import source : (click directory and select the project i.e SIApp)
+
+step3:
+------
+	Open main spring boot class and write custom message.
+	
+step4:
+------
+	Run spring boot project.
+
+
+
+2) Using IDE's (Intellij / STS-Spring Tool Suit)
+================================================
+Project Structure 
+-----------------
+SIApp
+|
+|---src/main/java
+	|
+	|---com.rt.www
+		|
+		|--SIAppApplication.java
+
+|---src/main/resources
+	|
+	|---application.properties
+
+|---src/test/java 
+|
+|---pom.xml 
+
+step1:
+------
+	Launch STS IDE by choosing workspace location.
+
+step2:
+------
+	Create a spring boot project.
+	ex:
+		File --> New --> Spring boot starter project --> 
+		Name : FirstSB
+		Type : Maven  	 	Packaging : Jar 
+		Java Version : 17	Language : Java	
+		Group : com.rt.www
+		Artifact : FirstSB 
+		version : keep same 
+		Description : Demonstration on spring boot application  
+		package : com.rt.www
+		--> Next --> Next --> Finish.	
+
+step3:
+------
+	Open main spring boot class and write custom message.
+	
+step4:
+------
+	Run spring boot project.
+
+
+Interview Question 
+==================
+What is @SpringBootApplication annotation ?
+
+It is a class level annotation.
+It is used denote main class of spring boot application.
+It is a combination of three annotations.
+
+1) @EnableAutoConfiguration
+---------------------------
+	It is used to enable auto configuration mechanism in spring boot.
+
+2) @ComponentScan
+-----------------
+	It is used to scan on packages where our project is located.
+
+3) @Configuration 
+----------------
+	It is used to add extra beans to context.
+	It is used to perform extra configurations.
+
+
+Q) How many components are there in spring boot?
+
+There are four components in spring boot.
+
+1) AutoConfiguration 
+
+2) Spring Boot Starters
+
+3) Actuator 
+
+4) CLI Tool 
+
+
+
+Spring Boot Starters
+====================
+It is one of the component of spring boot.
+
+It is used to simplify dependency management by providing some common dependencies in a single starter.
+
+It is also known as dependency descriptor.
+
+Spring boot contains many built-in starters as given below.
+ex:
+	spring-boot-starter.*
+
+Here '*' means name of the application.
+ex:
+	spring-boot-starter.webmvc
+	spring-boot-starter.data-jpa 
+	spring-boot-starter.validation 
+	spring-boot-starter.test 
+	and etc.		
+
+
+Spring Web Dependency 
+=====================
+Spring web is a core dependency to create web applications and RESTFul API's.
+
+It allows java application to handle all HTTP request and response.
+
+It contains Spring MVC, REST and Tomcat as embedded server.
+
+To create a web application we need to use below spring web dependency.
+ex:
+	<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-webmvc</artifactId>
+	</dependency>
+
+Spring web dependency performs following as auto configuration.
+
+
+1) DispatcherServlet
+-----------------
+Receives all incoming HTTP requests and forwards them to the correct controller method for processing.
+
+2) Error Pages
+------------
+Automatically handles common HTTP errors such as 404 (Page Not Found), 500 (Internal Server Error), and 400 (Bad Request) by displaying appropriate error pages.
+
+3) Static Resources
+------------------
+Automatically serves static files like CSS, JavaScript, images, and fonts from folders such as static, public, or resources without any extra configuration.
+
+4) Servlet Container
+----------------
+Automatically configures and starts an embedded Tomcat server (by default), so you don't need to install or configure a separate web server.
+
+Diagram: sb2.1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Q) What is stereotype annotation?
+
+Spring Stereotype Annotations are specialized markers applied to Java classes that define their specific role or architectural layer within an application. When Spring performs component scanning, it automatically detects these annotated classes, instantiates them, and registers them as beans in the application context.
+
+
+Q) What is @Controller annotation?
+
+It is a class level annotation.
+It is a stereotype annotation.
+It serves a class as controller to intercept all incoming request.
+
+
+Q) What is @RequestMapping anntoation ?
+
+It is a method level annotation.
+It is used to map the request to perticular handler method.
+It accept all HTTP request like GET, POST, PUT, DELETE and etc.
+
+
+Q) What is @ResponseBody annotation?
+
+It is a method level annotation.
+It tells to controller a return object automatically serialized to text/xml/JSON.

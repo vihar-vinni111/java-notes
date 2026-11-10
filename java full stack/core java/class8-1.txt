@@ -1,0 +1,269 @@
+Identifiers 
+===========
+A name given to a program elements is called identifier.
+
+Program elements are variables , methods, classes , interfaces and etc.
+
+ex:
+	class  Test
+	{
+		public static void main(String[] args)
+		{
+			int x = 10;
+		
+			System.out.println(x) 
+		}
+	}
+	Here Test, main, String, args, x , System, out, println are identifiers.
+
+Rules to declare an identifiers
+-------------------------------
+
+Rule1:
+------
+	Identifier will accept following characters.
+	ex:
+		A-Z
+		a-z
+		0-9
+		_
+		$
+
+Rule2:
+------
+	If we take other characters then we will get compile time error.
+	ex:
+		int  empId;
+		int  emp_id;
+		int  emp$alary;
+		int  dept@no;  //invalid 
+
+Rule3:
+------
+	Every identifier must and should starts with alphabet, underscore or 
+	dollar symbol but not with digit.
+	ex:
+		int  a1234; 
+		int  _abcd;
+		int  $alary;
+		int  1abcd;  //invalid 
+
+Rule4:
+------	
+	We can't take reserved words as an identifier name.
+	ex:
+		int  if; //invalid 
+		int  else; //invalid 
+		int for; //invalid 
+		int do; //invalid 
+
+Rule5:
+------
+	Every identifier is a case sensitive.
+	ex:
+		int  number;
+		int Number;
+
+Rule6:
+------
+	There is no length limit for an identifier but it is not 
+	recommanded to take more then 15 characters.
+
+Datatypes 
+==========
+Datatype describes what type of value we want to store inside a variable.
+
+Datatype also tells how much memory has to be created for a variable.
+
+In java, Datatypes are divided into two types.
+
+1) Primitive Datatypes 
+
+2) Non-Primitive Datatypes 
+
+Diagram: class8.1
+
+byte
+----
+It is a smallest datatype in java.
+
+Size : 1 byte (8 bits)
+
+Range : -128 to 127 (-2^7 to 2^7-1)
+
+ex:
+	1) byte b = 10;
+	   System.out.println(b); // 10
+
+	2) byte b = 130;
+	   System.out.println(b); // C.T.E 
+
+	3) byte b = 10.56;
+	   System.out.println(b); // C.T.E 
+
+short
+------
+It is rarely used datatype in java.
+
+Size : 2 bytes (16 bits)
+
+Range : -32768 to 32767 (-2^15 to 2^15-1)
+
+ex:
+	1) byte b = 10;
+	   short s = b;
+	   System.out.println(s); // 10
+
+	2) short s = 10.56;
+	   System.out.println(s); // C.T.E 
+
+	3) short s = "Hi";
+	   System.out.println(s); // C.T.E 
+		
+int 
+------
+It is mostly used datatype in java.
+
+Size : 4 bytes (32 bits)
+
+Range : -2147483648 to 2147483647 (-2^31 to 2^31-1)
+
+ex:
+	1) int i = 10.56;
+	   System.out.println(i); // C.T.E 
+
+	2) int i = "true";
+	   System.out.println(i); // C.T.E 
+
+	3) int i = 'a';
+	   System.out.println(i); // 97
+
+Note:
+-----
+In java, for every character we have universal unicode value.
+ex:
+	a - 97 
+	A - 65 
+
+long 
+----
+If int datatype is not enough to hold large value then we need to use long datatype.
+
+Size : 8 bytes (16 bits)
+
+Range : (-2^63 to 2^63-1)
+
+ex:
+	1) long l = "hi";
+	   System.out.println(l); // C.T.E 
+
+	2) long l = 10.56;
+	   System.out.println(l); // C.T.E
+
+	3) long l = true;
+	   System.out.println(l); // C.T.E 
+
+	4) long l = 'A';	  
+	   System.out.println(l); // 65 
+
+float						double 
+-------						----------
+If we need 4 to 6 decimal point of accuracy	If we need 14 to 16 decimal point of  
+then we need to use float.			accuracy then we need to use double.
+
+Size : 4 bytes (32 bits)			Size : 8 bytes (64 bits)
+
+Range : -3.4e38 to 3.4e38			Range: -1.7e308 to 1.7e308
+
+To declare float value we need to 		To declare double value we need to 
+suffix with 'f' or 'F'.				suffix with 'd' or 'D'.
+ex:						ex:
+	10.56f						10.56d 
+
+ex:
+---
+	1) float f = 10;
+	   System.out.println(f); // 10.0
+
+	2) float f = 10.56f;
+           System.out.println(f); // 10.56		
+
+	3) float f = 'a';
+	   System.out.println(f); // 97.0	
+	
+	4) float f = "hi";
+	   System.out.println(f); // C.T.E 
+
+	5) float f = true;
+	   System.out.println(f); // C.T.E 
+
+ex:
+---
+	1) double d = 10;
+	   System.out.println(d); // 10.0
+
+	2) double d = 10.56d;
+           System.out.println(d); // 10.56		
+
+	3) double d = 'a';
+	   System.out.println(d); // 97.0	
+	
+	4) double d = "hi";
+	   System.out.println(d); // C.T.E 
+
+	5) double d = true;
+	   System.out.println(d); // C.T.E 
+
+boolean 
+-------
+It is used to represent boolean values either true or false.
+
+Size : (Not Applicable)
+Range : (Not Applicable)
+
+ex:
+	1) boolean b = "true";
+	   System.out.println(b); // C.T.E 
+
+	2) boolean b = TRUE;
+	   System.out.println(b); // C.T.E 
+
+	3) boolean b = false;
+           System.out.println(b); // false 
+
+char 
+----
+It is a single character which is enclosed in a single quotation.
+
+Size : 2 bytes (16 bits)
+
+Range : 0 to 65535
+
+ex:
+	1) char ch = 'a';
+	   System.out.println(ch); // a
+	
+	2) char ch = 65;
+	   System.out.println(ch); // A
+
+	3) char ch = "B";
+	   System.out.println(ch); // C.T.E 
+
+	4) char ch = 'ab';
+	   System.out.println(ch); // C.T.E 
+
+Diagram: class8.1
+
+
+
+
+
+
+
+
+
+
+
+
+
+

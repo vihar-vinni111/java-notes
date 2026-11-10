@@ -1,0 +1,272 @@
+CustomerController.java
+=======================
+package com.rt.www.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.rt.www.entity.Customer;
+import com.rt.www.service.CustomerService;
+
+@RestController
+@RequestMapping("/customer")
+public class CustomerController 
+{
+	@Autowired
+	private CustomerService customerService;
+	
+	@PostMapping("/add")
+	public Customer addCustomer(@RequestBody Customer customer)
+	{
+		return customerService.addCustomer(customer);
+	}
+	
+	@GetMapping("/fetch")
+	public List<Customer> getAllCustomers()
+	{
+		return customerService.getAllCustomers();
+	}
+	
+	@GetMapping("/fetch/{custId}")
+	public ResponseEntity<Customer> getCustomerById(@PathVariable Long custId)
+	{
+		return customerService.getCustomerById(custId);
+	}
+	
+	@PutMapping("/update")
+	public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer)
+	{
+		return customerService.updateCustomer(customer);
+	}
+	
+	@DeleteMapping("/delete/{custId}")
+	public ResponseEntity<String> deleteCustomer(@PathVariable Long custId)
+	{
+		return customerService.deleteCustomer(custId);
+	}
+	
+	@PatchMapping("/patch/{custId}")
+	public ResponseEntity<String> patchCustomer(@PathVariable Long custId, @RequestBody Map<String,Object> data)
+	{
+		return customerService.patchCustomer(custId,data);
+	}
+}
+
+
+CustomerService.java
+=====================
+package com.rt.www.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.catalina.connector.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.rt.www.entity.Customer;
+import com.rt.www.repo.CustomerRepository;
+
+@Service
+public class CustomerService 
+{
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	public Customer addCustomer(Customer customer)
+	{
+		return customerRepository.save(customer);
+	}
+	public List<Customer> getAllCustomers()
+	{
+		return customerRepository.findAll();
+	}
+	public ResponseEntity<Customer> getCustomerById(Long custId)
+	{
+		Customer customer = customerRepository.findById(custId).get();
+		return new ResponseEntity<>(customer, HttpStatus.OK);
+	}
+	
+	public ResponseEntity<Customer> updateCustomer(Customer customer)
+	{
+		Customer old_cust = customerRepository.findById(customer.getCustId()).get();
+		old_cust.setCustName(customer.getCustName());
+		old_cust.setCustAddress(customer.getCustAddress());
+		customerRepository.save(old_cust);
+		return new ResponseEntity<>(old_cust,HttpStatus.OK);
+	}
+	public ResponseEntity<String> deleteCustomer(Long custId)
+	{
+		Customer customer = customerRepository.findById(custId).get();
+		customerRepository.delete(customer);
+		return new ResponseEntity<>("Record Deleted",HttpStatus.OK);
+	}
+	public ResponseEntity<String> patchCustomer(Long custId, Map<String,Object> data)
+	{
+		Customer customer = customerRepository.findById(custId).get();
+		if(customer==null)
+		{
+			return new ResponseEntity<>("Record Not Found",HttpStatus.NOT_FOUND);
+		}
+		else
+		{
+			data.forEach((key,value)->{
+				switch(key)
+				{
+					case "custId" : customer.setCustId((Long)value); break;
+					case "custName" : customer.setCustName((String)value); break;
+					case "custAddress" : customer.setCustAddress((String)value);break;
+				}
+			});
+			customerRepository.save(customer);
+			return new ResponseEntity<>("Record Updated",HttpStatus.OK);
+		}
+		
+	}
+}
+
+Request url
+===========
+	HTTP Request	URL
+	-----------	----
+	PUT		http://localhost:9090/customer/update	
+			Body
+				Raw (JSON)
+			{
+    				"custId" : 102,
+    				"custName" :"Jessica",
+    				"custAddress": "Chicago"
+			}
+
+	DELETE		http://localhost:9090/customer/delete/102
+
+
+	PATCH		http://localhost:9090/customer/patch/101
+			Body
+				Raw (JSON)
+			{
+       				"custName" :"Alina"
+    			}
+
+
+PUT VS PATCH 
+============
+• @PutMapping is used to update the entire resource (replacing all fields).
+
+• @PatchMapping is used to update specific fields (modifying only what is changed).
+
+
+
+Exception Handling in Spring Boot 
+==================================
+If we give wrong/bad request to an application there may chance of raising exception while processing the request.
+
+ex:
+	Request  -->   http://localhost:9090/customer/fetch/102
+
+	{
+    		"timestamp": "2026-11-03T04:12:27.780Z",
+    		"status": 500,
+    		"error": "Internal Server Error",
+    		"path": "/customer/fetch/102"
+	}
+
+	Here 102 record is not found. Hence we will get exception by controller.
+
+Handling exceptions and providing proper solutions is best for java enterprise applications.
+
+There are two annotations to perform exception handling in spring boot.
+
+1) @RestControllerAdvice 
+=========================
+It is a class level annotation.
+It defines global exception handling for rest controller.
+
+2) @ExceptionHandler 
+====================
+It is a method level annotation.
+It is used to handle perticular exception in spring boot.
+
+
+Project Structure 
+-----------------
+customer-service
+|
+|---src/main/java	
+	|
+	|---com.rt.www
+	|
+	|---com.rt.www.entity 
+		|
+		|---Customer.java
+
+	|---com.rt.www.repo
+		|
+		|---CustomerRepository.java (interface)
+
+	|---com.rt.www.service
+		|
+		|---CustomerService.java
+
+	|---com.rt.www.controller
+		|		
+		|---CustomerController.java
+
+	|---com.rt.www.exception
+		|
+		|---ErrorDetails.java		
+		|---ResourceNotFoundException.java
+		|---GlobalExceptionHandler.java 
+
+|---src/main/resources
+	|
+	|---application.yml 
+
+|---src/test/java
+|
+|---pom.xml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

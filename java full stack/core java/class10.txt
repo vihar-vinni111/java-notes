@@ -1,0 +1,291 @@
+Reserved Words
+==============
+Reserved words are predefined words which are reserved in java to associate some functionality or meaning. Such type of words are called reserved words.
+
+Java supports 70 reserved words and it is classified into two types.
+
+All reserved words writtens in lowercase.
+
+Diagram: class10.1
+
+Used keywords with respect to flow control
+---------------------------------------------
+if
+else
+switch
+case
+default
+for
+while
+do
+break
+continue
+return
+
+Used keywords with respect to Access modifiers
+-----------------------------------------
+public
+private
+protected
+
+Used keywords with respect to classes and interfaces
+--------------------------------------
+class
+interface
+enum
+extends
+implements
+abstract
+final
+static
+strictfp
+sealed
+permits
+
+Used keywords with respect to exception handling 
+---------------------------
+try
+catch
+finally
+throw
+throws
+assert
+
+Used keywords with respect to variables and methods
+--------------------------------
+void
+var
+new
+this
+super
+volatile
+transient
+synchronized
+
+Used keywords with respect to datatypes.
+----------------------------------------
+int
+long
+short
+byte
+float
+double
+char
+boolean
+
+
+Used keywords with respect to package
+---------------------------------------
+package
+import
+module  (Java 9+)
+
+
+Used keywords with respect to object and reference handling
+--------------------------------
+instanceof
+typeof   (reserved but unused in Java)
+yield    (Java 14+ switch expression)
+record   (Java 16+)
+native
+
+
+Used keywords with respect to misc reserved words 
+--------------------------------------------
+requires  (Java 9 modules)
+exports   (Java 9 modules)
+opens     (Java 9 modules)
+uses      (Java 9 modules)
+provides  (Java 9 modules)
+with      (Java 9 modules)
+to        (Java 9 modules)
+non-sealed (Java 17+)
+
+var-arg method 
+==============
+Untill 1.4 version , it is not possible to declare a method with variable number of arguments. But from 1.5 version onwards it is possible to declare a method with variable number of arguments.
+
+We can declare var-arg method as follow.
+ex:
+		var-arg parameter 
+			  |
+		       --------
+	void methodOne(int... i)
+                           |
+			ellipse 	
+
+Here var-arg parameter is a replacement of single dimensional array.
+ex:
+	...	--->	[]
+
+We can invoke var-arg method with any number integer values including zero.
+
+
+ex:1
+----
+class Test
+{
+	public static void main(String[] args)
+	{
+		methodOne();
+	}
+	public static void methodOne()
+	{
+		System.out.println("0-arg method");
+	}	
+}
+
+ex:2
+---
+class Test
+{
+	public static void main(String[] args)
+	{
+		methodOne(10);
+	}
+	public static void methodOne(int i)
+	{
+		System.out.println("one-arg method");
+	}	
+}
+
+ex:3
+---
+class Test
+{
+	public static void main(String[] args)
+	{
+		methodOne(10,20);
+	}
+	public static void methodOne(int i,int j)
+	{
+		System.out.println("two-arg method");
+	}	
+}
+
+ex:4
+-----
+class Test
+{
+	public static void main(String[] args)
+	{
+		methodOne();
+		methodOne(10);
+		methodOne(10,20);
+		methodOne(10,20,30);
+	}
+	public static void methodOne(int... i)
+	{
+		System.out.println("var-arg method");
+	}	
+}
+
+In realtime we will use var-arg method when number of inputs are not fixed to a method.
+
+ex:
+---
+class Zomato 
+{
+	public static void main(String[] arsg)
+	{	
+		//bookOrder("Burgur");	
+		bookOrder("Pizza","Coke");
+	}
+	public static void bookOrder(String... items)
+	{
+		//System.out.println(items[0]);
+		System.out.println(items[0]+" "+items[1]);
+	}
+}
+
+Rule1:
+------
+	We can declare var-arg parameter with general parameters.
+	ex:
+		void methodOne(int x,int... y)
+
+Rule2:
+------
+	If we mix var-arg parameter with general parameter then var-arg parameter 
+	must be last parameter.
+	ex:
+		void methodOne(int... x,int y)  //invalid 
+		void methodOne(int x,int... y)  //valid 
+Rule3:
+------
+	A var-arg method can have only one var-arg parameter.
+	ex:
+		void methodOne(int... x)   //valid 
+		void methodOne(int... x,int... y)  //invalid 
+
+
+Java Source File Structure 
+==========================
+case1:
+------
+	A java program can have mutiple classes.
+
+case2:
+-----
+	If a java program contains multiple classes then we need to check 
+	which class contains main method and that class treated as main class.
+	ex:
+		Student.java
+		------------
+		class Recordings
+		{
+			String src="Good Drive";
+		}
+		class Student
+		{
+			public static void main(String[] args)
+			{
+				Recordings r = new Recordings();
+				System.out.println(r.src);	
+			}
+		}
+		If we compile above program we will get two .class files i.e 
+		Recordings.class and Student.class.
+	
+case3:
+-----
+	If a java program contains multiple classes with main method then we need to declare
+	atleast one class as public and that public class treated as main class.
+	ex:
+		A.java
+		------
+		public class A
+		{
+			public static void main(String[] args)
+			{
+				System.out.println("A-class");	
+			}
+		}
+		class B
+		{
+			public static void main(String[] args)
+			{
+				System.out.println("B-class");	
+			}
+		}
+		If we compile above program we will get two .class files i.e 
+		A.class and B.class.
+		ex:
+			javac   A.java
+
+		We can execute above program as follow.
+		ex:
+			java  A 
+			java  B 
+
+
+
+
+
+
+
+
+
+
+
+

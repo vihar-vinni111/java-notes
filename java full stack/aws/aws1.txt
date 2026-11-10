@@ -1,0 +1,61 @@
+Types of applications 
+=====================
+We have two types of applications.
+
+1) client based applications 
+
+2) Web based applications 
+
+
+1) client based applications 
+-----------------------------
+Applications which are need to be installed in a user's computer are called client based applications.
+
+Applications which are running in a user's computer are called client based applications.
+
+All client based applications are ruled out.
+
+ex:
+	VLC Media Player
+	MS-Office 
+	and etc.
+
+2) Web based applications 
+-------------------------
+Applications which are accessible from anywhere by the browser over the network are called web based applications.
+
+ex:
+	www.amazon.in
+	www.flipkart.in 
+	www.facebook.com
+
+
+Q) How can we develop an application accessible by thousands or millions of user's?
+
+Firstly, we need to develop web application and later we need to host that application on top of the server. Then our application is accessible by thousands and millions of users.
+
+Diagram: aws1.1
+
+ 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,250 @@
+1) NOT NULL 
+===========
+NOT NULL constraint does not allow null values.
+NOT NULL constraint can accept duplicate values.
+NOT NULL constraint can be created at column level.
+
+column level
+------------
+drop table student;
+create table student(sno number(3) not null,sname varchar2(10),sadd varchar2(12));
+insert into student values(101,'raja','hyd');
+insert into student values(101,'ravi','delhi');
+insert into student values(null,'ramana','vizag'); -- invalid 
+commit;
+
+
+NOT NULL constraint can be created for multiple columns.
+ex:
+---
+drop table student;
+create table student(sno number(3) not null,
+				sname varchar2(10) not null,
+					sadd varchar2(12) not null);
+insert into student values(101,'alan','texas'); -- valid 
+insert into student values(null,'raja','hyd');  -- invalid
+insert into student values(102,null,'delhi');   -- invalid 
+insert into student values(103,'ramana',null); -- invalid 
+commit;
+
+
+2) UNIQUE 
+=========
+UNIQUE constraint does not accept duplicate values.
+
+UNIQUE constriant can accept null values.
+
+UNIQUE constraint can be created at column level and table level.
+
+column level
+------------
+drop table student;
+create table student(sno number(3) UNIQUE,sname varchar2(10),sadd varchar2(12));
+insert into student values(101,'raja','hyd');
+insert into student values(101,'ravi','delhi'); -- invalid 
+insert into student values(null,'ramana','vizag'); 
+commit;
+
+table level
+------------
+drop table student;
+create table student(sno number(3),sname varchar2(10),sadd varchar2(12), UNIQUE(sno));
+insert into student values(101,'raja','hyd');
+insert into student values(101,'ravi','delhi'); -- invalid 
+insert into student values(null,'ramana','vizag'); 
+commit;
+
+UNIQUE constraint be created for multiple columns.
+
+ex:
+---
+drop table student;
+create table student(sno number(3),sname varchar2(10),sadd varchar2(12), 
+			UNIQUE(sno,sname,sadd));
+insert into student values(101,'raja','hyd');
+
+
+3) Primary Key 
+===============
+Primary key is a combination of NOT NULL and UNIQUE constraint.
+It does not accept null values and duplicate values.
+A table can have only one primary key.
+Primary key constraint can be created at column level and table level.
+
+column level
+------------
+drop table student;
+create table student(sno number(3) primary key,sname varchar2(10),sadd varchar2(12));
+insert into student values(101,'raja','hyd');
+insert into student values(101,'ravi','delhi'); -- invalid 
+insert into student values(null,'ramana','vizag'); -- invalid 
+commit;
+
+
+table level
+------------
+drop table student;
+create table student(sno number(3),sname varchar2(10),sadd varchar2(12),primary key(sno));
+insert into student values(101,'raja','hyd');
+insert into student values(101,'ravi','delhi'); -- invalid 
+insert into student values(null,'ramana','vizag'); -- invalid 
+commit;
+
+4) Foreign Key 
+==============
+It is to establish the relationship between two tables.
+
+This relationship is also known as parent and child relationship or master and detailed relationship.
+
+To establish relationship between two tables. A parent table must have primary key or unique key and child table must have foreign key.
+
+Primary key and foreign key name may or may not match but datatype must match.
+
+Foreign key will accept only those values which are present in primary key.
+
+Foreign key will accept duplicates and null values.
+
+
+Diagram: oracle8.1
+
+College 
+----------
+drop table college;
+create table college(sno number(3) primary key,sname varchar2(10), branch varchar2(12));
+insert into college values(101,'raja','CSE');
+insert into college values(102,'ravi','ECE');
+insert into college values(103,'ramana','MEC');
+commit;
+
+Library
+--------
+drop table library;
+create table library(roll_no number(3) REFERENCES college(sno), 
+			book_name varchar2(15));
+
+insert into library values(101,'oracle');
+insert into library values(102,'framework');
+insert into library values(103,'excel');
+insert into library values(103,'java');
+insert into library values(null,'datascience');
+insert into library values(104,'data anlytics'); --invalid 
+commit;
+
+5) CHECK 
+=========
+Check constraint describes domain of a column.
+Here domain of a column means what type of values a column must accept.
+CHECK constraint can be created at column level and table level.
+
+column level
+------------
+drop table student;
+create table student(sno number(3),sname varchar2(10),
+			smarks number(3) check(smarks<=100));
+insert into student values(101,'raja',97);
+insert into student values(102,'ravi',100);
+insert into student values(103,'ramana',120);
+commit;
+
+
+column level
+------------
+drop table student;
+create table student(sno number(3),sname varchar2(10),
+			smarks number(3) check(smarks between 0 and 100));
+insert into student values(101,'raja',97);
+insert into student values(102,'ravi',100);
+insert into student values(103,'ramana',120);
+commit;
+
+
+column level
+------------
+drop table student;
+create table student(sno number(3),sname varchar2(10) check(sname =upper(sname)),
+			smarks number(3));
+insert into student values(101,'RAJA',97); 
+insert into student values(102,'ravi',100); -- invalid 
+insert into student values(103,'Ramana',80); -- invalid 
+commit;
+
+
+column level
+------------
+drop table student;
+create table student(sno number(3),sname varchar2(10) check(sname =lower(sname)),
+			smarks number(3));
+insert into student values(101,'RAJA',97); -- invalid 
+insert into student values(102,'ravi',100);
+insert into student values(103,'Ramana',80); -- invalid 
+commit;
+
+table level
+------------
+drop table student;
+create table student(sno number(3),sname varchar2(10),
+				smarks number(3), check(sname =lower(sname)));
+insert into student values(101,'RAJA',97); -- invalid 
+insert into student values(102,'ravi',100);
+insert into student values(103,'Ramana',80); -- invalid 
+commit;
+
+
+Interview queries
+================
+Q) Write a query to add the constraint to existing table?
+
+	alter table emp ADD primary key(eid);	
+
+
+Q) Write a query to drop the constraint from existing table?
+
+	alter table emp DROP primary key;
+	
+
+Q) What is the difference between ROWID and ROWNUM?
+
+ROWID 
+------
+It is permanent.
+It is a memory address where our records are stored.
+ex:
+	select rowid,eid,ename,esal from emp;
+
+ROWNUM 
+------
+It is temperory.
+It always starts with one and increment by 1.
+ex:
+	select rownum,eid,ename,esal from emp;
+	select rowid,rownum,eid,ename,esal from emp;
+
+
+Q) Write a query to display first three records from emp table?
+	
+	select * from emp where rownum<=3;
+
+
+Q) Write a query to display fourth record from emp table?
+
+	select * from emp where rownum<=4
+	minus 
+	select * from emp where rownum<=3;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

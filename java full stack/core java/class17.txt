@@ -1,0 +1,416 @@
+How to convert decimal to binary number 
+--------------------------------------
+ex:
+	10 - decimal number 
+	1010 - binary number 
+
+	2|10
+         ---- 0
+        2|5
+	 ---- 1
+        2|2 		^
+	 ---- 0 	|
+	  1		|
+	-----------------
+	1010
+
+
+How to convert binary number to decimal number 
+----------------------------------------
+	1010 - binary number 
+	10   - decimal number 
+
+	1010 <----
+
+	0*1 + 1*2 + 0*4 + 1*8
+	0 + 2 + 0 + 8 	
+	10  
+
+
+4) Bitwise operators 
+====================
+
+Bitwise AND operator (&)
+------------------------
+Bitwise AND operator deals with binary numbers.
+
+Truth table 
+----------
+T	T	= T
+T	F	= F
+F	T	= F 
+F	F	= F 
+
+ex:
+
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		int a=15,b=10;
+		int c = a & b;
+		System.out.println(c); //10
+	}
+}
+/*
+	15 - 1111 
+	10 - 1010
+	----------
+	&  - 1010 <-----
+	
+	0*1 + 1*2 + 0*4 + 1*8
+	
+	0 + 2 + 0 + 8 = 10
+*/
+
+Bitwise OR operator (|)
+-------------------------
+Bitwise OR operator deals with binary numbers.
+
+Truth table 
+-----------
+T	T	= T
+T	F	= T
+F	T	= T
+F	F	= F 
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		int a=15,b=10;
+		int c = a | b;
+		System.out.println(c); //15
+	}
+}
+/*
+	15 - 1111 
+	10 - 1010
+	----------
+	|  - 1111 <-----
+	
+	1*1 + 1*2 + 1*4 + 1*8
+	
+	1 + 2 + 4 + 8 = 15
+*/
+
+Bitwise XOR operator (^)
+------------------------
+Bitwise XOR operator deals with binary numbers.
+
+Truth table 
+------------
+T	T	= F
+T	F	= T
+F	T	= T
+F	F	= F 
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		int a=15,b=10;
+		int c = a ^ b;
+		System.out.println(c); //5
+	}
+}
+/*
+	15 - 1111 
+	10 - 1010
+	----------
+	^  - 0101 <----
+	
+	1*1 + 0*2 + 1*4 + 0*8 
+	1 + 0 + 4 + 0 
+	5
+*/
+
+Bitwise NOT operator (~)
+------------------------
+syntax:
+-------
+	-(n+1)
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		int n = ~10;
+		System.out.println(n); // -11
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		int n = ~(-23);
+		System.out.println(n); // 22
+	}
+}
+
+
+5) Logical operators 
+====================
+
+Logical AND operator (&&)
+-------------------------
+Logical AND operator deals with boolean values either true or false.
+
+Truth table 
+-----------
+T	T	= T
+T	F	= F 
+F	T	= F 
+F	F	= F 
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		System.out.println(true && true);
+		System.out.println(true && false);
+		System.out.println(false && true);
+		System.out.println(false && false);
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		boolean b = (5>2) && (6<10);
+		System.out.println(b); // true
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		boolean b = (5>2) && (6<1);
+		System.out.println(b); // false
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		boolean b = (5>20) && (6<1);
+		System.out.println(b); // false
+	}
+}
+
+
+Logical OR operator (||)
+-------------------------
+Logical OR operator deals with boolean values either true or false.
+
+Truth table 
+----------
+T	T	= T
+T	F	= T
+F	T 	= T
+F	F	= F
+ 
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		System.out.println(true || true);
+		System.out.println(true || false);
+		System.out.println(false || true);
+		System.out.println(false || false);
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		boolean b = (5>20) || (6<1);
+		System.out.println(b); // false 
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		boolean b = (5>20) || (6<10);
+		System.out.println(b); // true
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		boolean b = (5>2) || (6<10);
+		System.out.println(b); // true
+	}
+}
+
+Logical NOT operator (!)
+-----------------------
+logical NOT operators deals with boolean values.
+
+ex:
+--
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		boolean b = !(5>2);
+		System.out.println(b); //false
+	}
+}
+	
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		boolean b = !(5>20);
+		System.out.println(b); //true
+	}
+}
+
+Q) Write a java program to check given number is even or odd?
+
+import java.util.Scanner;
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the number : ");
+		int n = sc.nextInt();
+		System.out.println(((n&1)==0)?"It is even":"It is odd");
+	}
+}
+/*
+	10 - 1010
+	1  - 0001
+	---------
+	&  - 0000
+*/	
+
+
+
+
+6) Relational operators 
+========================
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		System.out.println(10 > 2); // true 
+		System.out.println(10 < 20); // true 
+		System.out.println(10 >= 2); // true 
+		System.out.println(10 <= 10); // true 
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		System.out.println(10 == 10); // true 
+		System.out.println(10 == 20); // false
+		System.out.println(10 != 20); // true 
+		System.out.println(10 != 10); // false 
+	}
+}
+
+
+7) Shift operators 
+===================
+
+Right shift operator (>>)
+---------------------------
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		int i = 10 >> 2;
+		System.out.println(i); // 10/4 -> 2 
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		int i = 100 >> 4;
+		System.out.println(i); // 100/16 = 6
+	}
+}
+
+Left Shift operator (<<)
+-------------------------
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		int i = 10 << 2;
+		System.out.println(i); // 10 * 4 = 40
+	}
+}
+
+ex:
+---
+class  Test
+{
+	public static void main(String[] args) 
+	{
+		int i = 100 << 3;
+		System.out.println(i); // 100 * 8 = 800
+	}
+}
+
+Assignment 
+===========
+Q) What is unsigned right shift operator (>>>)?
+
+
+
+
+
+
+
+

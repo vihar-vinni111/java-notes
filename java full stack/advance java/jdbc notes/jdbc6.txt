@@ -1,0 +1,360 @@
+
+Steps to interact with MySQL Database
+=====================================
+step1:
+------
+	Download and Install MySQL database.
+	ex:
+		https://dev.mysql.com/downloads/installer/
+
+step2:
+------
+	Copy the mysql server bin directory and paste in environmental variables.
+		 	
+	ex:
+		user variables : 
+		----------------
+		variable name : Path 
+		variable value : C:\Program Files\MySQL\MySQL Server 8.0\bin;	
+
+step3:
+------
+	Connect to mysql database.
+			
+		cmd> mysql -u root -p (press enter btn)
+			password : root 
+	
+	ex:
+		username : root (default)
+		password : root 
+
+step4:
+------
+	Create a schema and use that schema.	
+	ex:
+		show databases;
+		drop schema demo;
+		create schema demo;
+		use  demo;
+
+step5:
+------
+	Create a student table with records.
+	ex:
+		create table student(sno int(3), sname varchar(10), sadd varchar(12));
+		insert into student values(101,'varalaxmi','hyd');
+		insert into student values(102,'uday','delhi');
+		insert into student values(103,'vihar','vizag');
+		commit;
+		select * from student;
+
+step6:
+------
+	Launch Eclipse IDE by choosing workspace location.
+
+step7:
+------
+	Create a java project i.e MySQLProj.
+	
+
+step8:
+------
+	Add "mysql-connector-j.jar" file in project build path.
+
+	ex:
+		https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.31/
+
+step9:
+------
+	Create a "com.rt.www" package inside "src" folder.
+
+step10:
+------
+	Create a SelectApp.java file inside "com.ihub.www" package.
+
+SelectApp.java
+--------------
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class SelectApp 
+{
+	public static void main(String[] args) 
+	{
+		final String DRIVER = "com.mysql.cj.jdbc.Driver";
+		final String URL = "jdbc:mysql://localhost:3306/demo";
+		final String USERNAME="root";
+		final String PASSWORD="root";
+		final String QUERY = "select * from student";
+		Connection con = null;
+		Statement st = null;
+		ResultSet rs = null;
+		try
+		{
+			Class.forName(DRIVER);
+			con  = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+			st = con.createStatement();
+			rs = st.executeQuery(QUERY);
+			while(rs.next())
+			{
+				System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+			}
+			rs.close();
+			st.close();
+			con.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	} 
+}
+
+
+step11:
+------
+	Run SelectApp.java file.
+
+
+
+
+
+
+
+
+
+JDBC Application to interact with MongoDB Database
+====================================================
+
+step1:
+-----
+	Download and install MongoDB Community Server.
+	ex:
+		https://www.mongodb.com/try/download/community
+
+step2:
+-----
+	Downoad and install MongoDB Shell.
+	ex:
+		https://www.mongodb.com/try/download/shell
+
+step3:
+------
+	Extract Mongodb shell inside "MongoDB" folder.
+	ex:
+		C:\Program Files\MongoDB
+
+step4:
+------
+	Copy "bin" directory of mongoshell.
+	ex:
+		C:\Program Files\MongoDB\mongosh-2.3.0-win32-x64\bin
+
+step5:
+-----
+	Paste "bin" directory in environmental variables.
+	ex:
+		right click to This PC --> properties --> Advanced System Settings -->
+		Environmental variables -->  System variables --> click to path 
+		--> click to edit button --> New --> paste 
+		(C:\Program Files\MongoDB\mongosh-2.3.0-win32-x64\bin) -->ok
+		--->ok  --->ok.
+
+
+
+step7:
+-----
+	Create java project i.e MongoDBProj inside eclipse IDE.
+
+	ex:
+		File --> New --> Java project --> Name : MongoDBProj --> Next --> Finish.
+
+step8:
+-----
+	Download and add mongodb jar file in project build path.
+	ex:
+		jar file link : 
+		https://repo1.maven.org/maven2/org/mongodb/mongo-java-driver/3.11.2/
+
+
+	right click to MongoDBProj --> Buildpath --> configure build path --> libraries -->
+	click to classpath --> add external jars --> select mongo-java-driver.jar file --> 
+	Open --> Apply and close.
+
+step9:
+------
+	Create a "com.ihub.www" package inside "src" folder.
+
+step10:
+------
+	Create a InsertApp.java file inside "com.ihub.www" package.
+
+InsertApp.java
+--------------
+package com.rt.www;
+
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class InsertApp 
+{
+	public static void main(String[] args) 
+	{
+		try(MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");)
+		{
+			MongoDatabase mongoDatabase = mongoClient.getDatabase("myDB");
+			MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("products");
+			Document doc = new Document("pid",101).append("pname", "Lenovo").append("pprice", 60000);
+			mongoCollection.insertOne(doc);
+			System.out.println("Record Inserted");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+}
+
+
+
+step11:
+-------
+	Run the jdbc application.
+
+
+MongoDB Commands
+=================
+
+show dbs;
+
+use  batch61;
+
+show collections; 
+
+db.products.find(); // read the records 
+
+db.products.drop();
+
+db.dropDatabase();  or db.products.drop();
+
+
+
+InsertApp.java
+--------------
+package com.rt.www;
+
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class InsertApp 
+{
+	public static void main(String[] args) 
+	{
+		try(MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");)
+		{
+			 MongoDatabase mongoDatabase = mongoClient.getDatabase("batch64");
+			 
+			 MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("student");
+			 
+			 Document document = new Document("sid",101).append("sname","Alan").append("sadd","Texas");
+			 
+			 mongoCollection.insertOne(document);
+			 
+			 System.out.println("Record Inserted Successfully");
+		}
+	}
+}
+
+
+
+SelectApp.java
+-------------
+package com.rt.www;
+
+import org.bson.Document;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+public class SelectApp 
+{
+	public static void main(String[] args) 
+	{
+		try(MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");)
+		{
+			 MongoDatabase mongoDatabase = mongoClient.getDatabase("batch64");
+			 
+			 MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("student");
+			 
+			 Document doc =  mongoCollection.find(new Document("sid",101)).first();
+			 
+			 System.out.println(doc);
+		}
+	}
+}
+
+
+Interviews 
+==========
+
+Programs
+========
+1) Write a jdbc application to create student table?
+2) Write a jdbc application to read the data using simple statement object?
+3) Write a jdbc application to insert the data using PreparedStatement object?
+	eid,ename,esal,edoj
+4) Write a jdbc application to store the data in ResultSet?
+
+Theory 
+-------
+1) What is JDBC?
+2) How many steps are there to develop JDBC application?
+3) Types of JDBC drivers and explain with their names?
+4) What is DatabaseMetaData ?
+5) What is ResultSetMetaData ?
+6) Types of Statement objects?
+7) Simple Statement vs PreparedStatement object?
+8) Types of ResultSet objects?
+9) Types of Connection objects ? 
+10) What is Batch Processing in jdbc?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

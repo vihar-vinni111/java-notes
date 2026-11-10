@@ -1,0 +1,143 @@
+Data 
+=====
+It is a raw facts, values, figures, information or observation that can be stored, organized and analyzed to obtain meaningful information.
+
+We have three types of data.
+
+1) Structured Data 
+-------------------
+Data which contains fixed structure or format usally known as rows and columns is called structured data.
+ex:
+	Unit	Locality	City		State		Country 
+	----	-------		----		----		----
+	201	Lakemba		SYD		NSW		AUS
+
+
+2) Semi-Structured Data 
+----------------------
+Data which does not have fixed tabular structure but has organization/arrangements through keys, tags and metadata.
+ex:
+	XML 
+	----
+	<student>
+		<id>101</id>
+		<name>Alan</name>
+	</student>
+
+	JSON 
+	-----
+	{
+		id:101,
+		name:"Alan"
+	}
+
+3) Unstructured Data 
+---------------------
+Data which does not follow any fixed structure is called unstructured data.
+ex:
+	files 
+	images
+	audio
+	videos 
+	social media content 
+	and etc.
+
+
+RDBMS 
+=====
+RDBMS stands for Relational Database Management System.
+
+RDBMS is a software which is used to store, manage or retrieve structured data in the form of rows and columns.
+
+We have following list of RDBMS databases.
+
+ex:
+	Oracle 
+	MySQL 
+	SQL Server 
+	PostGreSQL
+	MariaDB 
+	Teradata 
+	and etc.
+
+Q) What is the difference between DBMS and RDBMS ? 
+
+DBMS						RDBMS 
+------						--------
+It stands for Database Management System.	It stands for Relational Database Management
+						System.
+
+It stores the data in a file.			It stores the data in a table.
+
+It provides only one user to 			It provides multiple users to 
+connect at a time.				connect at a time.
+
+It is not designed to hold large data.		It is designed to hold large data.
+
+No data security.				High data security.
+
+There is no normalization.			There is a normalization.
+
+
+Client-Server Archiecture 
+=========================
+In this architecture we need to see how our frontend data goes to database.
+
+Diagram: oracle1.1
+
+Frontend
+--------
+The one which is visible to the enduser to perform some operations is called frontend.
+ex:
+	ReactJS, AngularJS, VueJS, Ember, Backbone, Bootstrap and etc.
+
+
+Communication Channel
+----------------------
+It acts like a bridge between frontend and backend.
+ex:
+	REST API's 
+	Axios 
+	HttpClient 
+	Fetch 
+	and etc.
+
+Backend
+--------
+The one which is not visible to the enduser but it performs operations based on the instructions given by frontend is called backend.
+ex:
+	Python, Java, .Net, NodeJS, PHP and etc.
+
+Oracle 
+=======
+It is a RDBMS database provided by Oracle Corporation.
+
+It is used to store, process and manage large amount of structured data.
+
+It provides two important languages to work data or database logics.
+
+1) SQL - Structured Query Language 
+
+2) PL/SQL - Procedural Language Extensions to SQL.
+
+
+
+
+
+
+
+
+	 
+
+
+
+
+
+
+
+
+
+
+
+
+

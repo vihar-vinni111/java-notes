@@ -1,0 +1,159 @@
+Servlet to Database Communication
+=================================
+Diagram: servlet7.1
+
+Deployment Directory Structure 
+-------------------------------
+DBApp
+|
+|---Java Resources
+	|	
+	|-----src
+		|
+		|---com.rt.www
+			|
+			|---TestSrv.java
+|---WebContent
+	|	
+	|---form.html 
+	|---WEB-INF		
+		|
+		|------web.xml 
+		|------lib
+			|
+			|---ojdbc14.jar
+Note:
+-----
+In above application we need to add "servlet-api.jar" and "ojdbc14.jar" file in project build path.
+
+student table 
+--------------
+drop table student;
+create table student(sno number(3),sname varchar2(10),sadd varchar2(12));
+	
+form.html
+----------
+<form action="test" method="GET">
+
+	<table align="center">
+		<tr>
+			<td>No:</td>
+			<td><input type="text" name="t1"/></td>
+		</tr>
+		<tr>
+			<td>Name:</td>
+			<td><input type="text" name="t2"/></td>
+		</tr>
+		<tr>
+			<td>Address:</td>
+			<td><input type="text" name="t3"/></td>
+		</tr>
+		<tr>
+			<td><input type="reset" value="reset"/></td>
+			<td><input type="submit" value="submit"/></td>
+		</tr>
+	</table>
+
+</form>
+	
+web.xml
+------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>DBApp</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+
+TestSrv.java
+-------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/test")
+public class TestSrv extends HttpServlet
+{
+	protected void doGet(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw =res.getWriter();
+		res.setContentType("text/html");
+		
+		//reading form data 
+		String sno = req.getParameter("t1");
+		int no = Integer.parseInt(sno);
+		String name = req.getParameter("t2");
+		String add = req.getParameter("t3");
+		
+		//store the data into database 
+		Connection con = null;
+		PreparedStatement ps = null;
+		String qry = null;
+		int result = 0;
+		try
+		{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+			qry = "insert into student values(?,?,?)";
+			ps = con.prepareStatement(qry);
+			
+			//set the values
+			ps.setInt(1, no);
+			ps.setString(2, name);
+			ps.setString(3, add);
+			
+			//execute 
+			result = ps.executeUpdate();
+			if(result==0)
+				pw.println("<center><h1>No Record Inserted</h1></center>");
+			else
+				pw.println("<center><h1>Record Inserted</h1></center>");
+			
+			ps.close();
+			con.close();
+		}
+		catch(Exception e)
+		{
+			pw.println(e);
+		}
+		
+	}
+}
+
+Request url 
+----------
+	http://localhost:2525/DBApp/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

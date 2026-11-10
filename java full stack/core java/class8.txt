@@ -1,0 +1,135 @@
+Identifiers 
+===========
+A name given to a program elements is called identifier.
+
+Program elements are variables , methods, classes , interfaces and etc.
+
+ex:
+	class  Test
+	{
+		public static void main(String[] args)
+		{
+			int x = 10;
+		
+			System.out.println(x) 
+		}
+	}
+	Here Test, main, String, args, x , System, out, println are identifiers.
+
+Rules to declare an identifiers
+-------------------------------
+
+Rule1:
+------
+	Identifier will accept following characters.
+	ex:
+		A-Z
+		a-z
+		0-9
+		_
+		$
+
+Rule2:
+------
+	If we take other characters then we will get compile time error.
+	ex:
+		int  empId;
+		int  emp_id;
+		int  emp$alary;
+		int  dept@no;  //invalid 
+
+Rule3:
+------
+	Every identifier must and should starts with alphabet, underscore or 
+	dollar symbol but not with digit.
+	ex:
+		int  a1234; 
+		int  _abcd;
+		int  $alary;
+		int  1abcd;  //invalid 
+
+Rule4:
+------	
+	We can't take reserved words as an identifier name.
+	ex:
+		int  if; //invalid 
+		int  else; //invalid 
+		int for; //invalid 
+		int do; //invalid 
+
+Rule5:
+------
+	Every identifier is a case sensitive.
+	ex:
+		int  number;
+		int Number;
+
+Rule6:
+------
+	There is no length limit for an identifier but it is not 
+	recommanded to take more then 15 characters.
+
+Datatypes 
+==========
+Datatype describes what type of value we want to store inside a variable.
+
+Datatype also tells how much memory has to be created for a variable.
+
+In java, Datatypes are divided into two types.
+
+1) Primitive Datatypes 
+
+2) Non-Primitive Datatypes 
+
+Diagram: class8.1
+
+byte
+----
+It is a smallest datatype in java.
+
+Size : 1 byte (8 bits)
+
+Range : -128 to 127 (-2^7 to 2^7-1)
+
+ex:
+	1) byte b = 10;
+	   System.out.println(b); // 10
+
+	2) byte b = 130;
+	   System.out.println(b); // C.T.E 
+
+	3) byte b = 10.56;
+	   System.out.println(b); // C.T.E 
+
+short
+------
+It is rarely used datatype in java.
+
+Size : 2 bytes (16 bits)
+
+Range : -32768 to 32767 (-2^15 to 2^15-1)
+
+ex:
+	1) byte b = 10;
+	   short s = b;
+	   System.out.println(s); // 10
+
+	2) short s = 10.56;
+	   System.out.println(s); // C.T.E 
+
+	3) short s = "Hi";
+	   System.out.println(s); // C.T.E 
+		
+
+
+
+
+
+
+
+
+
+
+
+
+

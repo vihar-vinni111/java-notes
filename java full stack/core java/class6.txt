@@ -1,0 +1,69 @@
+History of Java 
+===============
+In 1990, Sun Micro System took one project to develop a software called consumer electronic device which can be controlled by a remote like setup box. That time project was called Stealth project and later it is renamed to Green project.
+
+James Gosling, Mike Sharadin and Patrick Naughton were there to develop the project and they have met in a place called Aspan/Colarado to start the work with graphic system. James Gosling thought to use C and C++ languages to develop the project. But the problem what they have faced is C and C++ languages are system dependent. Then James Gosling decided why don't we create our own programming language which is system independent. 
+
+In 1991, they have developed a programming language called an OAK. OAK is a national tree for many countries like Germany, France, USA and etc. 
+
+Later in 1995, they have renamed OAK to JAVA. Java is a island of an Indonasia where first coffee of seed was produced. During the development of project they were consuming lot of coffee's. Hence a symbol of java is a cup of coffee with saucer.
+
+Interview Questions 
+==================
+Q) Who is the creator of java?
+
+	James Gosling 
+
+Q) In which year java was developed?
+
+	In 1995
+
+Q) Java originally known as __ ?
+
+	OAK  
+
+
+Q) Is java platform dependent or independent?
+
+Java consider as platform independent at byte code level.
+Hence java is also known as WORA (Write Once Run Anywhere). 
+
+Diagram: class6.1
+
+
+
+Q) Is JVM platform dependent or independent?
+
+JVM consider as platform dependent.	
+
+
+Q) What is difference between JDK, JRE and JVM ?
+
+JDK
+----
+JDK stands for Java Development Kit.
+JDK is a installable software which consist Java Runtime Environment (JRE), Java Virtual Machine (JVM), compiler (javac), interpreter (java), an archiever (.jar), document generator (javadoc) and other tools needed for java application development.
+
+JRE
+----
+JRE stands for Java Runtime Environment.
+JRE is a part of a JDK which provides very good environment to run java applications only.
+
+JVM
+---
+JVM stands for Java Virtual Machine.
+JVM is a part of a JRE which is used to execute our program line by line procedure and converts byte code to machine code.
+
+Diagram: class6.2
+
+
+
+
+
+
+
+
+
+
+
+

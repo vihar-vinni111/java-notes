@@ -1,0 +1,588 @@
+Has-A Relationship 
+==================
+Has-A relationship is also known as composition and aggregation.
+
+There is no specific key word to implements Has-A relationship but mostly we will use new keyword.
+
+The main objective of Has-A relationship is to provide reusability.
+
+Has-A relationship increases dependency between two components.
+
+ex:
+	A course has a content 
+	A car has a engine 
+	A laptop has a charger
+	and etc.
+
+
+ex:
+---
+class Content 
+{
+	public String java() 
+	{
+		return "React+SpringBoot+OracleDB";
+	}
+	public String dataScience()
+	{
+		return "Python+ML+DL";
+	}
+}
+class Course 
+{
+	public void courseDetails()
+	{
+		Content c = new Content();
+		System.out.println("Java Content : "+c.java());
+		System.out.println("Data Science Content :"+c.dataScience());
+	}
+}
+class RaiseTech
+{
+	public static void main(String[] args)
+	{
+		Course c = new Course();
+		c.courseDetails();
+	}
+}
+
+composition
+============
+Without existing container object there is no chance of having contained object then the relationship between container and contained object is called composition which is strongly association.
+
+Diagram: class31.1
+
+ex:
+--
+class Engine 
+{
+	public void engineStart()
+	{
+		System.out.println("Engine Started");
+	}
+}
+class Car
+{
+	Engine e;
+	Car()
+	{
+		e = new Engine();
+	}
+	public void carStart()
+	{
+		e.engineStart();
+		System.out.println("Car Moving");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Car c = new Car();
+		c.carStart();
+	}
+}
+
+
+Aggregation 
+============
+Without existing container object there is a chance of having contained object then the relationship between container and contained object is called aggregation which is loosely association.
+
+Diagram: class31.2
+
+ex:
+---
+class Engine 
+{
+	public void engineStart()
+	{
+		System.out.println("Engine Started");
+	}
+}
+class Car
+{
+	Engine e;
+	Car(Engine e)
+	{
+		this.e = e;
+	}
+	public void carStart()
+	{
+		e.engineStart();
+		System.out.println("Car Moving");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Engine e = new Engine();
+		Car c = new Car(e);
+		c.carStart();
+	}
+}
+
+
+Method overloading 
+==================
+Having same method name with different signatures in a single class is called method overloading.
+
+All the methods which are present in a class are called overloaded methods.
+
+Method resolution will taken care by a compiler based on reference type.
+
+Method overloading reduces complexity of the programming.
+
+ex:
+--
+class ECI 
+{
+	//overloaded methods 
+	public void search(int epicNo)
+	{
+		System.out.println("Details Found via Epic No");
+	}
+	public void search(long phoneNo)
+	{
+		System.out.println("Details Found via Phone No");
+	}
+	public void search(String details)
+	{
+		System.out.println("Details Found via House No");
+	}
+}
+class Voter
+{
+	public static void main(String[] args)
+	{
+		ECI eci = new ECI();
+		eci.search(34567);
+		eci.search(9876543287L);
+		eci.search("1-7-453/1");
+	}
+}
+
+
+Q) Can we overload main method in jaa?
+
+Yes, we can overload main method in java but JVM always execute main method with 
+String[] parameter only.
+
+ex:
+---
+
+class Test
+{
+	public static void main(int[] iargs)
+	{
+		System.out.println("int[] iargs");
+	}
+	public static void main(String[] args)
+	{
+		System.out.println("String[] args");
+	}
+}
+
+
+Method Overriding 
+================
+Having same method name with same parameters in two different classes is called method 
+overriding.
+
+Methods which are present in parent class are called overridden methods.
+
+Methods which are present in child class are called overriding methods.
+
+Method resolution will taken care by a JVM based on runtime object.
+
+ex:
+---
+class Parent 
+{
+	//overridden methods 
+	public void property()
+	{
+		System.out.println("Cash+Gold+Land");
+	}
+	public void marry()
+	{
+		System.out.println("Trisha");
+	}
+}
+class Child extends Parent 
+{
+	//overridding methods
+	@Override 
+	public void marry()
+	{
+		System.out.println("Rashmika");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Parent p = new Parent();
+		p.property(); // Cash+Gold+Land
+		p.marry(); // Trisha 
+		
+		Child c = new Child();
+		c.property(); // Cash+Gold+Land
+		c.marry(); // Rashmika 
+		
+		Parent p1 = new Child();
+		p1.property(); //  Cash+Gold+Land
+		p1.marry(); // Rashmika 
+	}
+}
+
+If we declare any method as final then overridding of that method is not possible.
+
+ex:
+---
+
+class Parent 
+{
+	public final void property()
+	{
+		System.out.println("House-Not For Sale");
+	}
+}
+class Child extends Parent
+{
+	@Override
+	public void property()
+	{
+		System.out.println("House-For Sale");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Parent p = new Child();
+		p.property();
+	}
+}
+o/p:
+	C.T.E : Overridden method is final 
+
+
+Method Hiding 
+=============
+Method hiding is exactly same as method overriding with following differences.
+
+Method Overriding 				Method Hiding 
+-------------------				---------------
+Methods should be non-static.			Methods should be static.
+
+Method resolution will taken care by 		Method resolution will taken care by
+JVM based on runtime object.			compiler based on reference type.
+
+It is also known as runtime polymorphism,	It is also known a compile time 
+dynamic polymorphism or late binding.		polymorphism, static polymorphism or 
+						early binding.
+
+ex:
+---
+class Parent 
+{
+	public static void property()
+	{
+		System.out.println("House-Not For Sale");
+	}
+}
+class Child extends Parent
+{
+	public static void property()
+	{
+		System.out.println("House-For Sale");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Parent p = new Child();
+		p.property(); // House- Not For Sale 
+	}
+}
+
+Q) Can we override main method in java?
+
+No, we can't override main method in java because it is static.
+
+
+Polymorphism 
+============
+Polymorphism has derived from two Greek words.
+
+Here poly means many and morphism means forms.
+
+The ability to represent in different forms is called polymorphism.
+
+Diagram: class31.3
+
+The main objective of polymorphism is to provide flexibility.
+
+In java, polymorphism is divided into two types.
+
+1) Compile time polymorphism 
+
+2) Runtime polymorphism 
+
+1) Compile time polymorphism 
+-----------------------------
+A polymorphism which exhibits at compile time is called compile time polymorphism.
+Methods resolution will taken care by a compiler based on reference type.
+It is also known as static polymorphism or early binding.
+ex:
+	Method Overloading 
+	Method Hiding 
+
+2) Runtime polymorphism 
+-------------------------
+A polymorphism which exhibits at runtime time is called runtime polymorphism.
+Methods resolution will taken care by a JVM based on runtime object.
+It is also known as dynamic polymorphism or late binding.
+ex:
+	Method Overriding 
+
+this keyword 
+============
+A this keyword is a java keyword which is used to refer current class object reference.
+
+We can utilize this keyword in following ways.
+
+1) To refer current class variables 
+
+2) To refer current class methods
+
+3) To refer current class constructors 
+
+1) To refer current class variables 
+-----------------------------------
+class A 
+{
+	int i = 10;
+	int j = 20;
+	A(int i,int j)
+	{
+		System.out.println(i+" "+j); // 100  200
+		System.out.println(this.i+" "+this.j);// 10  20
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		A a = new A(100,200);
+	}
+}
+
+2) To refer current class methods
+---------------------------------
+class A 
+{
+	public void m1()
+	{
+		System.out.println("M1-Method");
+		this.m2();
+	}
+	public void m2()
+	{
+		System.out.println("M2-Method");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		A a = new A();
+		a.m1();
+	}
+}
+
+3) To refer current class constructors 
+---------------------------------------
+class A 
+{
+	A()
+	{
+		System.out.println("0-arg const");
+	}
+	A(int i)
+	{
+		this();
+		System.out.println("int-arg const");
+	}
+	A(double d)
+	{
+		this(10);
+		System.out.println("double-arg const");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		A a1 = new A(10.5d);
+	}
+}
+
+super keyword
+=============
+A super is a java keyword which is used to refer super class object reference.
+
+We can utilize super keyword in following ways.
+
+1) To refer super class variables
+
+2) To refer super class methods 
+
+3) To refer super class constructors 
+
+1) To refer super class variables
+--------------------------------
+class A 
+{
+	int i=1;
+	int j=2;
+}
+class B extends A 
+{
+	int i=10;
+	int j=20;
+	B(int i,int j)
+	{
+		System.out.println(this.i+" "+this.j); // 10  20
+		System.out.println(i+" "+j); // 100 200
+		System.out.println(super.i+" "+super.j);// 1 2
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		B b = new B(100,200);
+	}
+}
+
+2) To refer super class methods
+------------------------------
+class A 
+{
+	public void m1()
+	{
+		System.out.println("M1-Method");
+	}
+}
+class B extends A 
+{
+	public void m2()
+	{
+		super.m1();
+		System.out.println("M2-Method");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		B b = new B();
+		b.m2();
+	}
+}
+
+3) To refer super class constructors
+-------------------------------------
+class A 
+{
+	A()
+	{
+		System.out.println("A-const");
+	}
+}
+class B extends A 
+{
+	B()
+	{
+		//super();
+		System.out.println("B-const");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		B b = new B();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

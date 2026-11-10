@@ -1,0 +1,477 @@
+Custom Tags in JSP / Custom Action tags 
+=======================================
+Tags which are created by the user based on the application requirements are called 
+custom tags.
+
+To create custom tags in JSP we need to use taglib directive tag.
+
+syntax:
+------
+	<%@taglib  uri="urioftaglib"  prefix="prefixoftaglib" %>
+
+All custom tags information we need to configure inside mytags.tld file.
+
+Here TLD stands for Tag Library Descriptor.
+
+Deployment Directory Structure 
+------------------------------
+CustomTags
+|
+|---Java Resources
+	|
+	|------src
+		|
+		|---com.rt.www
+			|
+			|---CubeNumber.java
+|---WebContent
+	|
+	|---index.jsp 	
+	|---WEB-INF
+		|
+		|----web.xml 
+		|----mytags.tld 
+Note:
+-----
+In above application we need to add "servlet-api.jar" and "jsp-api.jar" file in project build path.
+
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>CustomTags</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+</web-app>
+
+
+index.jsp 
+---------
+
+<%@taglib  uri="/WEB-INF/mytags.tld"  prefix="rt"%>
+<center>
+	<h1>
+		Cube of a number is = <rt:cube  number="5" />		
+	</h1>
+</center>
+
+
+mytags.tld 
+---------
+<?xml version="1.0" encoding="ISO-8859-1" ?>  
+<!DOCTYPE taglib  
+        PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"  
+    "http://java.sun.com/j2ee/dtd/web-jsptaglibrary_1_2.dtd">  
+  
+<taglib>  
+  <tlib-version>1.0</tlib-version>  
+  <jsp-version>1.2</jsp-version>  
+  <short-name>simple</short-name>  
+  <uri>http://tomcat.apache.org/example-taglib</uri>
+
+   <tag>
+   		<name> cube </name>
+   		<tag-class>com.rt.www.CubeNumber</tag-class>
+   		<attribute>
+   			<name>number</name>
+   			<required>true</required>
+   		</attribute>
+   </tag>			
+
+</taglib>
+
+CubeNumber.java
+-----------------
+package com.rt.www;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.TagSupport;
+
+public class CubeNumber extends TagSupport
+{
+	private int number;
+	
+	//setter method 
+	public void setNumber(int number)
+	{
+		this.number = number;
+	}
+	
+	public int doStartTag()throws JspException
+	{
+		JspWriter out = pageContext.getOut();
+		try
+		{
+			out.println(number*number*number);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return SKIP_BODY;
+	}
+}
+
+Request url 
+----------
+	http://localhost:2525/CustomTags/
+
+Implicit objects 
+================
+Object which can be used directly without any configuration is called implicit object.
+
+Implicit objects are created by the web container which are available to every JSP page.
+
+JSP provides 9 implicit objects as given below.
+
+ex:
+	Object		TYPE 
+	------		----
+	out		JspWriter 
+	request 	HttpServletRequest
+	response 	HttpServletResponse 
+	config		ServletConfig
+	application 	ServletContext
+	session 	HttpSession 
+	pageContext 	PageContext
+	page 		Object 
+	exception 	Throwable 
+
+response object
+===============
+It is a implicit object of type HttpServletResponse.
+
+It is used to send errors and response to other resources.
+
+Deployment Directory Structure 
+------------------------------
+JspApp12
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---form.html 
+	|---process.jsp 
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+form.html 
+---------
+<center>
+	<h1>
+		<a href="process.jsp"> Facebook </a>
+	</h1>
+</center>
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp12</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+process.jsp
+----------
+<%
+	response.sendRedirect("http://www.facebook.com/login");
+%>
+
+Request url 
+----------
+	http://localhost:2525/JspApp12/
+
+
+config object 
+==============
+It is an implicit object of type ServletConfig.
+
+It is used to read initialized parameters from web.xml file.
+
+Deployment Directory Structure 
+------------------------------
+JspApp13
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|----process.jsp
+	|----WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+
+process.jsp 
+-----------
+<center>
+<h1>
+<%
+	String value = config.getInitParameter("driver");
+	out.println(value);
+%>
+</h1>
+</center>
+
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>JspApp13</display-name>
+  
+  <servlet>
+  	<servlet-name>ABC</servlet-name>
+  	<jsp-file>/process.jsp</jsp-file>
+  	<init-param>
+  		<param-name>driver</param-name>
+  		<param-value>oracle.jdbc.driver.OracleDriver</param-value>
+  	</init-param>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ABC</servlet-name>
+  	<url-pattern>/test</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
+
+Request url
+----------
+	http://localhost:2525/JspApp13/
+
+
+application object
+================= 
+It is an implicit object of type ServletContext.
+
+It is used to read configuration information from web.xml file which is global.
+
+Deployment Directory Structure 
+------------------------------
+JspApp14
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|----process.jsp
+	|----WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+process.jsp 
+----------
+<center>
+<h1>
+<%
+	String value = application.getInitParameter("driver");
+	out.println(value);
+%>
+</h1>
+</center>
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>JspApp13</display-name>
+  
+  <servlet>
+  	<servlet-name>ABC</servlet-name>
+  	<jsp-file>/process.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>ABC</servlet-name>
+  	<url-pattern>/test</url-pattern>
+  </servlet-mapping>
+  
+  <context-param>
+  	<param-name>driver</param-name>
+  	<param-value>com.mysql.cj.jdbc.Driver</param-value>
+  </context-param>
+  
+</web-app>
+
+Request url 
+---------
+	http://localhost:2525/JspApp13/test 
+
+
+session object
+============
+It is an implicit object of type HttpSession.
+
+It is used to read, add , remove attributes to/from session.
+
+
+Deployment Directory Structure 
+------------------------------
+JspApp15
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|----form.html
+	|----first.jsp 
+	|----second.jsp
+	|----WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+form.html 
+----------
+
+<form action="first.jsp">
+
+	Name : <input type="text" name="t1"/> 
+	
+	<input type="submit" value="submit"/>
+	
+</form>
+
+first.jsp 
+----------
+
+<%
+	String name = request.getParameter("t1");
+	session.setAttribute("pname", name);
+	out.println("Welcome : "+name);
+%>
+<a href="second.jsp"> click for second jsp page </a>
+
+
+second.jsp
+------------
+
+<%
+	String name = (String)session.getAttribute("pname");
+	out.println("Hey! Welcome : "+name);
+%>
+
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp15</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+
+Request url 
+------------
+	http://localhost:2525/JspApp15/
+
+pageContext object
+=================
+It is an implicit object of type PageContext.
+
+It is used to read, add , remove attributes to/from session using following scopes.
+
+We have following four scopes in jsp
+
+1) Page Scope 
+
+2) Request scope 
+
+3) Session scope 
+
+4) Application scope 
+
+Deployment Directory Structure 
+------------------------------
+JspApp16
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|----form.html
+	|----first.jsp 
+	|----second.jsp
+	|----WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+form.html 
+----------
+
+<form action="first.jsp">
+
+	Name : <input type="text" name="t1"/> 
+	
+	<input type="submit" value="submit"/>
+	
+</form>
+
+first.jsp 
+----------
+
+<%
+	String name = request.getParameter("t1");
+	pageContext.setAttribute("pname", name, pageContext.SESSION_SCOPE);
+	out.println("Welcome : "+name);
+%>
+<a href="second.jsp"> click for second jsp page </a>
+
+
+second.jsp
+------------
+
+<%
+	String name = (String)pageContext.getAttribute("pname", pageContext.SESSION_SCOPE);
+	out.println("Hey!!!!!! Welcome : "+name);
+%>
+
+
+web.xml 
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>JspApp15</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+
+Request url 
+------------
+	http://localhost:2525/JspApp16/
+

@@ -1,0 +1,410 @@
+To see the output in PL/SQL we need to execute below command.
+ex:
+	SET SERVEROUTPUT ON 
+
+
+In PL/SQL, we can perform DML operations.
+
+Q) Write a PL/SQL program to insert a record into student table?
+
+	DECLARE 
+	L_sno  student.sno%TYPE;
+	L_sname student.sname%TYPE;
+	L_sadd student.sadd%TYPE;
+	BEGIN 
+	L_sno := &sno;
+	L_sname := '&sname';
+	L_sadd := '&sadd';
+	insert into student values(L_sno,L_sname,L_sadd);
+	DBMS_OUTPUT.PUT_LINE('Record Inserted');
+	END;
+	/
+	
+Q) Write a PL/SQL program to update student record based on student no?
+
+
+	DECLARE 
+	L_sno student.sno%TYPE;
+	BEGIN 
+	L_sno := &sno;
+	update student set sname='jessica' where sno=L_sno;
+	DBMS_OUTPUT.PUT_LINE('Record Updated');
+	END;
+	/
+
+Q) Write a PL/SQL program to delete student record based on student no?
+
+
+	DECLARE 
+	L_sno student.sno%TYPE;
+	BEGIN 
+	L_sno := &sno;
+	delete from student where sno = L_sno;	
+	DBMS_OUTPUT.PUT_LINE('Record Deleted');
+	END;
+	/
+
+Control Statements 
+==================
+We have three control statements in PL/SQL.
+
+1) IF THEN 
+
+2) IF THEN ELSE 
+
+3) IF THEN ELSIF THEN ELSE 
+
+1) IF THEN 
+-----------
+It evaluates the code only if our condition is true.
+
+ex:
+	DECLARE 
+	A number:= 10;
+	BEGIN 	
+
+	IF A > 5 THEN 
+	DBMS_OUTPUT.PUT_LINE('It is greatest');
+	END IF;
+
+	END;
+	/
+
+ex:
+	DECLARE 
+	A number:= 1;
+	BEGIN 	
+
+	IF A > 5 THEN 
+	DBMS_OUTPUT.PUT_LINE('It is greatest');
+	END IF;
+
+	END;
+	/
+
+
+2) IF THEN ELSE 
+---------------
+It is used to evaluate the code either our condition is true or false.
+
+ex:
+	DECLARE 
+	A number:= 10;
+	BEGIN 
+
+	IF A > 5 THEN 
+	DBMS_OUTPUT.PUT_LINE('It is greatest');
+	ELSE 
+	DBMS_OUTPUT.PUT_LINE('It is not greatest');
+	END IF;
+
+	END;
+	/
+
+ex:
+	DECLARE 
+	A number:= 1;
+	BEGIN 
+
+	IF A > 5 THEN 
+	DBMS_OUTPUT.PUT_LINE('It is greatest');
+	ELSE 
+	DBMS_OUTPUT.PUT_LINE('It is not greatest');
+	END IF;
+
+	END;
+	/
+
+3) IF THEN ELSIF THEN ELSE 
+--------------------------
+The evaluates the code based on multiple conditions.
+
+ex:
+	DECLARE 
+	MY_CODE number:= 500;
+	BEGIN 
+	IF MY_CODE = 200 THEN 
+	DBMS_OUTPUT.PUT_LINE('OK');
+	ELSIF MY_CODE = 404 THEN 
+	DBMS_OUTPUT.PUT_LINE('Client Side Error');
+	ELSIF MY_CODE = 500 THEN 
+	DBMS_OUTPUT.PUT_LINE('Server Side Error');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Invalid Code'); 
+	END IF;
+	END;
+	/
+
+
+LOOPS 
+======
+We have three types of loops in PL/SQL.
+
+1) Simple Loop 
+
+2) While Loop 
+
+3) For Loop 
+
+1) Simple Loop 
+---------------
+It evaluates the code how long our condition is true.
+
+ex:
+	DECLARE 
+	A number:=1;
+	BEGIN 
+
+	LOOP	
+	DBMS_OUTPUT.PUT_LINE('Hello');
+	EXIT WHEN A = 4;
+	A := A + 1;
+	END LOOP;
+
+	END;
+	/
+
+2) While Loop 
+--------------
+It is used to evaluate the code how long our condition is true.
+
+ex:
+---
+	DECLARE 
+	A number:= 1;
+	BEGIN 
+	
+	WHILE A<=4 LOOP
+	DBMS_OUTPUT.PUT_LINE('Hello');
+	A:=A+1;
+	END LOOP;
+
+	END;
+	/
+
+3) For Loop
+-----------
+It is used to evaluate the code how long our condition is true.
+
+ex:
+	DECLARE 
+	A number;
+	BEGIN 
+	
+	FOR A IN 1 .. 4 LOOP
+	DBMS_OUTPUT.PUT_LINE('Hello');
+	END LOOP;
+
+	END;
+	/
+
+Exceptions 
+==========
+Runtime errors are called exceptions.
+
+We have two types of exceptions.
+
+1) Predefined exceptions 
+
+2) Userdefined exceptions 
+
+1) Predefined exceptions 
+------------------------
+Built-in exceptions are called predefined exceptions.
+
+i) NO_DATA_FOUND Exception 
+
+ii) TOO_MANY_ROWS Exception 
+
+iii) ZERO_DIVIDE Exception 
+
+iv) VALUE_ERROR Exception 
+
+v) DUP_VAL_ON_INDEX Exception 
+
+vi) OTHERS 
+
+i) NO_DATA_FOUND Exception 
+---------------------------
+This exception will occur when select statement does not return any row.
+
+ex:
+	DECLARE 
+	L_ename emp.ename%TYPE;
+	BEGIN 
+	select ename into L_ename from emp where eid=209;
+	DBMS_OUTPUT.PUT_LINE(L_ename);	
+	EXCEPTION 
+	WHEN NO_DATA_FOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check employee id');
+	END;
+	/
+
+ii) TOO_MANY_ROWS Exception 
+---------------------------
+This exception will occur when select statement returns more then one row.
+
+ex:
+	DECLARE 
+	L_ename emp.ename%TYPE;
+	BEGIN 
+	select ename into L_ename from emp where deptno = 50;
+	DBMS_OUTPUT.PUT_LINE(L_ename);	
+	EXCEPTION 
+	WHEN TOO_MANY_ROWS THEN 
+	DBMS_OUTPUT.PUT_LINE('select statement returns more then one row');
+	END;
+	/
+
+iii) ZERO_DIVIDE Exception 
+--------------------------
+This exception will occur when we divide any number with zero.
+
+ex:
+	DECLARE 
+	A number;
+	BEGIN 
+	A:=10/0;
+	DBMS_OUTPUT.PUT_LINE(A);
+	EXCEPTION 
+	WHEN ZERO_DIVIDE THEN 
+	DBMS_OUTPUT.PUT_LINE('Dont divide by zero');
+	END;
+	/
+
+iv) VALUE_ERROR Exception
+-------------------------
+This exception will occur when there is a mismatch with size and datatype.
+
+ex:
+	DECLARE 
+	A number(3);
+	BEGIN
+	A:=12345;
+	DBMS_OUTPUT.PUT_LINE(A);
+	EXCEPTION 
+	WHEN VALUE_ERROR THEN 
+	DBMS_OUTPUT.PUT_LINE('Check the size');
+	END;
+	/
+
+ex:
+	
+	DECLARE 
+	L_esal emp.esal%TYPE;
+	BEGIN 
+	select ename into L_esal from emp where eid=202;
+	DBMS_OUTPUT.PUT_LINE(L_esal);	
+	EXCEPTION 
+	WHEN VALUE_ERROR THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check datatype');
+	END;
+	/	
+
+v) DUP_VAL_ON_INDEX Exception 
+-----------------------------
+This exception will occur when are trying to insert duplicate record in primary key.
+
+ex:
+	alter table student add primary key (sno);
+
+	BEGIN 
+	insert into student values(104,'Alan','Texas');
+	DBMS_OUTPUT.PUT_LINE('Record Inserted');
+	EXCEPTION 
+	WHEN DUP_VAL_ON_INDEX THEN 
+	DBMS_OUTPUT.PUT_LINE('Duplicate Record');	
+	END;
+	/
+
+vi) OTHERS
+-----------
+It is a unviversal exception angular which is used to handle all types of exceptions.
+
+ex:
+
+	DECLARE 
+	L_ename emp.ename%TYPE;
+	BEGIN 
+	select ename into L_ename from emp where eid=209;
+	DBMS_OUTPUT.PUT_LINE(L_ename);	
+	EXCEPTION 
+	WHEN OTHERS THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check employee id');
+	END;
+	/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

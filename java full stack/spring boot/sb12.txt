@@ -1,0 +1,306 @@
+Custom Queries in Spring Boot
+=============================
+@Query annotation of spring data jpa allows us to declare customer queries using JPQL(Java Persistence Query Language) and Native SQL.
+
+@Param annotation of spring data jpa is used to bind method parameters with query parameters.
+
+project structure
+-----------------
+order-service 
+|
+|---src/main/java
+	|
+	|---com.rt.www
+	|
+	|---com.rt.www.entity 
+		|
+		|---Order.java
+
+	|---com.rt.www.repo
+		|	
+		|---OrderRepository.java (interface)
+
+	|---com.rt.www.service
+		|
+		|---OrderService.java
+
+	|---com.rt.www.controller 
+		|
+		|---OrderController.java
+
+|---src/main/resources
+	|
+	|---application.yml 
+
+|---src/test/java
+|
+|---pom.xml 
+
+step1:
+-----
+	Create a spring starter project i.e order-service.
+	ex:
+		starters:
+				Spring Web
+				Spring Data JPA 
+				MySQL Driver
+				Lombok 
+step2:
+------
+	Create "Order.java" file inside "com.rt.www.entity" package.
+
+Order.java
+----------
+package com.rt.www.entity;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity(name = "OrderEntity")
+@Table(name = "orders")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Order 
+{
+	@Id
+	private Long id;
+	
+	@Column
+	private String status;
+	
+	@Column
+	private String address;
+	
+	@Column
+	private LocalDate delivery;
+}
+
+
+step3:
+------
+	Create a "OrderRepository" inside "com.rt.www.repo" package.
+
+OrderRepository.java
+--------------------
+package com.rt.www.repo;
+import java.time.LocalDate;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.rt.www.entity.Order;
+
+@Repository
+public interface OrderRepository extends JpaRepository<Order, Long>
+{
+	public Order findByStatus(String status);
+	
+	@Query(value = "select * from orders where address = :address", nativeQuery = true)
+	public Order findOrderByAddress(@Param("address") String address);
+	
+	@Query("select oe from OrderEntity oe where oe.delivery = :delivery")
+	public Order findOrderByDelivery(@Param("delivery") LocalDate delivery);
+}
+
+
+
+step4:
+------
+	Create and use schema in mysql database.
+	ex:
+		show databases;
+		create schema java_batch;
+		use java_batch;
+
+
+step5:
+-----
+	Create a orders table with records.
+	ex:
+		create table orders(id int(3),status varchar(10), address varchar(10), delivery Date);
+		insert into orders values(101,'Delivered', 'Hyderabad', '2026-04-27');
+		insert into orders values(102,'Dispached', 'Delhi', '2026-07-15');				insert into orders values(103,'Cancelled', 'Vizag', '2026-03-19');
+		commit;
+
+
+step6:
+-----
+	Rename application.properties file to application.yml file.
+
+application.yml 
+---------------
+server:
+  port: 9191
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/java_batch
+    username: root
+    password: root
+
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+
+step7:
+------
+	Create a "CustomerController.java" file inside "com.rt.www.controller" package.
+
+CustomerController.java
+-----------------------
+package com.rt.www.controller;
+
+import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.rt.www.entity.Order;
+import com.rt.www.service.OrderService;
+
+@RestController
+@RequestMapping("/order")
+public class OrderController 
+{
+	@Autowired
+	private OrderService orderService;
+	
+	@GetMapping("/first/{id}")
+	public ResponseEntity<Order> firstOrder(@PathVariable Long id)
+	{
+		return orderService.firstOrder(id);
+	}
+	
+	@GetMapping("/second/{status}")
+	public Order secondOrder(@PathVariable String status)
+	{
+		return orderService.secondOrder(status);
+	}
+	
+	@GetMapping("/third/{address}")
+	public Order thirdOrder(@PathVariable String address)
+	{
+		return orderService.thirdOrder(address);
+	}
+	
+	@GetMapping("/fourth/{delivery}")
+	public Order fourthOrder(@PathVariable LocalDate delivery)
+	{
+		return orderService.fourthOrder(delivery);
+	}
+}
+
+
+step8:
+------
+	Create a "CustomerService.java" file inside "com.rt.www.service" package.
+
+CustomerService.java
+---------------------
+package com.rt.www.service;
+
+import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.rt.www.entity.Order;
+import com.rt.www.repo.OrderRepository;
+
+@Service
+public class OrderService 
+{
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	public ResponseEntity<Order> firstOrder(Long id)
+	{
+		Order order = orderRepository.findById(id).get();
+		return new ResponseEntity<>(order, HttpStatus.OK);
+	}
+	
+	public Order secondOrder(String status)
+	{
+		return orderRepository.findByStatus(status);
+	}
+	
+	public Order thirdOrder(String address)
+	{
+		return orderRepository.findOrderByAddress(address);
+	}
+	
+	public Order fourthOrder(LocalDate delivery)
+	{
+		return orderRepository.findOrderByDelivery(delivery);
+	}
+}
+
+
+step9:
+------
+	Run spring boot starter project.
+
+step10:
+-----
+	Test the application using postman.
+	ex:
+		HTTP Request 	URL 
+		-----------	----
+		GET		http://localhost:9191/order/fetch/101
+		GET		http://localhost:9191/order/second/delivered	
+		GET		http://localhost:9191/order/third/Delhi
+		GET		http://localhost:9191/order/fourth/2026-03-19
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

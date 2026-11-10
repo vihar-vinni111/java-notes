@@ -1,0 +1,193 @@
+Synonyms
+========
+Alter name given to a table is called synonym.
+
+We can use synonym name instead of table name for all the commands.
+
+The main purpose of synonym is abstraction, convenience and security.
+
+syntax:
+------
+	create synonym <synonym_name> for <object_name>;
+
+ex:
+	create synonym sy1 for student;	
+
+	select * from sy1;
+
+	insert into sy1 values(104,'ramulu','pune');
+
+	delete from sy1 where sno=104;
+	
+
+Q) Write a query to see the list synonyms present in database ?
+
+	select synonym_name from user_synonyms;
+
+Q) Write a query to drop the synonym?
+
+	drop synonym sy1;
+
+Indexes 
+=======
+It is used to improve the performance of select command.
+
+Index in a table is similar to index in a book.
+
+We can create index only for those columns which are widely used in where clause.
+
+When index is created , two columns created one is ROWID and another is INDEXED COLUMN and by default all the records store in ascending order in indexed column.
+
+ex:
+			INDEX TABLE 
+	--------------------------------------
+	ROWID			INDEXED_COLUMN
+	---------------------------------------
+			|	9000
+			|	15000
+			|	23000
+			|	31000
+			|	39000
+			|	42000
+	---------------------------------------
+
+We have two types of index.
+
+1) Simple Index
+----------------
+If index is created only for one column is called simple index.
+ex:
+	create index idx1 on emp(eid); 
+	
+	Here index is created when we use eid in where clause.
+	ex:
+		select * from emp where eid=203;
+ 
+
+2) Complex Index 
+-----------------
+If index is created for multiple columns is called complex index.
+ex:
+	create index idx2 on emp(ename,esal);
+
+	Here index is created when use use ename and esal in where clause.
+	ex:
+		select * from emp where ename='Alan' and esal=9000;
+
+
+Q) Write a query to display list of indexes present in database?
+
+	select index_name from user_indexes;
+
+
+Q) Write a query to drop the index?
+
+	drop index idx1;
+	drop index idx2;
+
+
+
+
+JOINS 
+=====
+select * from emp,dept;  -- 6*4 = 24 records 
+
+select eid,ename,esal,deptno,dname,dloc from emp,dept; --column ambiguously defined
+
+To overcome above limitation we can use table name.
+ex:
+	select emp.eid,emp.ename,emp.esal,dept.deptno,dept.dname,dept.dloc 
+		from emp , dept;
+
+Table Alias 
+-----------
+A userdefined name given to a table is called table alias.
+
+Using table alias length of the query will reduce and mean while performance is maintained.
+
+Table alias is temperory.
+
+Table alias we can use in select clause as well as where clause.
+
+ex:
+	select e.eid,e.ename,e.esal,d.deptno,d.dname,d.dloc 
+		from emp e, dept d; -- 6 * 4 = 24 records 
+
+Definition 
+==========
+Joins is a query mechanism which is used to retrieve the data from one or more then one table.
+
+We have following list of joins.
+
+1) Equi Join 
+
+2) Non-Equi Join 
+
+3) Cross Join / Cartisian Product 
+
+4) Self Join 
+
+5) Natural Join 
+
+6) Inner Join 
+
+7) Outer Join 
+
+
+1) Equi Join 
+-------------
+When two tables are joined based on common column is called equi-join.
+
+ex:
+	select e.eid,e.ename,e.esal,e.deptno,d.deptno,d.dname,d.dloc from emp e, dept d
+	where(e.deptno = d.deptno);  -- 6 records 
+
+2) Non-Equi Join
+----------------
+When two tables are joined without equi join operator (=) is called non-equi join.
+ex:
+
+	select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e, dept d
+	where e.esal > 30000;  -- 3 * 4 = 12 records 
+
+3) Cross Join
+--------------
+It combines every row from one table with every row from another table. This operation produces a Cartesian product.
+
+Cross join does not contain where clause.
+
+ex:
+	SQL
+	---
+	select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e,dept d;  
+
+	ANSI 
+	----
+	American National Standard Institute
+	select 	e.eid,e.ename,e.esal,d.dname,d.dloc from emp e CROSS JOIN dept d; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

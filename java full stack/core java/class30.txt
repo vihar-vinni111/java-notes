@@ -1,0 +1,583 @@
+Is-A relationship 
+=================
+Is-A relationship is also known as inheritance.
+
+Using extends keyword we can implements Is-A relationship.
+
+The main objective of Is-A relationship is to provide reusability.
+
+ex:
+	Animal is a dog and Dog is a animal 
+	Vehicle is a car and car is a vehicle
+	Bird is a sparrow and sparrow is a bird. 
+
+ex:
+---
+class Animal 
+{
+	public void eat()
+	{
+		System.out.println("Eat Method");
+	}
+}
+class Dog extends Animal
+{
+	public void sound()
+	{
+		System.out.println("Sound Method");
+	}
+}
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Animal a = new Animal();
+		a.eat();
+		
+		Dog d = new Dog();
+		d.eat();
+		d.sound();
+		
+		Animal a1 = new Dog();
+		a.eat();
+		
+		// Dog d1 = new Animal(); // C.T.E 
+	}
+}
+
+conclusion 
+-----------
+Whenever parent having properties by default go to child. But whatever child having 
+properties by default it never go to parent.
+
+A parent reference can hold child object but child reference can't hold parent object.
+
+Inheritance 
+===========
+It is a mechanism in which one class acquires the properties of another class.
+
+It is a mechanism where new class derives the properties and behaviours from existing class.
+
+Inheritance promotes code reusability.
+
+Diagram: class30.1
+
+We have following list of inheritance.
+
+1) Single Level Inheritance 
+
+2) Multi-Level Inheritance 
+
+3) Multiple Inheritance
+
+4) Hierarchical Inheritance 
+
+5) Hybrid Inheritence.
+
+
+1) Single Level Inheritance 
+---------------------------
+If we derived a class in the presence of one base class is called single level inheritance.
+
+diag:
+	A (Parent/Base/Super class)
+	|
+	|
+	B (Child/Derived/Sub class)
+
+ex:
+---
+class Father
+{
+	public void skill1()
+	{
+		System.out.println("Coding Skill");
+	}
+}
+class Son extends Father 
+{
+	public void skill2()
+	{
+		System.out.println("Fast Riding Bike Skill");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Father f = new Father();
+		f.skill1();
+		
+		Son s = new Son();
+		s.skill1();
+		s.skill2();
+	}
+}
+
+
+2) Multi-Level Inheritance 
+---------------------------
+class GrandFather
+{
+	public void property1()
+	{
+		System.out.println("House");
+	}
+}
+class Father extends GrandFather
+{
+	public void property2()
+	{
+		System.out.println("Car");
+	}
+}
+class Son extends Father 
+{
+	public void property3()
+	{
+		System.out.println("Bike");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		GrandFather gf = new GrandFather();
+		gf.property1();
+		
+		Father f = new Father();
+		f.property1();
+		f.property2();
+		
+		Son s = new Son();
+		s.property1();
+		s.property2();
+		s.property3();
+		
+	}
+}
+
+3) Multiple Inheritance
+-----------------------
+In java, we can't extends more then one class simultenously because java does not support 
+multiple inheritance.
+ex:
+	class A 
+	{	
+	}
+	class B 
+	{	
+	}
+	class C extends A,B  --> invalid 
+	{
+	}
+	
+In java, interface can extends more then one interface so we can achieve multiple inheritance concept through interfaces.
+
+ex:
+	interface A 
+	{
+	}
+	interface B 
+	{
+	}
+	interface C extends A,B
+	{
+	}
+	
+	
+If our class does not extends any other class then it is a direct child class of Object class.
+ex:				diag:
+	class A 			Object
+	{				|
+	}				|
+					A 
+
+If our class extends some other class then it is a indirect child class of Object class.
+ex:				diag:
+	class A 			Object
+	{				|
+	}				A
+	class B extends A		|
+	{				B
+	}
+	
+Java does not support cyclic inheritance.
+ex:
+	class A extends B
+	{
+	}
+	class B extends A 
+	{
+	}
+
+Q) Why java does not support multiple inheritance?
+   
+   There is a chance of raising ambiguity problem that's why java does not support multiple 
+   inheritance.
+	
+  ex:
+	P1.m1()				P2.m1()
+	|------------------------------------|
+			|
+			C.m1()	
+
+
+
+
+
+
+
+4) Hierarchical Inheritance
+----------------------------
+If we derived multiple classes by using one base class is called hierarchical inheritance.
+
+diag:
+		A		
+		|
+	|---------------|
+	B		C
+	
+ex:
+---
+class Animal 
+{
+	public void eat()
+	{
+		System.out.println("Animal Eat");
+	}
+}
+class Dog extends Animal
+{
+	public void sound()
+	{
+		System.out.println("Bow Bow");
+	}
+}
+class Cat extends Animal
+{
+	public void sound()
+	{
+		System.out.println("Meow Meow");
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Animal a = new Animal();
+		a.eat();
+		
+		Dog d = new Dog();
+		d.eat();
+		d.sound();
+		
+		Cat c = new Cat();
+		c.eat();
+		c.sound();
+	}
+}
+
+
+5) Hybrid Inheritance 
+---------------------
+It is a combination of two or more inheritance.
+Java does not support hybrid inheritance.
+diag:
+		A		
+		|
+	|---------------|
+	B		C
+	|---------------|
+		|
+		D 
+
+Constructor 
+===========
+It is a special method which is used to initialize an object.
+
+Having same name as class name is called constructor.
+
+In java, constructor will execute when we create instance of a class.
+
+It does not allow any returntype. If we declare any returntype then we won't get any compile time error or runtime error.
+
+A constructor will accept following modifiers.
+ex:
+	default 
+	public 
+	private 
+	protected 
+
+In java , constructors are divided into two types.
+	
+1) Userdefined constructor 
+
+2) Default constructor 
+
+1) Userdefined constructor 
+---------------------------
+A constructor which is created by the user based on the application requirements is called 
+userdefined constructor.
+
+It is categorized into two types.
+
+i) Zero Argument Constructor 
+
+ii) Parameterized Constructor 
+
+i) Zero Argument Constructor 
+-----------------------------
+Suppose we are not passing any argument to userdefined constructor then such concept is called zero argument constructor.
+
+ex:
+---
+class Test 
+{
+	Test()
+	{
+		System.out.println("0-arg const");
+	}
+	public static void main(String[] args)
+	{
+		System.out.println("main-method");
+	}
+}
+o/p:
+	main-method
+
+ex:
+---
+
+class Test 
+{
+	public Test()
+	{
+		System.out.println("0-arg const");
+	}
+	public static void main(String[] args)
+	{
+		System.out.println("main-method");
+		Test t = new Test();
+	}
+}
+o/p:
+	main-method 
+	0-arg const 
+
+ex:
+---
+
+class Test 
+{
+	private Test()
+	{
+		System.out.println("0-arg const");
+	}
+	public static void main(String[] args)
+	{
+		Test t1 = new Test();
+		System.out.println("main-method");
+		Test t2 = new Test();
+	}
+}
+
+o/p:
+	0-arg const
+	main-method 
+	0-arg const
+
+
+ex:
+---
+
+class Test 
+{
+	protected Test()
+	{
+		System.out.println("0-arg const");
+	}
+	public static void main(String[] args)
+	{
+		Test t1 = new Test();
+		System.out.println("main-method");
+		Test t2 = new Test();
+	}
+}
+o/p:
+	0-arg const
+	main-method 
+	0-arg const
+
+
+ii) Parameterized Constructor
+-----------------------------
+Suppose if we pass atleat one argument to userdefined constructor such type of constructor is called parameterized constructor.
+
+ex:
+---
+class Employee 
+{
+	//current class variables 
+	private int empId;
+	private String empName;
+	private double empSal;
+	
+	Employee(int empId,String empName,double empSal)
+	{
+		this.empId = empId;
+		this.empName = empName;
+		this.empSal = empSal;
+	}
+	public void getEmployeeDetails()
+	{
+		System.out.println("Employee Id : "+empId);
+		System.out.println("Employee Name : "+empName);
+		System.out.println("Employee Salary : "+empSal);
+	}
+}
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Employee e = new Employee(101,"Alan",10000d);
+		e.getEmployeeDetails();
+	}
+}
+
+2) Default constructor 
+----------------------
+It is a compiler generated constructor for every java program where we are not defining atleast zero argument constructor.
+
+To see default constructor we need to use below command.
+ex:
+	javap   -c   Test 
+
+Diagram: class30.2
+
+
+
+Constructor Overloading 
+=======================
+Having same constructor name with different parameters in a single class is called constructor overloading.
+
+ex:
+---
+class A
+{
+	A()
+	{
+		System.out.println("0-arg const");
+	}
+	A(int i)
+	{
+		System.out.println("int-arg const");
+	}
+	A(double d)
+	{
+		System.out.println("double-arg const");
+	}
+}
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		A a1 = new A();
+		A a2 = new A(10);
+		A a3 = new A(10.5d);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

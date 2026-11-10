@@ -1,0 +1,150 @@
+System.out.println()
+====================
+It is a output statement in java.
+
+Whenever we want to display any userdefined statements , data or expression then we need to use output statement in java.
+
+syntax:
+-------
+	  static variable 
+                |
+	System.out.println()
+	|             |
+predefined 	predefined method 
+final class 
+
+Diagram: class12.1
+
+ex:
+---
+class Test 
+{
+	void main()
+	{
+		System.out.print("RAISE");
+		System.out.print("TECH");
+	}
+}	
+o/p:
+	RAISETECH 
+
+ex:
+---
+class Test 
+{
+	void main()
+	{
+		System.out.println("RAISE");
+		System.out.println("TECH");
+	}
+}
+o/p:
+	RAISE 
+	TECH 
+
+ex:
+---
+class Test 
+{
+	void main()
+	{
+		double d = 10.5478965d;
+		System.out.printf("%.2f",d);
+	}
+}
+
+
+Various ways to display the output in java
+------------------------------------------
+1) custom message 
+   ex:
+	System.out.println("Hello World");
+
+2) int i = 10
+   ex:
+	System.out.println(i);
+	System.out.println("The value is = "+i);
+	System.out.println(i+" is the value");
+
+3) int i=10,j=20;
+   ex:
+	System.out.println(i+" "+j);
+	System.out.println(i+" and "+j);
+ 	
+4) int i=1,j=2,k=3;
+   ex:
+	System.out.println(i+" "+j+" "+k);
+
+
+Q) What is the difference between System.out.println() and System.err.println()?
+
+System.out.println()
+---------------------
+It is used to display standard output.
+It display the output only on console.
+
+System.err.println()
+--------------------
+It is used to display error output.
+It display the output on console as well as redirect to physical file.
+ex:
+class Test 
+{
+	void main()
+	{
+		System.err.println("Welcome to Java Batch");
+	}
+}	
+o/p:
+	javac  Test.java
+	java   Test 2>abc.txt 
+
+
+Q) Write a java program to display Hello World without using print stmt?
+
+class Test 
+{
+	void main()throws java.io.IOException
+	{
+		String str = "Hello World";
+		System.out.write(str.getBytes());
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

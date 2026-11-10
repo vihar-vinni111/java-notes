@@ -1,0 +1,128 @@
+Web Application 
+===============
+It is a software application which runs in a web server.
+
+It is a interactive, data driven application that can be accessible by browser over the 
+network using HTTP protocol.
+ex:
+	http://www.flipkart.in
+	https://www.amazon.in
+
+Technically, a web application is a collection of web resource programs having capability to 
+generate web pages.
+
+We have two types of web pages.
+
+1) Static web page / Passive web page 
+------------------------------------
+A page with fixed content is called static web page.
+ex:
+	Facebook login page 
+	gmail login page 
+	home page 
+	about page 
+	contact us page 
+	and etc.
+
+2) Dynamic web page / Active web page 
+-------------------------------------
+A web page with dynamic content is called dynamic web page.
+ex:
+	Live cricket score page 
+	stock market share value page 
+	news page 
+	gmail inbox 	
+	and etc.
+
+We have two types of web resource programs.
+
+1) Static web resource program 
+------------------------------
+A web resource program which is used to generate static web pages is called static web resource
+program.
+ex:
+	HTML program 
+	CSS program 
+	Bootstrap program 
+	angularjs program 
+	reactjs program 
+	and etc.
+
+2) Dynamic web resource program
+-----------------------------
+A web resource program which is used to generate dynamic web pages is called dynamic web resource program.
+ex:
+	servlet program 
+	jsp program 
+	and etc.
+
+Based on the position and execution these web resource programs are classified into two types.
+
+1) Client side web resource program 
+-----------------------------------
+A web resource program which executes at client side(browser window) is called client side 
+web resource program.
+
+All static web resource programs are called client side web resource programs.
+ex:
+	HTML program 
+	CSS program 
+	Bootstrap program 
+	angularjs program 
+	reactjs program 
+	and etc.
+
+2) Server side web resource program
+-----------------------------------
+A web resource program which executes at server side is called server side web resource 
+program.
+
+All dynamic web resource programs are called server side web resource programs.
+ex:
+	servlet program 
+	jsp program 
+	and etc.
+
+Web application and Web resource program execution 
+==================================================
+Java application executes manually.
+
+Web application and web resource program executed at the time when they have requested.
+
+Diagram: servlet1.1
+
+With the respect to the diagram
+--------------------------------
+1) Enduser gives the request to web resource program.
+
+2) Web server traps that request and passes that request to appropriate web resoure program.
+
+3) Web resource program executes the logic to process the request.
+
+4) Web resource program communicates with database software if necessary.
+
+5) Web resource program gives the result to web server.
+
+6) Web server sends the output to browser window as dynamic response.
+
+Note:
+-----
+	The process of keeping the application in a server is called deployment 
+	and reverse is called undeployment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

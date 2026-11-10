@@ -1,0 +1,48 @@
+JSP 
+====
+JSP stands for Java/Jakarta Server Pages.
+
+JSP is a server side web resource program which is used to develop web applications.
+
+JSP is a dynamic web resource program which is used to develop dynamic web pages.
+
+
+Q) What is the difference between Servlets and JSP ? 
+
+Servlets					JSP 
+--------					--------
+To work with servlets strong java knowledge 	To work with JSP strong java knowledge 
+is required.					is not required.
+
+It is not suitable for non-java programmers.	It is suitable for java and non-java 
+						programmers.
+
+It does not support tags.			It supports tags.
+
+It supports annotations.			It does not support annotations.
+
+It accept all requests.				It accept only HTTP request.
+
+It is faster.					It is bit slow.
+
+It does not give implicit objects.		It gives 9 implicit objects.
+
+Configuration of servlet program is 		Configuration of JSP program is 
+mandatory.					optional.
+
+Handling exceptions is mandatory.		Handling exceptions is optional.
+
+We can't maintain HTML code and JAVA code	We can maintain HTML code and Java code  
+seperately.					seperately.
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,397 @@
+ii) while loop
+===============
+It is used to execute the source code how long our condition is true.
+
+syntax:
+-------
+	while(condition)
+	{
+		-
+		- //code to be execute 
+		-
+	}
+
+ex:
+--
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i=1;
+		while(i<=10)
+		{
+			System.out.print(i+" ");//infinite 1  
+		}
+	}
+}
+
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i=11;
+		while(i<=10)
+		{
+			System.out.print(i+" ");// no output
+		}
+	}
+}
+
+Q) Write a java program to display 10 natural numbers using while loop?
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i=1;
+		while(i<=10)
+		{
+			System.out.print(i+" "); // 1 2 3 4 5 6 7 8 9 10
+			i++;
+		}
+	}
+}
+
+Q) Write a java program to perform sum of 10 natural numbers?
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int i=1,sum=0;
+		while(i<=10)
+		{
+			sum = sum + i;
+			i++;
+		}
+		System.out.println(sum);
+	}
+}
+
+Q) Write a java program to find out factorial of a given number?
+
+Input:
+	5
+
+Output:
+	120 (5*4*3*2*1)
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the number : ");
+		int n = sc.nextInt();//5
+		
+		int i=n, fact=1;
+		while(i>=1)
+		{
+			fact = fact * i;
+			i--;
+		}
+		System.out.println(fact);
+	}
+}
+
+
+Q) Write a java program to find out sum of digits of a given number?
+
+input:
+	123
+output:
+	6
+
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the number : ");
+		int n = sc.nextInt();//123
+		
+		int rem,sum=0;
+		while(n>0)
+		{
+			rem = n%10;
+			sum = sum + rem;
+			n = n/10;
+		}
+		System.out.println(sum);
+	}
+}
+	
+
+Q) Write a java program to find out given number is armstrong or not?
+
+input:
+	153
+
+output:
+	
+	It is a armstrong number
+	1*1*1+5*5*5+3*3*3 -> 1+125+27 -> 153
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the number : ");
+		int n = sc.nextInt();//123
+		int temp = n;
+		int rem,sum=0;
+		while(n>0)
+		{
+			rem = n%10;
+			sum = sum + rem*rem*rem;
+			n = n/10;
+		}
+		if(temp==sum)
+			System.out.println("It is a armstrong number");
+		else
+			System.out.println("It is not a armstrong number");
+	}
+}
+
+Q) Write a java program to display reverse of a given number?
+
+input:
+	123
+output:
+	321
+
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the number : ");
+		int n = sc.nextInt();//123
+		
+		int rem,rev=0;
+		while(n>0)
+		{
+			rem = n%10;
+			rev = rev*10+rem;
+			n = n/10;
+		}
+		System.out.println(rev);
+	}
+}
+
+
+Q) Write a java program to find out given number is palindrome or not?
+
+input:
+	121
+output:
+	It is a palindrome number 
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the number : ");
+		int n = sc.nextInt();//123
+		int temp = n;
+		int rem,rev=0;
+		while(n>0)
+		{
+			rem = n%10;
+			rev = rev*10+rem;
+			n = n/10;
+		}
+		if(temp==rev)
+			System.out.println("It is a palindrome number");
+		else
+			System.out.println("It is not a palindrome number");
+	}
+}
+
+
+Q) A Frog felldown in a well of 10 meters. Each day frog tries to come out from the well. Frog
+  jumps two meters and rollback to one meters. Write a java program in how many days a frog can   
+  come out from the well.
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int wellLength = 10;
+		int jumps = 2;
+		int rollback = 1;
+		
+		int days=0;
+		int currentPosition = 0;
+		while(currentPosition<wellLength)
+		{
+			currentPosition+=jumps;
+			if(currentPosition>wellLength)
+			{
+				break;
+			}
+			currentPosition-=rollback;
+			days++;
+		}
+		System.out.println("Frog will come out from well in "+days+" days");
+	}
+}
+
+iii) for loop 
+===========
+It is used to execute the source code how long our condition is true.
+
+syntax:
+-------
+	for(initialization;condition;increment/decrement)
+	{	
+		-
+		- //code to be execute 
+		-
+	}
+
+If number of iterations are known by the user then we need to use for loop.
+
+If number of iterations are not known by the user then we need to use while loop.
+
+If number of iterations are not known by the user but code must execute atleast for one time then we need to use do while loop.
+
+ex:
+--
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		for(int i=1;i<=10;i++)
+		{
+			System.out.print(i+" "); //1 2 3 4 5 6 7 8 9 10
+		}
+	}
+}
+	
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		for(int i=1;i<=10;i++)
+		{
+			if(i%2==0)
+				System.out.print(i+" "); //2 4 6 8 10
+		}
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		for(int i=1;i<=10;i++)
+		{
+			if(i%2==0)
+			{
+				System.out.print(i+" "); // 2 6 10
+				i+=2;
+			}
+		}
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		int cnt = 0;
+		for(int i=1;i<=10;i++)
+		{
+			if(i%2==0) 
+			{
+				cnt++;
+			}
+		}
+		System.out.println(cnt);//5 
+	}
+}
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		for(;;)
+		{
+			System.out.print("Hello ");
+		}
+	}
+}
+o/p:
+	infinite Hello 
+
+Q) Write a java program to find out given number prime or not?
+
+Input:
+	5
+
+Output:
+	It is a prime number 
+
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the number :");
+		int n = sc.nextInt();//5
+		
+		boolean flag = true;
+		for(int i=2;i<=n/2;i++)
+		{
+			if(n%i==0)
+			{
+				flag=false;
+				break;
+			}
+		}
+		if(flag==true)
+			System.out.println("It is a prime number");
+		else
+			System.out.println("It is not a prime number");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

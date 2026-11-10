@@ -1,0 +1,451 @@
+File Uploading 
+==============
+The process of capturing a file from client machine file system and storing in a server machine file system is called file uploading and reverse is called file downloading.
+
+While dealing with matrimonial applications, job portal applications, profile management applications we need to upload and download a file.
+
+There is no specific API in servlets to perform file uploading.
+
+To overcome this limitation we need to use third party API called JAVAZOOM API.
+
+JAVAZOOM API comes in zip format and once if we extracted we will get three jar files.
+ex:
+	uploadbean.jar 
+	struts.jar 
+	cos.jar 
+
+JAVAZOOM API Link 
+-----------------
+https://drive.google.com/file/d/1XXQqn3rQ_yWTr-i4DT0nl4_nCDE2ejWl/view?usp=drive_link
+
+We can use file component in a form page as follow.e
+ex:
+	<input type="file" name="f1"/>
+
+Deployment Directory Structure 
+==============================
+UploadApp
+|
+|---Java Resources
+	|	
+	|------src
+		|
+		|---com.rt.www
+			|
+			|---FormSrv.java
+|---WebContent
+	|
+	|---form.html	
+	|---WEB-INF
+		|
+		|------web.xml 	
+		|------lib 
+			|
+			|---uploadbean.jar	
+			|---struts.jar
+			|---cos.jar 
+Note:
+------
+In above application we need to add "servlet-api.jar" file and "uploadbean.jar" file in project build path.
+
+form.html
+---------
+
+<form action="test" method="POST" enctype="multipart/form-data">
+	File1 : <input type="file" name="f1"/> <br>
+	File2 : <input type="file" name="f2"/> <br>
+	<input type="submit" value="upload"/>
+</form>
+
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>UploadApp</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+FormSrv.java
+------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import javazoom.upload.MultipartFormDataRequest;
+import javazoom.upload.UploadBean;
+
+@WebServlet(urlPatterns = "/test", name="FormSrv")
+public class FormSrv extends HttpServlet 
+{
+	protected void doPost(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw = res.getWriter();
+		res.setContentType("text/html");
+		
+		//upload the files 
+		try
+		{
+			UploadBean ub = new UploadBean();
+			ub.setFolderstore("D:\\store");
+			ub.setOverwrite(false);
+			
+			MultipartFormDataRequest nreq = new MultipartFormDataRequest(req);
+			ub.store(nreq);
+			pw.println("<center><h1>Files Uploaded Successfully</h1></center>");
+		}
+		catch(Exception e)
+		{
+			pw.println(e);
+		}
+	}
+}
+
+Request url 
+----------
+	http://localhost:2525/UploadApp/
+
+
+ServletConfig object 
+====================
+ServletConfig is an interface which is present in javax.servlet package.
+
+ServletConfig object is created by the web container for every servlet.
+
+ServletConfig object is used to pass/read initialized parameters from deployment descriptor(web.xml) and annotations to specific servlet during initialization phase.
+
+We can create ServletConfig object as follow.
+ex:
+	ServletConfig config = getServletConfig(); 
+
+ServletConfig interface contains following methods.
+
+1) public String getInitParameter(String name)
+-------------------------------------------
+	It returns parameter value based on initialized parameter name.
+
+2) public Enumeration getInitParameterNames() 
+---------------------------------------------
+	It returns Enumeration of initialized parameter names.
+
+3) public String getServletName() 
+-------------------------------
+	It returns servlet name.
+
+4) public ServletContext getServletContext() 
+--------------------------------------------
+	It returns ServletContext object.
+
+
+Deployment Directory Structure 
+==============================
+ServletConfigApp
+|
+|---Java Resources
+	|
+	|------src
+		|
+		|---com.rt.www
+			|
+			|---TestSrv.java
+|---WebContent
+	|
+	|---index.html 
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+index.html
+----------
+<center>
+	<h1>
+		<a href="test">
+			click me
+		</a>
+	</h1>
+</center>
+
+web.xml 
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>ServletConfigApp</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+TestSrv.java
+------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = "/test", name="TestSrv", initParams = {
+		@WebInitParam(name="driver", value="oracle.jdbc.driver.OracleDriver"),
+		@WebInitParam(name="url", value="jdbc:oracle:thin:@localhost:1521:Xe")
+})
+public class TestSrv extends HttpServlet
+{
+	protected void doGet(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw =res.getWriter();
+		res.setContentType("text/html");
+		
+		ServletConfig config = getServletConfig();
+		
+		pw.println(config.getInitParameter("driver")+"<br>");
+		pw.println(config.getInitParameter("url")+"<br>");
+		
+		Enumeration<String> e = config.getInitParameterNames();
+		while(e.hasMoreElements())
+		{
+			String s = e.nextElement();
+			pw.println(s+"<br>");
+		}
+		
+		pw.println(config.getServletName());
+		
+		pw.close();
+	}
+}
+
+Request url
+----------
+	http://localhost:2525/ServletConfigApp/
+
+
+
+ServletContext object 
+=====================
+ServletContext is an interface which is present in javax.servlet package.
+
+ServletContext object created by web container for every web application.
+
+ServletContext object is used to read configuration information from web.xml file which is global.
+
+We can create ServletContext object as follow.
+ex:
+	ServletContext context = getServletContext(); 
+	or 
+	ServletConfig config = getServletConfig();
+	ServletContext context = config.getServletContext(); 
+
+ServletContext interface contains following methods.
+
+1) public String getInitParameter(String name)
+----------------------------
+	It returns parameter value based on initialized parameter name.
+
+2) public Enumeration getInitParameterNames()
+----------------------------------------------
+	It returns enumeration of initialized parameter names.
+
+3) public void setAttribute(String name, Object obj)
+-----------------------------------------------
+	It is used to set the value/attribute to context object.
+
+4) public Object getAttribute(String name)
+----------------------------------------
+	It is used to read the value/attribute from context object. 
+
+5) public void removeAttrribute(String name)
+-------------------------------------
+	It is used to remove the value/attribute from context object.
+
+Deployment Directory Structure 
+==============================
+ContextApp
+|
+|---Java Resources	
+	|
+	|------src
+		|
+		|---com.rt.www
+			|
+			|---TestSrv.java
+|---WebContent
+	|
+	|---index.html	
+	|---WEB-INF
+		|
+		|---web.xml 
+Note:
+-----
+In above application we need to add "servlet-api.jar" file in project build path.
+
+index.html
+----------
+<center>
+	<h1>
+		<a href="test">
+			click me
+		</a>
+	</h1>
+</center>
+
+web.xml
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  
+  <display-name>ServletConfigApp</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+  <context-param>
+  	<param-name>driver</param-name>
+  	<param-value>oracle.jdbc.driver.OracleDriver</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>url</param-name>
+  	<param-value>jdbc:oracle:thin:@localhost:1521:XE</param-value>
+  </context-param>
+  
+</web-app>
+
+TestSrv.java
+------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(urlPatterns = "/test", name="TestSrv")
+public class TestSrv extends HttpServlet
+{
+	protected void doGet(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw =res.getWriter();
+		res.setContentType("text/html");
+		
+		ServletContext context = getServletContext();
+		
+		pw.println(context.getInitParameter("driver")+"<br>");
+		pw.println(context.getInitParameter("url")+"<br>");
+		
+		Enumeration<String> e = context.getInitParameterNames();
+		while(e.hasMoreElements())
+		{
+			String s = e.nextElement();
+			pw.println(s+"<br>");
+		}
+		
+		context.setAttribute("username","system");
+		context.setAttribute("password","admin");
+		
+		pw.println(context.getAttribute("username")+"<br>");
+		pw.println(context.getAttribute("password")+"<br>");
+		
+		context.removeAttribute("username");
+		context.removeAttribute("password");
+		
+		pw.close();
+	}
+}
+
+Request url 
+---------
+	http://localhost:2525/ServletConfigApp/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

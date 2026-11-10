@@ -1,0 +1,264 @@
+Eureka Server 
+=============
+Eureka server is also known as Dicovery Server.
+
+Eureka server is a service register that plays a vital role in automatic detection of machines or services on network.
+
+Eureka server is used to register client service applications (microservices).
+
+The default port number of eureka server is 8761.
+
+Diagram: sb11.1
+
+Project Structure
+---------------
+service-registry 
+|
+|---src/main/java
+	|
+	|---com.rt.www
+		|
+		|---ServiceRegistryApplication.java
+
+|---src/main/resources
+	|
+	|---application.properties
+
+|---src/test/java
+|
+|---pom.xml 
+
+step1:
+------
+	Create a spring boot starter project.
+	ex:	
+		starters:
+				Eureka Server
+
+
+step2:
+------
+	Add @EnableEurekaServer annotation on main spring boot class.
+
+ServiceRegistryApplication.java
+--------------------------------
+package com.rt.www;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+
+@SpringBootApplication
+@EnableEurekaServer
+public class ServiceRegistryApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ServiceRegistryApplication.class, args);
+	}
+
+}
+
+step3:
+------
+	Rename application.properties file to application.yml file.
+
+application.yml
+----------------
+server:
+  port: 8761
+
+spring:
+  application:
+    name: service-registry
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+step4:
+-----
+	Run spring boot starter project.
+
+step5:
+-----
+	Test the application.
+	ex:	
+		http://localhost:8761
+
+step6:
+------
+	Take a customer-service and add below dependency.
+	ex:
+		starter : 
+			Eureka Discovery Client 
+
+step7:
+-------
+	Goto application.yml file to register customer-service with eureka server.
+
+application.yml 
+----------------
+server:
+  port: 9090
+
+spring:
+  application:
+    name: CUSTOMER-SERVICE
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/JAVA_BATCH
+    username: root
+    password: root
+  jpa:
+    hibernate.ddl-auto: update 
+    generate-ddl: true
+    show-sql: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone : http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+      
+step8:
+----
+	Run customer-service project.
+
+step9:
+------
+	Test the application.
+	ex:
+		http://localhost:8761
+
+
+
+Spring Boot Actuator 
+====================
+Spring Boot Actuator is a module that provides production-ready features to help you monitor and manage your application when you push it to production.
+
+It describes about,
+1) Is my application running or not?
+2) How much memory/CPU is being used?
+3) What is the status of database, disk, services?
+
+Real life example
+-----------------
+Think of your application as a Human Body
+
+Human Body	Spring Boot Application
+----------	---------------------
+Doctor		Developer/DevOps
+BP Check	/actuator/health
+Temperature	/actuator/metrics
+Medical Report	/actuator/info
+
+step1:
+-------
+	Create a spring boot starter project i.e actuator-app.
+	ex:
+		starters:
+				Spring Web
+				Spring Boot Actuator 
+
+step2:
+------
+	Create a WebController.java file inside "com.rt.www.controller" package.
+
+WebController.java
+-----------------
+package com.rt.www.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class WebController 
+{
+	@GetMapping("/msg")
+   	public String home() 
+	{
+        	return "Spring Boot Actuator Example";
+    	}
+}
+
+step3:
+------
+	Configure server port, actuator properties and application properties.
+
+application.properties
+----------------------
+server.port=8282
+
+# Expose actuator endpoints
+management.endpoints.web.exposure.include=health,info,metrics
+
+# Enable health details
+management.endpoint.health.show-details=always
+
+# Application info
+management.info.env.enabled=true
+info.app.name=Spring Boot 4 Actuator Demo
+info.app.version=1.0.0
+	
+step4:
+------
+	Run spring boot project.
+
+step5:
+------
+	Test the application by using below request url.
+	ex:
+		http://localhost:8282/msg
+		http://localhost:8282/actuator/health
+		http://localhost:8282/actuator/info
+		http://localhost:8282/actuator/metrics
+
+
+
+Add actuator to API gateway 
+============================
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+application.properties 
+---------------------
+server:
+  port: 7171
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: customer-service
+              uri: http://localhost:9191
+              predicates:
+                - Path=/customer/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+Request url 
+------------
+http://localhost:7171/actuator/health
+http://localhost:7171/actuator/info
+http://localhost:7171/actuator/metrics
+
+
+
+
+
+

@@ -1,0 +1,288 @@
+Packages
+========
+A package is a collection of logical related sub programs like procedures, functions, variables, exceptions and etc together as a single unit.
+
+Package creation involved in two steps.
+
+1) Package specification 
+------------------------
+	It contains declaration of logical related sub programs.
+
+2) Package body 
+-------------
+	It contains definition of logical related sub programs.
+
+
+Realtime Usecase
+-----------------
+
+Employee Management System 
+	|
+	|-----Employee Module 
+		|
+		|---Add_Employee
+		|---Update_Employee
+		|---Terminate_Employee
+		|---Get_Employee_Details
+
+	|-----Salary Module 
+		|
+		|---calculate_salary
+		|---calculate_bonus
+	|
+	|-----Department Module 
+		|
+		|---add_department
+		|---fetch_department
+
+ex:1
+----
+Package specification 
+-----------------
+create or replace package pkg1 
+is
+procedure add_employee(L_eid IN number, L_ename IN varchar2, L_esal IN number,
+				L_deptno IN number, L_job varchar2, L_comm number);	
+end pkg1;	
+/
+
+package body 
+-----------
+create or replace package body pkg1 
+is
+procedure add_employee(L_eid IN number, L_ename IN varchar2, L_esal IN number,
+				L_deptno IN number, L_job varchar2, L_comm number)
+is
+begin
+	insert into emp values(L_eid,L_ename,L_esal,L_deptno,L_job,L_comm);
+	DBMS_OUTPUT.PUT_LINE('Record Inserted');
+end;	
+end pkg1;	
+/
+
+We can call above procedure as follow.
+ex:
+	exec  pkg1.add_employee(209,'Manasa',24000,60,'Salesman',500);
+
+	select * from emp;
+
+
+Ex:2
+----
+Package specification 
+----------------------
+create or replace package pkg2 
+is
+function calculate_bonus(L_eid number) return number;
+end pkg2;
+/
+
+Package body 
+-------------
+create or replace package body pkg2 
+is
+function calculate_bonus(L_eid number) return number
+is
+L_esal number;
+L_bonus number;
+begin
+	select esal into L_esal from emp where eid = L_eid;
+
+	L_bonus := L_esal * 10 / 100;
+	return L_bonus;
+end;
+end pkg2;
+/
+
+We can invoke above function as follow.
+ex:
+	select eid,ename,esal, pkg2.calculate_bonus(eid) as bonus from emp;
+
+
+
+Q) Write a query to see the list of packages present in database?
+
+	select object_name from user_objects where object_type='PACKAGE';
+
+Q) Write a query to see the source of a package.
+  
+	select text from user_source where name = 'PKG1';
+
+Q) Write a query to drop the package?
+
+	drop package body pkg1;
+	drop package pkg1;
+
+	drop package body pkg2;
+	drop package pkg2;
+
+Triggers 
+========
+It is a PL/SQL block which executes based on event.
+
+Trigger events are insert, update and delete.
+
+Trigger timmings are before , after and insteadof.
+
+syntax:
+------
+	create or replace trigger <trigger_name> <timming> <event> on <object>
+	begin
+	-
+	-
+	end;
+	/
+	
+ex:
+---
+create or replace trigger trg1 before insert on student
+begin 
+DBMS_OUTPUT.PUT_LINE('Thank You');
+END;
+/
+
+insert into student values(105,'Paravati','delhi');
+
+
+A trigger can be created for multiple events.
+
+create or replace trigger trg2 after insert or update or delete on student
+begin
+if inserting then 
+DBMS_OUTPUT.PUT_LINE('Thank you for inserting!!!');
+elsif updating then 
+DBMS_OUTPUT.PUT_LINE('Thank you for updating!!!');
+else
+DBMS_OUTPUT.PUT_LINE('Thank you for deleting!!!');
+end if;
+end;
+/
+
+insert into student values(106,'Ramya','vizag');
+update student set sname='Alan' where sname='ravi';
+delete from student where sno=103;
+
+
+Triggers are divided into two types.
+
+1) Statement Level trigger 
+---------------------------
+By default every trigger is a statement level trigger.
+
+In statement level trigger, our trigger will execute only for one time irrespective of number of records effected in a database table.
+
+ex:
+---
+	create or replace trigger trg3 after update on student 
+	begin 
+	DBMS_OUTPUT.PUT_LINE('Yahoooo!!');
+	end;	
+	/
+
+	update student set sname='raja';
+
+
+2) Row Level trigger 
+----------------------
+In row level trigger, our trigger will execute based on number of records effected in a database table.
+
+To create row level trigger we need to use "FOR EACH ROW" clause.
+
+ex:
+---
+	create or replace trigger trg3 after delete on student  FOR EACH ROW
+	begin 
+	DBMS_OUTPUT.PUT_LINE('Yahoooo!!');
+	end;	
+	/	
+
+	delete from student;
+
+
+
+Q) Write a query to see the list of triggers present in database?
+
+	select object_name from user_objects where object_type ='TRIGGER';
+	
+
+Q) Write query to see the source code of a trigger?
+
+	select text from user_source where name = 'TRG3';
+
+
+Q) Write a query to drop the trigger?
+
+	drop trigger trg1;
+	drop trigger trg2;
+	drop trigger trg3;
+
+
+Realtime usecase 
+-----------------
+A trigger is useful when we want Oracle to automatically perform an action when a specific database event occurs.
+
+HR updates salary
+       ↓
+UPDATE Employee
+       ↓
+   TRIGGER fires
+       ↓
+Reads :OLD and :NEW values
+       ↓
+Stores change in Salary_Audit
+
+
+
+Employee table:
+------------
+
+drop table employee;
+CREATE TABLE employee (
+    id NUMBER(5),
+    name VARCHAR2(15),
+    salary NUMBER(10,2)
+);
+INSERT INTO employee (id, name, salary)VALUES (101, 'John', 50000);
+INSERT INTO employee (id, name, salary)VALUES (102, 'David', 60000);
+commit;
+
+
+SALARY_AUDIT table
+----------------------
+drop table salary_audit;
+CREATE TABLE salary_audit (
+    id      NUMBER(5),
+    old_salary  NUMBER(10,2),
+    new_salary  NUMBER(10,2),
+    change_date DATE
+);
+
+
+Trigger
+-------
+CREATE OR REPLACE TRIGGER salary_audit_trigger
+AFTER UPDATE OF salary ON employee FOR EACH ROW
+BEGIN
+    INSERT INTO salary_audit
+    VALUES (
+        :OLD.id,
+        :OLD.salary,
+        :NEW.salary,
+        SYSDATE
+    );
+END;
+/
+
+Now execute:
+
+UPDATE employee SET salary = 55000 WHERE id = 101;
+
+
+The trigger automatically executes and inserts:
+ex:
+	select * from employee;
+	select * from salary_audit;
+
+
+
+

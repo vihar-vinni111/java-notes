@@ -1,0 +1,334 @@
+Maven 
+=====
+A maven is a project building management tool.
+
+It is used to simplify project development process.
+
+Maven is a declarative build automation used primarily for java applications.
+
+Maven is developed by Apache Software Foundation.
+
+Maven manages a project's full lifeycle - including compilation, testing , packaging and deployment by utilizing the central XML configuration file known as pom.xml.
+
+POM stands for Project Object Model. 
+
+
+Steps to develop and execute maven project 
+=========================================
+step1:
+------
+	Create a maven project i.e MavenProj.
+	ex:
+		File --> New --> Maven Project --> Next --> 		
+		GroupId : org.apache.maven.archetype
+		ArtifactId : maven-archetype-webapp
+		version : 1.0 
+		disable show the latest version 
+		--> Next
+		Group Id : com.rt.www
+		ArtifactId : MavenProj
+		version : (keep same) 
+		package : com.rt.www  ---> Finish.
+
+step2:
+------
+	Add servlet-api maven dependency inside pom.xml file.
+	ex:
+		<dependency>
+    			<groupId>javax.servlet</groupId>
+    			<artifactId>javax.servlet-api</artifactId>
+    			<version>3.1.0</version>
+    			<scope>provided</scope>
+		</dependency>		
+
+step3:
+-----
+	Goto index.jsp file and write below code.
+
+index.jsp 
+---------
+<center>
+	<h1>
+		<a href="test"> clickMe </a>
+	</h1>
+</center>
+
+
+step4:
+------
+	Configure welcome file inside web.xml file.
+
+web.xml
+------
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  
+  <display-name>Archetype Created Web Application</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+step5:
+------
+	Create a "java" folder inside "src/main" folder.
+	ex:
+		right click to src/main folder --> new --> folde --> java.
+
+step6:
+-----
+	Create a com.rt.www package inside "src/main/java" folder.
+
+step7:
+-----
+	Create TestSrv.java file inside "com.rt.www" package.
+
+TestSrv.java
+------------
+package com.rt.www;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+
+@WebServlet(urlPatterns = "/test", name = "TestSrv" ,loadOnStartup = 1)
+public class TestSrv extends HttpServlet
+{
+	protected void doGet(HttpServletRequest req,ServletResponse res)throws ServletException,IOException
+	{
+		PrintWriter pw =res.getWriter();
+		res.setContentType("text/html");
+		
+		pw.println("<center><h1> Welcome to Maven Project </h1></center>");
+		pw.close();
+	}
+}
+
+step8:
+------
+	Run maven project.
+	ex:
+		Right click to MavenProj --> run as --> run on server.
+
+step9:
+-----
+	Test the application.
+	ex:
+		http://localhost:2525/MavenProj/
+
+
+Steps to develop and execute web application in external servers 
+===============================================================
+step1:
+------
+	Create a Maven or Dynamic web project.
+	ex:
+		MavenProj 
+
+step2:
+------
+	Export the project to war file.
+	ex:
+		Right click to MavenProj --> Export --> War file -->
+		Destination : select Desktop --> save --> Finish. 	
+
+step3:
+------
+	Launch Tomcat Server from "Tomcat9.0/bin" folder.
+
+step4:
+-----
+	Visit to Tomcat console page.
+	ex:
+		http://localhost:2525
+
+step5:
+------
+	Goto Manager App and signin.
+	ex:
+		username : admin
+		password : admin 
+
+step6:
+------	
+	Deploy the war in tomcat server.
+
+step7:
+------
+	Click on /MavenProj to see the output.
+
+
+Junit 
+======
+Junit is open source unit testing framework for java applications.
+
+Unit testing means checking a piece of code working as per requirement or not.
+
+Unit testing is important for TDD (Test Driven Development).
+
+It is used for writing and exucuting unit test cases or suit for classes and methods.
+
+The latest version is Junit5.
+
+
+Deployment Directory Structure 
+------------------------------
+JunitProj 
+|
+|---src/main/java
+	|
+	|---com.rt.www
+		|
+		|---Demo.java
+
+|---src/main/resources
+|
+|---src/test/java
+	|
+	|---com.rt.www
+		|
+		|---DemoTest.java
+
+|---pom.xml 
+
+step1:
+------
+	Create a simple archetype Maven project.
+	ex:	
+		File --> New --> Maven Project --> Enable : create simple project -->
+		Next --> Group Id : com.rt.www --> Artificat Id : JunitProj --> 
+		Name : JunitProj 
+		Description : Demonstration on Junit  --> Finish.
+
+step2:
+------
+	Create a "com.rt.www" package inside "src/main/java" folder.
+
+step3:
+------
+	Create a "Demo.java" file inside "com.rt.www" package.
+
+Demo.java
+--------
+package com.rt.www;
+public class Demo 
+{
+	public int sum(int a,int b)
+	{
+		return a+b;
+	}
+	
+	public String concatination(String s1,String s2)
+	{
+		return s1+s2;
+	}
+}
+
+step4: 
+------
+	Create test cases for above program.
+	ex:
+		Right to Demo.java file --> New --> Other --> Goto Junit --> Test Case 
+		--> Next --> package name : com.rt.www  --> Name : DemoTest --> 
+		select setUp and tearDown() methods --> Next -->
+		select sum and concatination method --> Finish --> ok.
+		
+step5:
+------
+	Write the code for unit testing.
+
+DemoTest.java
+-------------
+package com.rt.www;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class DemoTest {
+
+	Demo d = null;
+	@Before
+	public void setUp() throws Exception {
+		d = new Demo();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testSum() {
+		int result = d.sum(10,20);
+		assertEquals(30, result);
+	}
+
+	@Test
+	public void testConcatination() {
+		String result = d.concatination("raise","tech");
+		assertEquals("raisetech", result);
+	}
+
+}
+
+step6:
+------
+	Run test cases.
+	ex:
+		Right click to DemoTest.java file --> run as --> Junit Test  .
+
+Note:
+-----
+	Green color indicates test cases are passed 
+	Brown color indicates test cases are failed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

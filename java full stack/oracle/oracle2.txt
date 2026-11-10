@@ -1,0 +1,243 @@
+SQL 
+===
+SQL stands for Structured Query Language which is pronounce as SEQUEL.
+
+This language is used to interact with oracle database.
+
+It is a comand based language.
+
+It is a case insensitive language.
+
+Every command must starts with verb.
+
+Every command must ends with semicolon.
+
+It is developed by Donald D. Chamberlin and Raymond F. Boyce in IBM.
+
+Sub languages of SQL 
+===================
+We have five sub languages of SQL.
+
+1) DDL - Data Definition Language
+
+2) DML - Data Manipulation Language
+
+3) DRL/DQL  - Data Retrieve/Query Language
+
+4) TCL  - Transaction Control Language
+
+5) DCL  - Data Control Language
+
+
+1) DDL - Data Definition Language
+----------------------------------
+This language is used to maintain the objects in database.
+It is a collection of five commands.
+ex:
+	create, alter, drop , truncate and rename.
+
+
+2) DML - Data Manipulation Language
+------------------------------------
+This language is used to manipulate the data that is present in database.
+It is a collection of four commands.
+ex:
+	insert,update,delete and merge.	
+
+3) DRL/DQL  - Data Retrieve/Query Language
+-----------------------------------------
+This language is used to retrieve the data from database.
+It is a collection of one command.
+ex:
+	select 
+
+4) TCL  - Transaction Control Language
+---------------------------------------
+This language is used to maintain the transactions in database.
+It is a collection of three commands.
+ex:
+	commit, rollback and savepoint.
+
+
+5) DCL  - Data Control Language
+-------------------------------
+This language is used to control user access and permissions from database objects.
+It is a collection of two commands.
+ex:
+	grant and revoke
+
+
+Oracle 
+======
+Version			:	10g or 11g or 12c 
+
+Vendor			:	Oracle Corporation 
+
+Website			:	www.oracle.com/in 
+
+Port No			:	1521
+
+Username		:	system (default)
+
+Password		:	admin 	
+
+Download link		:
+
+https://drive.google.com/file/d/0B9rC21sL6v0td1NDZXpkUy1oMm8/view?usp=drive_link&resourcekey=0-aKooR3NmAh_eLo_qGw_inA
+
+
+
+Establish the connection with database
+======================================
+To perform any operation in database we need to establish the connection with database.
+Once the work with database is completed we need to close the connection.
+
+ex:1
+----
+	SQL> connect 
+		enter username : system 
+		enter password : admin 
+	SQL> disconnect 
+
+ex:2
+----
+	SQL> conn
+		enter username : system 
+		enter password : admin 
+	SQL> disc
+ex:3
+----
+	SQL> conn system/admin 
+	SQL> disc 
+
+
+create command 
+==============
+It is used to create tables in a database.
+
+syntax:
+-------
+	create table <table_name>(col1 datatype(size),col2 datatype(size),.....,
+						colN datatype(size));
+
+ex:
+	create table student(sno number(3),sname varchar2(10),sadd varchar2(12));
+	
+	create table dept(deptno number(3),dname varchar2(10),dloc varchar2(10));
+		
+	create table emp(eid number(3),ename varchar2(10),esal number(8,2),
+			deptno number(3),job varchar2(10),comm number(6));
+
+Describe command 
+===============
+It is used to see the structure of a table.
+
+syntax:
+------
+	desc <table_name>;
+ex:
+	desc emp;
+	desc student;
+	desc dept;
+
+Insert command 
+==============
+It is used to insert the records/rows into database table.
+
+syntax:
+-------
+	insert into <table_name> values(value1,value2,...,valueN);
+
+ex:
+	insert into student values(101,'raja','hyd');
+	insert into student values(102,'ravi');  -- not enough values
+
+	Here null is used to represent undefined or unavailable.
+
+	insert into student values(102,'ravi',null);
+	
+Approach2
+--------
+	insert into student(sno,sname,sadd) values(103,'ramana','vizag');
+	insert into student(sno,sname) values(104,'ramulu');
+
+Approach3
+---------
+	Using '&' symbol we can read dynamic inputs.
+	
+	insert into student values(&sno,'&sname','&sadd');
+
+
+commit command
+===============
+It is used to make the changes permanent to database.
+
+syntax:
+------
+	commit;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

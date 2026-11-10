@@ -1,0 +1,302 @@
+com.rt.www.exception
+|
+|---ErrorResponse.java
+|---ResourceNotFoundException.java
+|---GlobalExceptionHandler.java
+
+
+What are Records in Java?
+===========================
+Java Records are a special type of class introduced to simplify the creation of data transfer objects (DTOs).
+
+It is introduced in Java 16.
+
+Records help us reduce boilerplate code such as:
+
+- Constructors
+- Getters
+- toString()
+- equals()
+- hashCode()
+
+
+ErrorResponse.java
+-----------------
+package com.rt.www.exception;
+import java.time.LocalDateTime;
+public record ErrorResponse(
+        LocalDateTime timestamp,
+        int status,
+        String error,
+        String message,
+        String path
+) {
+}
+
+ResourceNotFoundException.java
+------------------------------
+package com.rt.www.exception;
+
+public class ResourceNotFoundException extends RuntimeException {
+
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}
+
+
+GlobalExceptionHandler.java
+---------------------------
+package com.rt.www.exception;
+
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler
+{
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex, HttpServletRequest request)
+	{
+		ErrorResponse errorResponse = new ErrorResponse(
+				LocalDateTime.now(),
+				HttpStatus.NOT_FOUND.value(),
+				"Not Found",
+				ex.getMessage(),
+				request.getRequestURI()
+				);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+	}
+	
+	@ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(
+            Exception ex,
+            HttpServletRequest request) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal Server Error",
+                "Something went wrong",
+                request.getRequestURI()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(errorResponse);
+    }
+
+}
+
+
+CustomerService.java
+--------------------
+package com.rt.www.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.rt.www.entity.Customer;
+import com.rt.www.exception.ResourceNotFoundException;
+import com.rt.www.repo.CustomerRepository;
+
+@Service
+public class CustomerService 
+{
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	public Customer addCustomer(Customer customer)
+	{
+		return customerRepository.save(customer);
+	}
+	public List<Customer> getAllCustomers()
+	{
+		return customerRepository.findAll();
+	}
+	public ResponseEntity<Customer> getCustomerById(Long custId)
+	{
+		Customer customer = customerRepository.findById(custId).orElseThrow(()-> new ResourceNotFoundException("Id Not Found"));
+		return new ResponseEntity<>(customer, HttpStatus.OK);
+	}
+	
+	public ResponseEntity<Customer> updateCustomer(Customer customer)
+	{
+		Customer old_cust = customerRepository.findById(customer.getCustId()).orElseThrow(()-> new ResourceNotFoundException("Id Not Found"));
+		old_cust.setCustName(customer.getCustName());
+		old_cust.setCustAddress(customer.getCustAddress());
+		customerRepository.save(old_cust);
+		return new ResponseEntity<>(old_cust,HttpStatus.OK);
+	}
+	public ResponseEntity<String> deleteCustomer(Long custId)
+	{
+		Customer customer = customerRepository.findById(custId).orElseThrow(()-> new ResourceNotFoundException("Id Not Found"));
+		customerRepository.delete(customer);
+		return new ResponseEntity<>("Record Deleted",HttpStatus.OK);
+	}
+	public ResponseEntity<String> patchCustomer(Long custId, Map<String,Object> data)
+	{
+		Customer customer = customerRepository.findById(custId).orElseThrow(()-> new ResourceNotFoundException("Id Not Found"));
+		if(customer==null)
+		{
+			return new ResponseEntity<>("Record Not Found",HttpStatus.NOT_FOUND);
+		}
+		else
+		{
+			data.forEach((key,value)->{
+				switch(key)
+				{
+					case "custId" : customer.setCustId((Long)value); break;
+					case "custName" : customer.setCustName((String)value); break;
+					case "custAddress" : customer.setCustAddress((String)value);break;
+				}
+			});
+			customerRepository.save(customer);
+			return new ResponseEntity<>("Record Updated",HttpStatus.OK);
+		}
+		
+	}
+}
+
+Request url
+-----------
+	HTTP Method	URL
+	----------	-----
+	GET		http://localhost:9090/customer/fetch/102
+
+	{
+    		"timestamp": "2026-11-04T09:26:09.4503931",
+    		"status": 404,
+    		"error": "Not Found",
+   		"message": "Id Not Found",
+    		"path": "/customer/fetch/102"
+	}		
+
+Assignment 
+==========
+Create two microservices i.e  "order-service" and "payment-service".
+
+
+
+
+API Gateway 
+===========
+API Gateway is a single entry point between the client and multiple microservices.
+
+Instead of the client directly calling each microservice:
+
+ex:
+	Client → Customer Service
+	Client → Order Service
+	Client → Payment Service
+
+We make the client to call API Gateway.
+
+Diagram: sb10.1
+
+The main purpose of API Gateway to handle:
+
+1) Request routing
+2) Authentication/authorization
+3) Security
+4) Logging
+5) CORS
+6) Rate limiting
+7) Load balancing
+8) Request/response filtering
+9) Centralized API entry point
+
+
+step1:
+------
+	Create a spring starter project i.e api-gateway.
+	
+step2:
+------
+	Add Spring Cloud Gateway Server Web MVC dependency in pom.xml 
+	ex:
+		<dependency>
+    			<groupId>org.springframework.cloud</groupId>
+    			<artifactId>spring-cloud-starter-gateway-server-webmvc</artifactId>
+		</dependency>
+
+	Note : This is the dependency for the MVC/Tomcat-based Gateway.
+
+step3:
+------
+	The BOM manages compatible Spring Cloud dependency versions.
+
+	pom.xml 
+	---------
+	<properties>
+    		<java.version>17</java.version>
+    		<spring-cloud.version>2025.1.2</spring-cloud.version>
+	</properties>
+
+
+	<dependencyManagement>
+    		<dependencies>
+        		<dependency>
+            			<groupId>org.springframework.cloud</groupId>
+            			<artifactId>spring-cloud-dependencies</artifactId>
+            			<version>${spring-cloud.version}</version>
+            			<type>pom</type>
+            			<scope>import</scope>
+        		</dependency>
+    		</dependencies>
+	</dependencyManagement>
+
+
+	Note : Without the BOM, Maven may report:'dependencies.dependency.version' is missing
+
+step4:
+------
+	Convert application.properties file to application.yml file.
+
+step5:
+------
+	Configure application name, server port and Gateway routing configuration.
+
+application.yml
+---------------
+server:
+  port: 7171
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: customer-service
+              uri: http://localhost:9090
+              predicates:
+                - Path=/customer/**
+step6:
+------	
+	Keep ApiGatewayApplication.java file as it is.
+
+step7:
+------
+	Run spring boot project.
+
+step8:
+------
+	Test the application.
+	ex:
+		http://localhost:9090/customer/fetch
+		http://localhost:7171/customer/fetch

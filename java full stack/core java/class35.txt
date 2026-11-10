@@ -1,0 +1,541 @@
+Interview Programs 
+==================
+
+Q) Write a java program to remove special characters from given string?
+
+input:
+	R@ai_s%e$Te!c*h
+output:
+	RaiseTech 
+
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "R@ai_s%e$Te!c*h";
+		str = str.replaceAll("[^A-Za-z0-9]","");
+		System.out.println(str);
+	}
+}
+
+
+Q) Write a java program to remove all the spaces from given string?
+
+input:
+	R ais eTe ch
+output:
+	RaiseTech 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "R ais eTe ch";
+		str = str.replaceAll("\\s","");
+		System.out.println(str);
+	}
+}
+
+
+
+Q) Write a java program to display the string in a given format?
+
+input:
+	abababa
+output:
+	aba
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "abababa";
+		str = str.replaceAll("aba","a");
+		System.out.println(str);
+	}
+}
+
+
+Q) Write a java program to delete the word from given string?
+
+input:
+	str = this is java class
+	delete = is 
+output:
+	th java class 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "this is java class";
+		String delete = "is";
+		str = str.replaceAll(delete,"");
+		System.out.println(str);
+	}
+}
+
+
+Q) Write a java program to concatinate two strings?
+
+Input:
+	Raise12
+	Tech28
+Output:
+	RaiseTech40
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str1 = "Raise12";
+		String str2 = "Tech28";
+			
+		String word1 = str1.replaceAll("[^A-Za-z]","");
+		int num1 = Integer.parseInt(str1.replaceAll("[^0-9]",""));
+		
+		String word2 = str2.replaceAll("[^A-Za-z]","");
+		int num2 = Integer.parseInt(str2.replaceAll("[^0-9]",""));
+		
+		String word = word1 + word2;
+		int num = num1 + num2;
+		
+		System.out.println(word+num);
+	}
+}
+
+
+
+Q) Write a java program to find out number of digits, sum of digits and check that number 
+is even or odd?
+
+Input:
+	NEX123
+
+Output:
+	No of digits : 3
+	Sum of digits : 6
+	It is even number 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "NEX123";
+		
+		String newStr = str.replaceAll("[^0-9]","");
+		
+		System.out.println("Number of digits : "+newStr.length());
+		
+		int sum = 0;
+		for(char ch : newStr.toCharArray())
+		{
+			int n = Character.getNumericValue(ch);
+			sum += n;
+		}
+		System.out.println("Sum of digits : "+sum);
+		
+		System.out.println((sum%2==0)?"It is even number":"It is odd number");
+	}
+}
+
+
+Q) Write a java program to sort the string?
+
+input:
+	dacbe
+output:
+	abcde 
+
+
+import java.util.Arrays;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "dacbe";
+		
+		char[] carr = str.toCharArray();
+		
+		Arrays.sort(carr);
+		
+		str = new String(carr);
+		System.out.println(str);
+	}
+}
+
+
+
+Q) Write a java program to perform right rotation of a given string?
+
+input:
+	str = raisetech 
+	cnt = 2
+output:
+	isetechra
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "raisetech"; 
+		int cnt = 2;
+
+		String word1 = str.substring(cnt);
+		String word2 = str.substring(0,cnt);
+
+		str = word1+word2;
+		System.out.println(str);
+	}
+}
+
+
+Q) Write a java program to insert a word in a given string?
+
+input:
+	str = "JavaStudents"
+	insert = "For"
+	index = 4
+Output:
+	JavaForStudents 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "JavaStudents";
+		String insert = "For";
+		int index = 4;
+
+		String word1 = str.substring(0,index);
+		String word2 = str.substring(index);
+		
+		str = word1+insert+word2;
+		System.out.println(str); 
+	}
+}
+
+
+
+Q) Write a java program to display the string in a given format?
+
+input:
+	abc.txt
+
+output:
+	txt 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "abc.txt";
+		int index = str.indexOf('.');
+		String fileFormat = str.substring(index+1);
+		System.out.println(fileFormat);
+	}
+}
+
+
+Q) Write a java program to display each word starting letter in uppercase?
+
+input:
+	this is java class
+output:
+	This Is Java Class 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "this is java class";
+		String[] sarr = str.split(" ");
+		
+		String result = "";
+		for(String s : sarr)
+		{
+			String word1 = s.substring(0,1).toUpperCase();
+			String word2 = s.substring(1);
+			result += word1+word2;
+			result += " ";
+		}
+		str = result.trim();
+		System.out.println(str);
+	}
+}
+
+
+
+Q) Write a java program to check given string is Anagram or not?
+
+Input:
+	silent 	
+	listen 
+
+Output:
+	It is a anagram string 	
+
+
+import java.util.Arrays;
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str1 = "silent"; 	
+		String str2 = "listen";
+		
+		char[] carr1 = str1.toCharArray();
+		char[] carr2 = str2.toCharArray();
+		
+		Arrays.sort(carr1);   // e i l n s t 
+		Arrays.sort(carr2);   // e i l n s t 
+		
+		str1 = new String(carr1);
+		str2 = new String(carr2);
+		
+		if(str1.equals(str2))
+			System.out.println("It is a Anagram string");
+		else
+			System.out.println("It is not a Anagram string");
+		
+	}
+}
+
+
+Q) Write a java program to display highest int number from given string?
+
+Input:
+	1kg apple for 100 rupees and 2kg mangoes for 200 rupees
+
+Output:
+	200
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "1kg apple for 100 rupees and 2kg mangoes for 200 rupees";
+		String[] sarr = str.split("\\D+");
+		int max = Integer.MIN_VALUE;
+		
+		for(String s : sarr)
+		{
+			int n = Integer.parseInt(s);
+			if(n>max)
+			{
+				max = n;
+			}
+		}
+		System.out.println(max);
+	}
+}
+
+
+Q) John has purchased a new laptop for his office work. His child started to frame word using alphabets. John wants to write a program to find out the longest word created by his child.
+
+Input:
+	cat apple elephant ball 		
+			
+Output:
+	elephant 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "cat apple elephant ball";
+		String[] sarr = str.split(" ");
+		
+		String word = sarr[0];
+		int cnt = sarr[0].length();
+		
+		for(String s : sarr)
+		{
+			if(s.length() > cnt)
+			{
+				cnt = s.length();
+				word = s;
+			}
+		}
+		System.out.println(word);		
+	}
+}
+
+
+Q) Write a java program to display reverse of a string?
+
+Input:
+	hello 
+
+output:
+	olleh 
+
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "hello";
+		
+		String result = "";
+		for(int i=str.length()-1;i>=0;i--)
+		{
+				result += str.charAt(i);
+		}
+		System.out.println(result);
+	}
+}
+
+
+
+
+
+Q) Write a java program to check given string is palindrome or not?
+
+input:
+	racar 
+
+output:
+	It is a palindrome string 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "racar";
+		
+		String result = "";
+		for(int i=str.length()-1;i>=0;i--)
+		{
+				result += str.charAt(i);
+		}
+		if(str.equals(result))
+			System.out.println("It is a palindrome string");
+		else
+			System.out.println("It is not a palindrome string");
+	}
+}
+
+
+
+Q) Write a java program to display reverse of a sentence?
+
+input:
+	this is java class 
+
+output:
+	class java is this
+
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "this is java class";
+		
+		String[] sarr = str.split(" ");
+		
+		String result = "";
+		
+		for(int i = sarr.length-1;i>=0;i--)
+		{
+			result += sarr[i];
+			result += " ";
+		}
+		System.out.println(result.trim());
+	}
+}
+
+
+
+Q) Write a java program to reverse of a word in a sentence?
+
+input:
+	This is java class
+
+output:
+	sihT si avaj ssalc
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "This is java class";
+		
+		String[] sarr = str.split(" ");
+		
+		String rev = "";
+		for(String s: sarr)
+		{
+			for(int i=s.length()-1;i>=0;i--)
+			{
+				rev += s.charAt(i);
+			}
+			rev+= " ";
+		}
+		System.out.println(rev.trim());
+	}
+}
+
+
+
+
+Q) Write a java program to display palindrome string?
+
+input:
+	racar is madam for students
+
+output:
+	racar madam 
+
+
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str = "racar is madam for students";
+		
+		String[] sarr = str.split(" ");
+		
+		for(String s : sarr) // r a c a r
+		{
+			String rev = "";
+			for(int i = s.length()-1;i>=0;i--)
+			{
+				rev += s.charAt(i);
+			}
+			if(s.equals(rev))
+				System.out.print(s+" ");
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

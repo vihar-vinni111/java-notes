@@ -1,0 +1,542 @@
+Type4 JDBC Driver Architecture / Native protocol / Thin Driver
+==============================================================
+Type4 JDBC driver is not designed to take the support of ODBC driver and Vendor DB library.
+
+It is designed to interact with database software directly.
+
+Diagram: jdbc3.1
+
+Advantages:
+
+1) It gives better performance when compare to Type1 and Type2 JDBC driver.
+
+2) This driver developed in java so it gives platform independency.
+
+3) To work with Type4 JDBC driver we don't need to arrange odbc driver and vendor db library 
+   seperately.
+
+4) Since odbc driver and vendor db library not present at client side so it is suitable to 
+   perform untrusted applets to database communication.
+
+5) It is suitable for medium and large scale projects. Hence it is a industry standard driver.
+
+Disadvantages:
+
+1) It is not a built-in driver of JDK.
+
+2) For every database we need to arrange Type4 JDBC driver seperately.
+
+
+JDBC Connection Pool 
+====================
+It is a factory containing set of readily available JDBC Connection objects before actual 
+being used.
+
+Diagram: jdbc3.2
+
+JDBC Connection pool represent connectivity with same database software.
+
+Advantages:
+
+1) It gives reusable JDBC Connection objects.
+
+2) With minimum number of Connection objects we can interact with multiple clients.
+
+3) A programmer is not responsible to create, manage an destroy connection objects. A JDBC 
+   connection pool is responsible.
+
+
+Type3 JDBC Driver Architecture / Net Protocol Driver 
+----------------------------------------------------
+Web server, proxy server or IDE's server contains JDBC Connection pool.
+
+Type3 JDBC driver is not designed to interact with database software directly.
+
+Type3 JDBC driver is designed to interact with web server or proxy server or IDE's server 
+to get one reusable JDBC connection object from JDBC Connection pool.
+
+Diagram: jdbc3.3
+
+With respect to the diagram:
+
+1) Web server or proxy server interacts with database software to get connection objects 
+   in JDBC Connection pool.
+
+2) Our application uses Type3 JDBC driver to interact web server or proxy server to get 
+   on reusable JDBC connection object.
+
+3) Our application uses jdbc Connection object to create other connection objects.
+
+4) Once if we call con.close() , jdbc connection object goes back to jdbc connection pool.
+
+
+
+SQL Injection Problem 
+=====================
+Along with input values if we pass special SQL instructions which change the behaviour of a 
+query and behaviour of an application is called SQL injection problem.
+ 
+Here special SQL instructions comment in SQL i.e --.
+
+While dealing with simple Statement object there is a chance of raising SQL injectio problem.
+
+ex:
+	Enter username : raja'-- 
+	Enter password : pooja 
+
+	Valid Credentials 
+
+
+userlist table 
+---------------
+drop table userlist;
+create table userlist(uname varchar2(10), pwd varchar2(10));
+insert into userlist values('raja','rani');
+commit;
+
+ex:
+---
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class SqlInjProbApp
+{
+	public static void main(String[] args)throws Exception 
+	{
+			Scanner sc = new Scanner(System.in);
+			
+			System.out.println("Enter the username : ");
+			String name = sc.next();
+			
+			System.out.println("Enter the password : ");
+			String pass = sc.next();
+			
+			//convert string inputs according to sql query 
+			name="'"+name+"'";
+			pass="'"+pass+"'";
+			
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+			Statement st = con.createStatement();
+			
+			String qry = "select count(*) from userlist where uname="+name+" and pwd="+pass;
+	
+			ResultSet rs = st.executeQuery(qry);
+			int result = 0;
+			while(rs.next())
+			{
+				result = rs.getInt(1);
+			}
+			if(result==0)
+				System.out.println("Invalid Credentials");
+			else
+				System.out.println("Valid Credentials");
+			
+			rs.close();
+			st.close();
+			con.close();
+	}
+}
+
+Types of Statement objects in JDBC
+===================================
+We have three Statement objects in JDBC.
+
+1) Simple Statement object
+--------------------------
+It is an object of underlying supplied java class which implements java.sql.Statement interface. 
+
+2) PreparedStatement object 
+-------------------------
+It is an object of underlying supplied java class which implements java.sql.PreparedStatement interface.
+
+3) CallableStatement object 
+-----------------------------
+It is an object of underlying supplied java class which implements java.sql.CallableStatement interface.
+
+
+Limitations with simple Statement object
+========================================
+1) It is not suitable to execute same query for multiple times with same or different values.
+
+2) It raises SQL injection problem.
+
+3) Framing a query with variables is quit complex.
+	
+4) Without any conversion, we can't use string values.
+
+5) It does not allow us to insert date values to database table column.
+
+6) It does not allow us to insert LOB(Large Objects) values to database table column.
+
+To overcome above limitations we need to use PreparedStatement object.
+
+
+PreparedStatement 
+==================
+PreparedStatement is an interface which is present in java.sql package.
+
+PreparedStatement object deals with pre-compiled SQL query.
+
+A query which goes to database software without input values and becomes parsed query either 
+it is executed or not is called pre-compiled SQL query.
+
+We can create PreparedStatement object as follow.
+ex:
+	PreparedStatement ps = con.prepareStatement(query);
+
+
+Q) Write a JDBC to insert student record using PreparedStatement object?
+
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Scanner;
+
+public class PSInsertApp 
+{
+	public static void main(String[] args)throws Exception 
+	{
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the student no : ");
+		int no = sc.nextInt();
+		
+		System.out.println("Enter the student name : ");
+		String name = sc.next();
+		
+		System.out.println("Enter the student address : ");
+		String add = sc.next();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		
+		String qry = "insert into student values(?,?,?)";
+		
+		PreparedStatement ps = con.prepareStatement(qry);
+		
+		//set the values
+		ps.setInt(1, no);
+		ps.setString(2, name);
+		ps.setString(3, add);
+		
+		//execute 
+		int result = ps.executeUpdate();
+		
+		if(result==0)
+			System.out.println("No Record Inserted");
+		else
+			System.out.println("Record Inserted");
+		
+		ps.close();
+		con.close();
+	}
+}
+
+Q) Write a JDBC application to update student name based on student number?
+
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Scanner;
+
+public class PSUpdateApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the student no : ");
+		int no = sc.nextInt();
+		
+		System.out.println("Enter the student name : ");
+		String name = sc.next();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		
+		String qry = "update student set sname=? where sno=?";
+		
+		PreparedStatement ps = con.prepareStatement(qry);
+		
+		//set the values
+		ps.setString(1, name);
+		ps.setInt(2, no);
+		
+		//execute the query 
+		int result = ps.executeUpdate();
+		if(result==0)
+			System.out.println("No Record Updated");
+		else
+			System.out.println("Record Updated");
+		
+		ps.close();
+		con.close();
+	}
+}
+
+Q) Write a JDBC application to delete student record based on student number?
+
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Scanner;
+
+public class PSDeleteApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the student no : ");
+		int no = sc.nextInt();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		
+		String qry = "delete from student where sno = ?";
+		
+		PreparedStatement ps = con.prepareStatement(qry);
+		
+		//set the values
+		ps.setInt(1,no);
+		
+		//execute 
+		int result = ps.executeUpdate();
+		if(result == 0)
+			System.out.println("No Record Deleted");
+		else
+			System.out.println("Record Deleted");
+		
+		ps.close();
+		con.close();
+	}
+}
+
+
+Solution for SQL Injection problem 
+==================================
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Scanner;
+
+public class SolForSQLInjProbApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the username : ");
+		String name = sc.next();
+		
+		System.out.println("Enter the password : ");
+		String pass = sc.next();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		
+		String qry = "select count(*) from userlist where uname=? and pwd=?";
+		
+		PreparedStatement ps = con.prepareStatement(qry);
+		
+		//set the values
+		ps.setString(1, name);
+		ps.setString(2, pass);
+		
+		//execute 
+		ResultSet rs = ps.executeQuery();
+		int result = 0;
+		while(rs.next())
+		{
+			result = rs.getInt(1);
+		}
+		if(result == 0)
+			System.out.println("Invalid Credentials");
+		else
+			System.out.println("Valid Credentials");
+		
+		rs.close();
+		ps.close();
+		con.close();
+	}
+}
+
+DatabaseMetaData 
+================
+DatabaseMetaData is an interface which is present in java.sql package.
+
+DatabaseMetaData provides metadata of a database.
+
+DatabaseMetaData gives information about database product name, database product version, database driver name, database driver version, database username and etc.
+
+We can create DatabaseMetaData object as follow.
+ex:
+	DatabasetMetaData dbmd = con.getMetaData();
+
+ex:
+---
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+
+public class DBMDApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		DatabaseMetaData dbmd = con.getMetaData();
+		System.out.println(dbmd.getDatabaseProductName());
+		System.out.println(dbmd.getDatabaseProductVersion());
+		System.out.println(dbmd.getDriverName());
+		System.out.println(dbmd.getDriverVersion());
+		System.out.println(dbmd.getUserName());
+		con.close();
+	}
+}
+
+
+ResultSetMetaData 
+=================
+ResultSetMetaData is an interface which is present in java.sql package.
+
+ResultSetMetaData provides metadata of a table.
+
+ResultSetMetaData gives information about number of columns, name of the columns, type of columns, size of columns and etc.
+
+We can create ResultSetMetaData object as follow.
+ex:
+	ResultSetMetaData rsmd = rs.getMetaData(); 
+
+ex:
+---
+package com.rt.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+
+public class RSMDApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		String qry = "select * from student";
+		PreparedStatement ps = con.prepareStatement(qry);
+		ResultSet rs = ps.executeQuery();
+		
+		ResultSetMetaData rsmd = rs.getMetaData();
+		System.out.println(rsmd.getColumnCount());
+		System.out.println(rsmd.getColumnName(1));
+		System.out.println(rsmd.getColumnTypeName(2));
+		System.out.println(rsmd.getColumnDisplaySize(2));
+		rs.close();
+		ps.close();
+		con.close();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
